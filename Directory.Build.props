@@ -1,0 +1,10 @@
+<Project>
+	<PropertyGroup>
+		<!--
+			Path to the Probably Stolen installation (the folder that contains
+			"Probably Stolen_Data"). Override it here, with an environment
+			variable, or per build: dotnet build ... -p:GameDir="D:\...\Probably Stolen"
+		-->
+		<GameDir Condition="'$(GameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Probably Stolen</GameDir>
+	</PropertyGroup>
+</Project>

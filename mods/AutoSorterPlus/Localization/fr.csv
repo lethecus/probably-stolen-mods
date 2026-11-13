@@ -1,0 +1,65 @@
+# AutoSorter Plus – Français
+# Conservez les marqueurs comme {0}. Ne traduisez pas la syntaxe des règles (tag:, AND, OR, NOT).
+asp.hotkey.sort,Trier l'inventaire
+asp.hotkey.overview,Aperçu des conteneurs
+asp.hotkey.settings,Ouvrir les règles de stockage (clic droit)
+asp.hotkey.toggle,Activer/désactiver AutoSorter Plus
+asp.log.disabled,AutoSorter Plus est désactivé globalement.
+asp.log.noTargets,Aucune règle de conteneur active. Faites un clic droit sur un conteneur et activez d'abord une règle.
+asp.log.done,"Trié : {0} déplacés, {1} sans destination, {2} échecs, {3} ignorés · {4} conteneur(s) · {5} ms"
+asp.log.scan,{0} conteneur(s) détecté(s).
+asp.log.globalOn,AutoSorter Plus activé.
+asp.log.globalOff,AutoSorter Plus désactivé.
+asp.log.notContainer,Cet objet n'est pas un conteneur de stockage.
+asp.log.saved,"Règle enregistrée pour {0}."
+asp.log.savedDisabled,"Règle enregistrée mais désactivée pour {0}. Activez-la pour que le tri l'utilise."
+asp.panel.saved,Règle enregistrée.
+asp.panel.savedDisabled,"Règle enregistrée, mais désactivée. Activez « Activée » pour l'appliquer."
+asp.panel.title,Règles de stockage
+asp.panel.key,Cible : {0}
+asp.panel.enabled,Activée
+asp.panel.include,Inclure des objets
+asp.panel.includeHint,"ex. tag:SEED AND mod:neon_undertow"
+asp.panel.exclude,Exclure des objets
+asp.panel.excludeHint,"ex. tag:BEVERAGE OR tag:LUXURY_ITEM"
+asp.panel.help,"Recherchez avec tag:, id:, name:, mod: ou label:. Autorise les jokers * et ?. Séparez les filtres par "","". mod:base = objets du jeu de base."
+asp.panel.saveNotice,Pensez à enregistrer avant de fermer.
+asp.panel.allowStolen,Autoriser les objets volés
+asp.panel.stolenPriority,Priorité aux objets volés
+asp.panel.allowContraband,Autoriser la contrebande
+asp.panel.priority,Priorité
+asp.panel.test,Vérifier
+asp.panel.scan,Analyser le contenu
+asp.scan.title,"Analyser : {0}"
+asp.scan.hint,"Tags, mods et ids d'objet dans ce conteneur. Ajoutez-les à Inclure ou Exclure ; plusieurs entrées se combinent avec OR (la virgule fonctionne aussi)."
+asp.scan.tags,Tags dans ce conteneur
+asp.scan.loose,Objets en vrac dans votre inventaire
+asp.scan.container,Dans ce conteneur
+asp.scan.mods,Mods
+asp.scan.labels,Labels / états
+asp.scan.ids,Ids d'objet
+asp.scan.empty,Le conteneur est vide.
+asp.scan.include,+ Inclure
+asp.scan.exclude,+ Exclure
+asp.scan.close,Fermer
+asp.panel.matches,{0} objet(s) correspondant(s)
+asp.panel.stolenBlocked,"{0} volés (activez Autoriser les objets volés)"
+asp.panel.contrabandBlocked,"{0} contrebande (activez Autoriser la contrebande)"
+asp.panel.save,Enregistrer
+asp.panel.clear,Effacer
+asp.panel.close,Fermer
+asp.panel.slots,Onglets / emplacements
+asp.panel.cleared,Règle effacée.
+asp.overview.title,Aperçu des conteneurs
+asp.overview.hint,Clic droit sur un conteneur pour modifier sa règle. Ctrl+R trie, Ctrl+Maj+O active/désactive.
+asp.overview.sort,Trier maintenant
+asp.overview.close,Fermer
+asp.overview.globalOn,État : activé
+asp.overview.globalOff,État : désactivé
+asp.overview.edit,Modifier
+asp.overview.empty,Aucune règle pour l'instant.
+asp.overview.off,désactivée
+asp.overview.priority,"P{0}"
+asp.slot.fridge.chill,Zone de fraîcheur
+asp.slot.fridge.freeze,Zone de congélation
+asp.error.parse,Erreur de règle : {0}

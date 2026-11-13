@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Manifest>
+  <ID>customer_counter</ID>
+  <Name>Customer Counter</Name>
+  <Author>Local</Author>
+  <ModVersion>1.0</ModVersion>
+  <Description>A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.</Description>
+  <GameVersions>
+    <Version>1.0.0.14</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>CustomerCounter.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Manifest>

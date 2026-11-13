@@ -1,0 +1,65 @@
+# AutoSorter Plus – 日本語
+# {0} などのプレースホルダーは変更しないでください。ルール構文（tag:, AND, OR, NOT）は翻訳しないでください。
+asp.hotkey.sort,インベントリを整理
+asp.hotkey.overview,コンテナ一覧
+asp.hotkey.settings,保管ルールを開く（右クリック）
+asp.hotkey.toggle,AutoSorter Plus のオン/オフ
+asp.log.disabled,AutoSorter Plus は全体で無効になっています。
+asp.log.noTargets,有効なコンテナルールがありません。コンテナを右クリックして、先にルールを有効にしてください。
+asp.log.done,"整理完了：移動 {0} 件、対象なし {1} 件、失敗 {2} 件、スキップ {3} 件 · コンテナ {4} 個 · {5} ms"
+asp.log.scan,コンテナを {0} 個検出しました。
+asp.log.globalOn,AutoSorter Plus を有効にしました。
+asp.log.globalOff,AutoSorter Plus を無効にしました。
+asp.log.notContainer,そのアイテムは保管コンテナではありません。
+asp.log.saved,"{0} のルールを保存しました。"
+asp.log.savedDisabled,"{0} のルールを保存しましたが無効です。整理で使うには有効にしてください。"
+asp.panel.saved,ルールを保存しました。
+asp.panel.savedDisabled,"ルールを保存しましたが無効です。「有効」をオンにしてください。"
+asp.panel.title,保管ルール
+asp.panel.key,対象: {0}
+asp.panel.enabled,有効
+asp.panel.include,含めるアイテム
+asp.panel.includeHint,"例: tag:SEED AND mod:neon_undertow"
+asp.panel.exclude,除外するアイテム
+asp.panel.excludeHint,"例: tag:BEVERAGE OR tag:LUXURY_ITEM"
+asp.panel.help,"tag:、id:、name:、mod:、label: で検索できます。ワイルドカード * と ? が使えます。複数のフィルターは "","" で区切ります。mod:base = 基本ゲームのアイテム。"
+asp.panel.saveNotice,閉じる前に変更を保存してください。
+asp.panel.allowStolen,盗品を許可
+asp.panel.stolenPriority,盗品を優先
+asp.panel.allowContraband,密輸品を許可
+asp.panel.priority,優先度
+asp.panel.test,確認
+asp.panel.scan,内容をスキャン
+asp.scan.title,"スキャン: {0}"
+asp.scan.hint,"このコンテナ内のタグ、MOD、アイテムIDです。含める/除外に追加できます。複数の項目は OR で結合されます（カンマも可）。"
+asp.scan.tags,このコンテナ内のタグ
+asp.scan.loose,インベントリ内の未収納アイテム
+asp.scan.container,このコンテナ内
+asp.scan.mods,MOD
+asp.scan.labels,ラベル / 状態
+asp.scan.ids,アイテムID
+asp.scan.empty,コンテナは空です。
+asp.scan.include,+ 含める
+asp.scan.exclude,+ 除外
+asp.scan.close,閉じる
+asp.panel.matches,一致 {0} 件
+asp.panel.stolenBlocked,"盗品 {0} 件（「盗品を許可」をオン）"
+asp.panel.contrabandBlocked,"密輸品 {0} 件（「密輸品を許可」をオン）"
+asp.panel.save,保存
+asp.panel.clear,クリア
+asp.panel.close,閉じる
+asp.panel.slots,タブ / スロット
+asp.panel.cleared,ルールを削除しました。
+asp.overview.title,コンテナ一覧
+asp.overview.hint,コンテナを右クリックするとルールを編集できます。Ctrl+R で整理、Ctrl+Shift+O でオン/オフ。
+asp.overview.sort,今すぐ整理
+asp.overview.close,閉じる
+asp.overview.globalOn,状態: 有効
+asp.overview.globalOff,状態: 無効
+asp.overview.edit,編集
+asp.overview.empty,ルールはまだありません。
+asp.overview.off,無効
+asp.overview.priority,"P{0}"
+asp.slot.fridge.chill,冷蔵ゾーン
+asp.slot.fridge.freeze,冷凍ゾーン
+asp.error.parse,ルールエラー: {0}

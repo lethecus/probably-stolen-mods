@@ -1,0 +1,65 @@
+# AutoSorter Plus – Português (Brasil)
+# Mantenha os marcadores como {0}. Não traduza a sintaxe das regras (tag:, AND, OR, NOT).
+asp.hotkey.sort,Ordenar inventário
+asp.hotkey.overview,Visão geral dos contêineres
+asp.hotkey.settings,Abrir regras de armazenamento (clique direito)
+asp.hotkey.toggle,Ativar/desativar o AutoSorter Plus
+asp.log.disabled,O AutoSorter Plus está desativado globalmente.
+asp.log.noTargets,Nenhuma regra de contêiner ativa. Clique com o botão direito em um contêiner e ative uma regra primeiro.
+asp.log.done,"Organizado: {0} movidos, {1} sem destino, {2} falhas, {3} ignorados · {4} contêiner(es) · {5} ms"
+asp.log.scan,{0} contêiner(es) encontrado(s).
+asp.log.globalOn,AutoSorter Plus ativado.
+asp.log.globalOff,AutoSorter Plus desativado.
+asp.log.notContainer,Esse item não é um contêiner de armazenamento.
+asp.log.saved,"Regra salva para {0}."
+asp.log.savedDisabled,"Regra salva, mas desativada para {0}. Ative para o organizador usá-la."
+asp.panel.saved,Regra salva.
+asp.panel.savedDisabled,"Regra salva, mas desativada. Ative «Ativa» para aplicá-la."
+asp.panel.title,Regras de armazenamento
+asp.panel.key,Destino: {0}
+asp.panel.enabled,Ativa
+asp.panel.include,Incluir itens
+asp.panel.includeHint,"ex.: tag:SEED AND mod:neon_undertow"
+asp.panel.exclude,Excluir itens
+asp.panel.excludeHint,"ex.: tag:BEVERAGE OR tag:LUXURY_ITEM"
+asp.panel.help,"Pesquise com tag:, id:, name:, mod: ou label:. Aceita os curingas * e ?. Separe os filtros com "","". mod:base = itens do jogo base."
+asp.panel.saveNotice,Lembre-se de salvar antes de fechar.
+asp.panel.allowStolen,Permitir roubados
+asp.panel.stolenPriority,Prioridade para roubados
+asp.panel.allowContraband,Permitir contrabando
+asp.panel.priority,Prioridade
+asp.panel.test,Verificar
+asp.panel.scan,Escanear conteúdo
+asp.scan.title,"Escanear: {0}"
+asp.scan.hint,"Tags, mods e ids de item neste contêiner. Adicione a Incluir ou Excluir; várias entradas se combinam com OR (vírgula também funciona)."
+asp.scan.tags,Tag neste contêiner
+asp.scan.loose,Itens soltos no seu inventário
+asp.scan.container,Neste contêiner
+asp.scan.mods,Mods
+asp.scan.labels,Rótulos / estados
+asp.scan.ids,Ids de item
+asp.scan.empty,O contêiner está vazio.
+asp.scan.include,+ Incluir
+asp.scan.exclude,+ Excluir
+asp.scan.close,Fechar
+asp.panel.matches,{0} item(ns) correspondente(s)
+asp.panel.stolenBlocked,"{0} roubados (ative Permitir roubados)"
+asp.panel.contrabandBlocked,"{0} contrabando (ative Permitir contrabando)"
+asp.panel.save,Salvar
+asp.panel.clear,Limpar
+asp.panel.close,Fechar
+asp.panel.slots,Abas / slots
+asp.panel.cleared,Regra apagada.
+asp.overview.title,Visão geral dos contêineres
+asp.overview.hint,Clique com o botão direito em um contêiner para editar a regra. Ctrl+R organiza, Ctrl+Shift+O ativa/desativa.
+asp.overview.sort,Organizar agora
+asp.overview.close,Fechar
+asp.overview.globalOn,Status: ativado
+asp.overview.globalOff,Status: desativado
+asp.overview.edit,Editar
+asp.overview.empty,Ainda não há regras.
+asp.overview.off,desativada
+asp.overview.priority,"P{0}"
+asp.slot.fridge.chill,Zona de resfriamento
+asp.slot.fridge.freeze,Zona de congelamento
+asp.error.parse,Erro de regra: {0}

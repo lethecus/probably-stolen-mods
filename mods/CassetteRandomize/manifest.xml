@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Manifest>
+  <ID>cassette_randomize</ID>
+  <Name>Cassette Randomize</Name>
+  <Author>Local</Author>
+  <ModVersion>3.0</ModVersion>
+  <Description>Replaces the tape player with a 50-row scrollable cassette deck (300 single-cell tapes, 7 rows visible) and a hi-fi equalizer panel: spectrum and oscilloscope, seek slider with track clock, volume, bass, treble, balance, mono, three savable presets and a collapsible storage drawer. The Randomize button starts a random playable cassette and keeps shuffling at the end of every track until Stop is pressed.</Description>
+  <GameVersions>
+    <Version>1.0.0.14</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>CassetteRandomize.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Manifest>

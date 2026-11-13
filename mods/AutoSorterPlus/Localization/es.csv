@@ -1,0 +1,65 @@
+# AutoSorter Plus – Español
+# Mantén los marcadores como {0}. No traduzcas la sintaxis de reglas (tag:, AND, OR, NOT).
+asp.hotkey.sort,Ordenar inventario
+asp.hotkey.overview,Resumen de contenedores
+asp.hotkey.settings,Abrir ajustes de almacenamiento (clic derecho)
+asp.hotkey.toggle,Activar/desactivar AutoSorter Plus
+asp.log.disabled,AutoSorter Plus está desactivado globalmente.
+asp.log.noTargets,No hay reglas de contenedor activas. Haz clic derecho en un contenedor y activa una regla primero.
+asp.log.done,"Ordenado: {0} movidos, {1} sin destino, {2} fallidos, {3} omitidos · {4} contenedor(es) · {5} ms"
+asp.log.scan,{0} contenedor(es) detectado(s).
+asp.log.globalOn,AutoSorter Plus activado.
+asp.log.globalOff,AutoSorter Plus desactivado.
+asp.log.notContainer,Ese objeto no es un contenedor de almacenamiento.
+asp.log.saved,"Regla guardada para {0}."
+asp.log.savedDisabled,"Regla guardada pero desactivada para {0}. Actívala para que el ordenado la use."
+asp.panel.saved,Regla guardada.
+asp.panel.savedDisabled,"Regla guardada, pero está desactivada. Activa «Activada» para aplicarla."
+asp.panel.title,Reglas de almacenamiento
+asp.panel.key,Destino: {0}
+asp.panel.enabled,Activada
+asp.panel.include,Incluir objetos
+asp.panel.includeHint,"p. ej. tag:SEED AND mod:neon_undertow"
+asp.panel.exclude,Excluir objetos
+asp.panel.excludeHint,"p. ej. tag:BEVERAGE OR tag:LUXURY_ITEM"
+asp.panel.help,"Busca con tag:, id:, name:, mod: o label:. Admite los comodines * y ?. Separa los filtros con "","". mod:base = objetos del juego base."
+asp.panel.saveNotice,Recuerda guardar los cambios antes de cerrar.
+asp.panel.allowStolen,Permitir robados
+asp.panel.stolenPriority,Prioridad a robados
+asp.panel.allowContraband,Permitir contrabando
+asp.panel.priority,Prioridad
+asp.panel.test,Verificar
+asp.panel.scan,Escanear contenido
+asp.scan.title,"Escanear: {0}"
+asp.scan.hint,"Etiquetas, mods e ids de objeto en este contenedor. Añádelos a Incluir o Excluir; varias entradas se combinan con OR (la coma también sirve)."
+asp.scan.tags,Etiquetas en este contenedor
+asp.scan.loose,Objetos sueltos en tu inventario
+asp.scan.container,En este contenedor
+asp.scan.mods,Mods
+asp.scan.labels,Etiquetas / estados
+asp.scan.ids,Ids de objeto
+asp.scan.empty,El contenedor está vacío.
+asp.scan.include,+ Incluir
+asp.scan.exclude,+ Excluir
+asp.scan.close,Cerrar
+asp.panel.matches,{0} objeto(s) coincidente(s)
+asp.panel.stolenBlocked,"{0} robados (activa Permitir robados)"
+asp.panel.contrabandBlocked,"{0} contrabando (activa Permitir contrabando)"
+asp.panel.save,Guardar
+asp.panel.clear,Limpiar
+asp.panel.close,Cerrar
+asp.panel.slots,Pestañas / ranuras
+asp.panel.cleared,Regla borrada.
+asp.overview.title,Resumen de contenedores
+asp.overview.hint,Haz clic derecho en cualquier contenedor para editar su regla. Ctrl+R ordena, Ctrl+Mayús+O activa/desactiva.
+asp.overview.sort,Ordenar ahora
+asp.overview.close,Cerrar
+asp.overview.globalOn,Estado: activado
+asp.overview.globalOff,Estado: desactivado
+asp.overview.edit,Editar
+asp.overview.empty,Aún no hay reglas.
+asp.overview.off,desactivada
+asp.overview.priority,"P{0}"
+asp.slot.fridge.chill,Zona de refrigeración
+asp.slot.fridge.freeze,Zona de congelación
+asp.error.parse,Error de regla: {0}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Manifest>
+  <ID>blank_card_printer</ID>
+  <Name>Blank Card Printer</Name>
+  <Author>Lethecus</Author>
+  <ModVersion>1.0</ModVersion>
+  <Description>Adds a Card Printer machine that prints vanilla blank keycards. Find it in toolTable scavenging or buy it from Dr. Jackson. Uninstall note: disabling the mod while you own a printer may remove it from your save.</Description>
+  <GameVersions>
+    <Version>1.0.0.14</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>BlankCardPrinter.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Manifest>

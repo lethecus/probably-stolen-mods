@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Manifest>
+  <ID>cassette_tape_size</ID>
+  <Name>Compact Cassettes</Name>
+  <Author>Local</Author>
+  <ModVersion>1.0</ModVersion>
+  <Description>Shrinks every music cassette from its 2x2 grid footprint down to a single 1x1 cell. Applies to newly created tapes and to tapes already stored in a save, so more cassettes fit in the player, in containers and in shop storage. The tape keeps its grid position; its sprite is drawn at one cell.</Description>
+  <GameVersions>
+    <Version>1.0.0.14</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>CassetteTapeSize.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Manifest>

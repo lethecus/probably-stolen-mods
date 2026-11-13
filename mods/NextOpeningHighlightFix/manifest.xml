@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Manifest>
+  <ID>next_opening_highlight_fix</ID>
+  <Name>Next Opening Highlight Fix</Name>
+  <Author>Local</Author>
+  <ModVersion>1.0</ModVersion>
+  <Description>Stops the repeating "Could not refresh item highlights" NullReferenceException from Next Opening: Suppliers &amp; Odin. Logs the full stack once for diagnosis. Requires Next Opening: Suppliers &amp; Odin.</Description>
+  <GameVersions>
+    <Version>1.0.0.14</Version>
+  </GameVersions>
+  <Prerequisites>
+    <Mod>nextopeningvisitors</Mod>
+  </Prerequisites>
+  <Assemblies>
+    <Assembly>NextOpeningHighlightFix.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Manifest>

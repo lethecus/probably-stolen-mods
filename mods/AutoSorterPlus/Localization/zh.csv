@@ -1,0 +1,65 @@
+# AutoSorter Plus – 简体中文
+# 请保留 {0} 等占位符。规则语法（tag:、AND、OR、NOT）不要翻译。
+asp.hotkey.sort,整理背包
+asp.hotkey.overview,容器总览
+asp.hotkey.settings,打开存储规则（右键）
+asp.hotkey.toggle,开/关 AutoSorter Plus
+asp.log.disabled,AutoSorter Plus 已在全局关闭。
+asp.log.noTargets,没有启用的容器规则。请右键点击容器并先启用一条规则。
+asp.log.done,"整理完成：移动 {0} 件，未匹配 {1} 件，失败 {2} 件，跳过 {3} 件 · 容器 {4} 个 · {5} 毫秒"
+asp.log.scan,已扫描到 {0} 个容器目标。
+asp.log.globalOn,AutoSorter Plus 已启用。
+asp.log.globalOff,AutoSorter Plus 已关闭。
+asp.log.notContainer,该物品不是存储容器。
+asp.log.saved,"已保存 {0} 的规则。"
+asp.log.savedDisabled,"已保存 {0} 的规则，但未启用。启用后整理才会使用它。"
+asp.panel.saved,规则已保存。
+asp.panel.savedDisabled,"规则已保存，但未启用。请打开“启用”以应用。"
+asp.panel.title,存储规则
+asp.panel.key,目标：{0}
+asp.panel.enabled,启用
+asp.panel.include,包含物品
+asp.panel.includeHint,"例如 tag:SEED AND mod:neon_undertow"
+asp.panel.exclude,排除物品
+asp.panel.excludeHint,"例如 tag:BEVERAGE OR tag:LUXURY_ITEM"
+asp.panel.help,"使用 tag:、id:、name:、mod: 或 label: 搜索。支持 * 和 ? 通配符。多个筛选条件用“,”分隔。mod:base = 基础游戏物品。"
+asp.panel.saveNotice,关闭前请记得保存更改。
+asp.panel.allowStolen,允许赃物
+asp.panel.stolenPriority,赃物优先
+asp.panel.allowContraband,允许违禁品
+asp.panel.priority,优先级
+asp.panel.test,验证
+asp.panel.scan,扫描内容
+asp.scan.title,"扫描：{0}"
+asp.scan.hint,"此容器中的标签、模组和物品 ID。可添加到“包含”或“排除”；多个条目会以 OR 组合（逗号也可）。"
+asp.scan.tags,此容器中的标签
+asp.scan.loose,背包中的散放物品
+asp.scan.container,此容器中
+asp.scan.mods,模组
+asp.scan.labels,标签 / 状态
+asp.scan.ids,物品 ID
+asp.scan.empty,容器是空的。
+asp.scan.include,+ 包含
+asp.scan.exclude,+ 排除
+asp.scan.close,关闭
+asp.panel.matches,匹配 {0} 件
+asp.panel.stolenBlocked,"赃物 {0} 件（请启用“允许赃物”）"
+asp.panel.contrabandBlocked,"违禁品 {0} 件（请启用“允许违禁品”）"
+asp.panel.save,保存
+asp.panel.clear,清除
+asp.panel.close,关闭
+asp.panel.slots,标签页 / 槽位
+asp.panel.cleared,规则已清除。
+asp.overview.title,容器总览
+asp.overview.hint,右键点击容器可编辑其规则。Ctrl+R 整理，Ctrl+Shift+O 开关。
+asp.overview.sort,立即整理
+asp.overview.close,关闭
+asp.overview.globalOn,状态：已启用
+asp.overview.globalOff,状态：已关闭
+asp.overview.edit,编辑
+asp.overview.empty,暂无规则。
+asp.overview.off,未启用
+asp.overview.priority,"P{0}"
+asp.slot.fridge.chill,冷藏区
+asp.slot.fridge.freeze,冷冻区
+asp.error.parse,规则错误：{0}
