@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Manifest>
+<Mod>
   <ID>blank_card_printer</ID>
   <Name>Blank Card Printer</Name>
-  <Author>Lethecus</Author>
-  <ModVersion>1.0</ModVersion>
-  <Description>Adds a Card Printer machine that prints vanilla blank keycards. Find it in toolTable scavenging or buy it from Dr. Jackson. Uninstall note: disabling the mod while you own a printer may remove it from your save.</Description>
+  <Author>Local</Author>
+  <ModVersion>1.2</ModVersion>
+  <Description>Adds a Card Printer machine that prints vanilla blank keycards. It needs a battery in its power slot and uses 3 power per card, plus 10 credits per print which is shown under the Print button. Find it in toolTable scavenging or buy it from the inventor.</Description>
   <GameVersions>
     <Version>1.0.0.14</Version>
   </GameVersions>
@@ -13,4 +13,4 @@
     <Assembly>BlankCardPrinter.dll</Assembly>
   </Assemblies>
   <Capabilities />
-</Manifest>
+</Mod>

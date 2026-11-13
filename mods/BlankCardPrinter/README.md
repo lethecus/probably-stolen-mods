@@ -1,11 +1,11 @@
-# Blank Card Printer
+# 
 
-Adds a Card Printer machine that prints vanilla blank keycards. Find it in toolTable scavenging or buy it from Dr. Jackson. Uninstall note: disabling the mod while you own a printer may remove it from your save.
 
-- Mod ID: `blank_card_printer`
-- Version: 1.0
-- Author: Lethecus
-- Game version: 1.0.0.14
+
+- Mod ID: ``
+- Version: 
+- Author: 
+- Game version: 
 
 ## Install
 
