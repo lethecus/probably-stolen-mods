@@ -13,15 +13,16 @@ public class PrinterMod : IMod
 
 	private const string CardId = "blank_keycard";
 
-	private ModLog log;
+	// One print costs this much power and this many credits.
+	private const int PrintPower = 3;
 
-	private ConfigEntry<int> printCost;
+	private const int PrintCredits = 10;
+
+	private ModLog log;
 
 	public void Init(ModManifest manifest)
 	{
 		log = new ModLog(manifest);
-		ModConfig config = ModHelper.GetConfig(manifest.ID);
-		printCost = config.Define("print_cost", 0, "General", (Func<string>)(() => "Credits per card"), (int?)0, (int?)200, (Func<string>)(() => "Credits deducted each time the printer produces a card."), false);
 	}
 
 	public void OnEnable()
@@ -52,7 +53,7 @@ public class PrinterMod : IMod
 		{
 			GameItem val = ItemDirectory.CreateEmptyItem("blank_card_printer.printer");
 			val.name = "Card Printer";
-			val.shortDescription = "Presses out blank access cards. Don't ask where the plastic comes from.";
+			val.shortDescription = "Presses out blank access cards. Needs a battery: 3 power and 10 credits per card.";
 			val.SetSpriteAndShapeFromMod("blank_card_printer", "card_printer");
 			val.SetContentWindow(BuildWindow(val));
 			return val;
@@ -61,31 +62,64 @@ public class PrinterMod : IMod
 
 	private PixelWindow BuildWindow(GameItem printer)
 	{
+		GameSlotInventory battery = new GameSlotInventory();
+		MachineHelper.SetupBatterySlot(battery, printer);
+
 		MachineryText status = MachineryText.Status("status", "Ready");
-		MachineryButton val = new MachineryButton("Print blank card", (Action)(() =>
+
+		MachineryButton printButton = new MachineryButton("Print blank card", (Action)(() =>
 		{
-			Print(status, printer);
+			Print(status, battery, printer);
 		}), -1, -1);
-		return MachineHelper.CreateMachineryWindow(true, new MachineryPanel[1] { MachineHelper.Panel("Card Printer", (PixelElement)(object)MachineryStack.Vertical(new PixelElement[2]
+
+		MachineryText costWarning = new MachineryText();
+		costWarning.SetText("Costs " + PrintCredits + " credits per card");
+		costWarning.SetColor(RenderHandler.GetColorFromPalette(RenderHandler.ColorPalette.LightOrange));
+
+		MachineryText powerWarning = new MachineryText();
+		powerWarning.SetText("Uses " + PrintPower + " power (battery required)");
+		powerWarning.SetColor(RenderHandler.GetColorFromPalette(RenderHandler.ColorPalette.LightCyan));
+
+		return MachineHelper.CreateMachineryWindow(true, new MachineryPanel[2]
 		{
-			(PixelElement)val,
-			(PixelElement)status
-		}), "control", true) });
+			MachineHelper.PowerPanel(battery),
+			MachineHelper.Panel("Card Printer", (PixelElement)(object)MachineryStack.Vertical(new PixelElement[4]
+			{
+				(PixelElement)printButton,
+				(PixelElement)costWarning,
+				(PixelElement)powerWarning,
+				(PixelElement)status
+			}), "control", true)
+		});
 	}
 
-	private void Print(MachineryText status, GameItem printer)
+	private void Print(MachineryText status, GameSlotInventory battery, GameItem printer)
 	{
-		int value = printCost.Value;
-		if (value > 0)
+		GameItem powerSource = battery.childItem;
+		if (powerSource == null)
 		{
-			ModHelper.AddCredit(-value, false);
+			SetStatus(status, "Insert a battery", RenderHandler.ColorPalette.LightRed);
+			return;
 		}
-		GameItem card = ModHelper.SpawnItem("blank_keycard");
+		if (!PowerHelper.CanDrawPowerSource(powerSource, PrintPower))
+		{
+			SetStatus(status, "Not enough power (" + PrintPower + " needed)", RenderHandler.ColorPalette.LightRed);
+			return;
+		}
+		if (!PlayerStore.Instance.HasCredit(PrintCredits))
+		{
+			SetStatus(status, "Not enough credits (" + PrintCredits + " needed)", RenderHandler.ColorPalette.LightRed);
+			return;
+		}
+
+		GameItem card = ModHelper.SpawnItem(CardId);
 		if ((object)card == null)
 		{
+			SetStatus(status, "Could not create a card", RenderHandler.ColorPalette.LightRed);
 			log.Log((object)"Could not create a blank keycard.");
 			return;
 		}
+
 		// Deposit into the inventory that currently holds the printer (storage container,
 		// shelf, toolbox, table, extra storage page, ...). Fall back to the main
 		// inventory when the printer is not inside anything or the container is full.
@@ -101,10 +135,24 @@ public class PrinterMod : IMod
 		if (card.parentInventory == null)
 		{
 			GraphUtils.DestroyIfUnplaced(card, "blank_card_printer: no room for printed blank keycard");
-			log.Log((object)"No room for the printed card; it was discarded.");
+			SetStatus(status, "No room for the card", RenderHandler.ColorPalette.LightRed);
+			log.Log((object)"No room for the printed card; nothing was charged.");
 			return;
 		}
-		log.Log((object)"Printed a blank keycard.");
+
+		PowerHelper.DrawPowerSource(powerSource, PrintPower);
+		ModHelper.AddCredit(-PrintCredits, false);
+		SetStatus(status, "Printed (-" + PrintCredits + " credits)", RenderHandler.ColorPalette.LightGreen);
+		log.Log((object)("Printed a blank keycard for " + PrintCredits + " credits and " + PrintPower + " power."));
+	}
+
+	private static void SetStatus(MachineryText status, string text, RenderHandler.ColorPalette color)
+	{
+		if (status != null)
+		{
+			status.SetText(text);
+			status.SetColor(RenderHandler.GetColorFromPalette(color));
+		}
 	}
 
 	private void StockInventor(List<GameItem> owned)
