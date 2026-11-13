@@ -24,5 +24,9 @@
       <HintPath>D:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>D:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 </Project>
