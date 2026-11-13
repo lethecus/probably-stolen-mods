@@ -103,8 +103,8 @@ $settings = New-ScheduledTaskSettingsSet `
 	-StartWhenAvailable `
 	-MultipleInstances IgnoreNew `
 	-ExecutionTimeLimit (New-TimeSpan -Minutes 10) `
-	-DisallowStartIfOnBatteries:$false `
-	-DontStopIfGoingOnBatteries:$true
+	-AllowStartIfOnBatteries `
+	-DontStopIfGoingOnBatteries
 
 $existing = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 if ($existing) {

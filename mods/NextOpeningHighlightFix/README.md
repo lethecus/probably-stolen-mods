@@ -1,4 +1,4 @@
-﻿# Next Opening Highlight Fix
+# Next Opening Highlight Fix
 
 Stops the repeating "Could not refresh item highlights" NullReferenceException from Next Opening: Suppliers & Odin. Logs the full stack once for diagnosis. Requires Next Opening: Suppliers & Odin.
 

@@ -1,4 +1,4 @@
-﻿# AutoSorter Plus
+# AutoSorter Plus
 
 Rule-based storage sorting with boolean rules. Each container and each machine tab gets its own include/exclude expression supporting AND, OR, NOT, parentheses, tag/id/name wildcards and source-mod matching, so vanilla seeds and modded seeds can live on different shelves. Runs on triggers only (sort, overview and a global toggle hotkey) and stores its rules with the save. Includes English localization plus a localization folder for other languages.
 

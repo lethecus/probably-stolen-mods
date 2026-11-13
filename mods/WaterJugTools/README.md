@@ -1,4 +1,4 @@
-﻿# Water Jug Tools
+# Water Jug Tools
 
 Adds an Empty action to the right-click menu for owned liquid containers, and makes the shop tap fill any container to its full capacity.
 

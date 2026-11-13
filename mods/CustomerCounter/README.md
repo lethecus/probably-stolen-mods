@@ -1,4 +1,4 @@
-﻿# Customer Counter
+# Customer Counter
 
 A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.
 

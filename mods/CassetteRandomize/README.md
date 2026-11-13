@@ -1,4 +1,4 @@
-﻿# Cassette Randomize
+# Cassette Randomize
 
 Replaces the tape player with a 50-row scrollable cassette deck (300 single-cell tapes, 7 rows visible) and a hi-fi equalizer panel: spectrum and oscilloscope, seek slider with track clock, volume, bass, treble, balance, mono, three savable presets and a collapsible storage drawer. The Randomize button starts a random playable cassette and keeps shuffling at the end of every track until Stop is pressed.
 
