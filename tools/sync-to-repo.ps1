@@ -40,11 +40,13 @@ if (-not $RepoRoot) { $RepoRoot = Split-Path -Parent $scriptDir }
 if (-not $ConfigPath) { $ConfigPath = Join-Path $scriptDir 'sync.config.json' }
 
 $branch = 'main'
+$exclude = @()
 if (Test-Path $ConfigPath) {
 	$config = Get-Content $ConfigPath -Raw | ConvertFrom-Json
 	if (-not $SourceRoot -and $config.sourceRoot) { $SourceRoot = $config.sourceRoot }
 	if ($config.repoRoot -and -not $PSBoundParameters.ContainsKey('RepoRoot')) { $RepoRoot = $config.repoRoot }
 	if ($config.branch) { $branch = $config.branch }
+	if ($config.exclude) { $exclude = @($config.exclude) }
 }
 
 if (-not $SourceRoot) {
@@ -111,7 +113,9 @@ try {
 	$modsDir = Join-Path $RepoRoot 'mods'
 	if (-not (Test-Path $modsDir)) { throw "No mods folder in $RepoRoot" }
 
-	$knownMods = Get-ChildItem $modsDir -Directory | Select-Object -ExpandProperty Name
+	$knownMods = Get-ChildItem $modsDir -Directory |
+		Where-Object { $exclude -notcontains $_.Name } |
+		Select-Object -ExpandProperty Name
 	$copied = 0
 	$normalised = 0
 
