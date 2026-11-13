@@ -91,8 +91,8 @@ else {
 	Write-Warning 'GitHub CLI not found; make sure git can push to origin without prompting.'
 }
 
-$arguments = '-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "{0}"' -f $syncScript
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $arguments -WorkingDirectory $repoRoot
+$arguments = '//B //Nologo "{0}"' -f (Join-Path $scriptDir 'run-sync.vbs')
+$action = New-ScheduledTaskAction -Execute 'wscript.exe' -Argument $arguments -WorkingDirectory $repoRoot
 
 $atLogon = New-ScheduledTaskTrigger -AtLogOn
 $repeat = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) `
@@ -104,7 +104,8 @@ $settings = New-ScheduledTaskSettingsSet `
 	-MultipleInstances IgnoreNew `
 	-ExecutionTimeLimit (New-TimeSpan -Minutes 10) `
 	-AllowStartIfOnBatteries `
-	-DontStopIfGoingOnBatteries
+	-DontStopIfGoingOnBatteries `
+	-Hidden
 
 $existing = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 if ($existing) {
