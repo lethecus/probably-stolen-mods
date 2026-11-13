@@ -78,6 +78,35 @@ if (-not $mutex.WaitOne(0)) {
 	return
 }
 
+# Pushes any local commits that origin does not have yet (retries after a failed push).
+function Push-Pending {
+	$previous = $ErrorActionPreference
+	$ErrorActionPreference = 'Continue'
+	try {
+		& $git fetch origin $branch --quiet 2>&1 | Out-Null
+		if ($LASTEXITCODE -ne 0) {
+			Write-Log 'Fetch failed; will retry on the next run.'
+			return
+		}
+		$ahead = [int]((& $git rev-list --count "origin/$branch..HEAD") | Select-Object -First 1)
+		if ($ahead -le 0) {
+			return
+		}
+		Write-Log "Pushing $ahead pending commit(s)..."
+		$push = & $git push origin $branch 2>&1 | ForEach-Object { $_.ToString() }
+		$pushCode = $LASTEXITCODE
+		$push | ForEach-Object { Write-Log "  $_" }
+		if ($pushCode -ne 0) {
+			Write-Log 'Push failed. The commit stays local and the next run will retry.'
+			return
+		}
+		Write-Log 'Pushed to origin.'
+	}
+	finally {
+		$ErrorActionPreference = $previous
+	}
+}
+
 try {
 	$modsDir = Join-Path $RepoRoot 'mods'
 	if (-not (Test-Path $modsDir)) { throw "No mods folder in $RepoRoot" }
@@ -165,6 +194,7 @@ Or from the repository root: ``.\build-all.ps1 -Deploy``.
 		$status = & $git status --porcelain
 		if (-not $status) {
 			Write-Log "No changes. (copied=$copied readme=$normalised)"
+			if (-not $DryRun) { Push-Pending }
 			return
 		}
 
@@ -201,21 +231,7 @@ Or from the repository root: ``.\build-all.ps1 -Deploy``.
 			return
 		}
 
-		$previous = $ErrorActionPreference
-		$ErrorActionPreference = 'Continue'
-		try {
-			$push = & $git push origin $branch 2>&1 | ForEach-Object { $_.ToString() }
-			$pushCode = $LASTEXITCODE
-		}
-		finally {
-			$ErrorActionPreference = $previous
-		}
-		$push | ForEach-Object { Write-Log "  $_" }
-		if ($pushCode -ne 0) {
-			Write-Log 'Push failed. The commit stays local and the next run will retry.'
-			return
-		}
-		Write-Log 'Pushed to origin.'
+		Push-Pending
 	}
 	finally {
 		Pop-Location
