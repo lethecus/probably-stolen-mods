@@ -3,7 +3,7 @@
 A concealed 15x13 smuggler storage with ten tabs, installed at the start of every game. Hover the metal grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it without opening. 15x13 cells on each of its ten tabs. Uninstall note: empty the stash before disabling this mod, or its contents are lost.
 
 - Mod ID: `hidden_wall_stash`
-- Version: 1.1
+- Version: 1.2
 - Author: YourName
 - Game version: 1.0.0.14
 
