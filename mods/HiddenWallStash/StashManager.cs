@@ -394,9 +394,14 @@ public static class StashManager
 		try
 		{
 			int found = 0;
+			if (Stash.contentWindow != null)
+			{
+				Stash.contentWindow.Validate();
+			}
 			foreach (GameGridInventory grid in EnumerateStashGrids())
 			{
 				found++;
+				grid.Validate();
 				bool canAccept = GraphUtils.CanAccept(grid, item);
 				Log.Log("Stash drop check: grid '" + (grid.identifier ?? "?") + "' canAccept=" + canAccept);
 				if (!canAccept)
