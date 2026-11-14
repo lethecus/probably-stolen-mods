@@ -1,7 +1,7 @@
 # Builds every mod in .\mods, optionally deploying them into the game's Mods folder.
 #
 #   .\build-all.ps1
-#   .\build-all.ps1 -GameDir "D:\SteamLibrary\steamapps\common\Probably Stolen"
+#   .\build-all.ps1 -GameDir "C:\Program Files (x86)\Steam\steamapps\common\Probably Stolen"
 #   .\build-all.ps1 -Deploy
 #
 param(

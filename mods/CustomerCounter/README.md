@@ -16,7 +16,7 @@ The folder needs `manifest.xml` and the built DLL next to each other (plus any `
 ## Build
 
 ```powershell
-dotnet build CustomerCounter.csproj -c Release -p:GameDir="D:\SteamLibrary\steamapps\common\Probably Stolen"
+dotnet build CustomerCounter.csproj -c Release -p:GameDir="C:\Program Files (x86)\Steam\steamapps\common\Probably Stolen"
 ```
 
 Or from the repository root: `.\build-all.ps1 -Deploy`.

@@ -27,7 +27,7 @@ The projects use the `GameDir` property, defined in `Directory.Build.props`:
 Either edit that default, set an environment variable, or pass it on the command line:
 
 ```powershell
-dotnet build mods\SaveAnywhere\SaveAnywhere.csproj -c Release -p:GameDir="D:\SteamLibrary\steamapps\common\Probably Stolen"
+dotnet build mods\SaveAnywhere\SaveAnywhere.csproj -c Release -p:GameDir="C:\Program Files (x86)\Steam\steamapps\common\Probably Stolen"
 ```
 
 ## Build one mod
@@ -47,7 +47,7 @@ The DLL appears in `mods\<ModName>\bin\Release\netstandard2.1\`.
 Optional arguments:
 
 ```powershell
-.\build-all.ps1 -GameDir "D:\SteamLibrary\steamapps\common\Probably Stolen"
+.\build-all.ps1 -GameDir "C:\Program Files (x86)\Steam\steamapps\common\Probably Stolen"
 .\build-all.ps1 -Deploy                      # also copy manifest + DLL + assets into <game>\Mods
 .\build-all.ps1 -Deploy -ModsDir "D:\somewhere\Mods"
 ```
