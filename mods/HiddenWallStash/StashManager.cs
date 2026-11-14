@@ -393,29 +393,27 @@ public static class StashManager
 		}
 		try
 		{
-			int found = 0;
 			if (Stash.contentWindow != null)
 			{
 				Stash.contentWindow.Validate();
 			}
 			foreach (GameGridInventory grid in EnumerateStashGrids())
 			{
-				found++;
-				grid.Validate();
-				bool canAccept = GraphUtils.CanAccept(grid, item);
-				Log.Log("Stash drop check: grid '" + (grid.identifier ?? "?") + "' canAccept=" + canAccept);
-				if (!canAccept)
+				if (grid == null || !GraphUtils.CanAccept(grid, item))
 				{
 					continue;
 				}
-				if (GraphUtils.TryAcceptAll(grid, item) > 0)
+				grid.Validate();
+				// TryAcceptAll returns how many units were NOT accepted, so 0 means success.
+				int remaining = GraphUtils.TryAcceptAll(grid, item);
+				if (remaining == 0)
 				{
 					MarkDirty();
 					Log.Log("Dropped " + item.identifier + " into the hidden wall stash.");
 					return true;
 				}
 			}
-			Log.Log("No room in the hidden wall stash for " + item.identifier + " (grids found: " + found + ", window=" + (Stash.contentWindow != null) + ").");
+			Log.Log("No room in the hidden wall stash for " + item.identifier + ".");
 		}
 		catch (Exception exception)
 		{
