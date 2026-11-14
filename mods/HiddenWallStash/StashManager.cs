@@ -393,9 +393,13 @@ public static class StashManager
 		}
 		try
 		{
+			int found = 0;
 			foreach (GameGridInventory grid in EnumerateStashGrids())
 			{
-				if (grid == null || !GraphUtils.CanAccept(grid, item))
+				found++;
+				bool canAccept = GraphUtils.CanAccept(grid, item);
+				Log.Log("Stash drop check: grid '" + (grid.identifier ?? "?") + "' canAccept=" + canAccept);
+				if (!canAccept)
 				{
 					continue;
 				}
@@ -406,7 +410,7 @@ public static class StashManager
 					return true;
 				}
 			}
-			Log.Log("No room in the hidden wall stash for " + item.identifier + ".");
+			Log.Log("No room in the hidden wall stash for " + item.identifier + " (grids found: " + found + ", window=" + (Stash.contentWindow != null) + ").");
 		}
 		catch (Exception exception)
 		{
