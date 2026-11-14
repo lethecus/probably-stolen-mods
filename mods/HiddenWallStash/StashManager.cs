@@ -362,13 +362,31 @@ public static class StashManager
 		}
 		try
 		{
-			foreach (GameInventory inventory in GraphUtils.FindAllChildrenType<GameInventory>(Stash))
+			PixelWindow window = Stash.contentWindow;
+			foreach (GameGridInventory grid in Resources.FindObjectsOfTypeAll<GameGridInventory>())
 			{
-				if (inventory == null || !GraphUtils.CanAccept(inventory, item))
+				if (grid == null)
 				{
 					continue;
 				}
-				if (GraphUtils.TryAcceptAll(inventory, item) > 0)
+				PixelWindow parentWindow = null;
+				try
+				{
+					parentWindow = grid.handler != null ? grid.handler.FindParentWindow() : null;
+				}
+				catch (Exception)
+				{
+					parentWindow = null;
+				}
+				if (parentWindow == null || parentWindow != window)
+				{
+					continue;
+				}
+				if (!GraphUtils.CanAccept(grid, item))
+				{
+					continue;
+				}
+				if (GraphUtils.TryAcceptAll(grid, item) > 0)
 				{
 					MarkDirty();
 					Log.Log("Dropped " + item.identifier + " into the hidden wall stash.");
