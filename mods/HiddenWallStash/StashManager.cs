@@ -345,6 +345,45 @@ public static class StashManager
 		return hash;
 	}
 
+	// Drops an item straight into the stash, used when the mouse is released over the grate.
+	public static bool TryDropIntoStash(GameItem item)
+	{
+		if (item == null)
+		{
+			return false;
+		}
+		if (!IsUsable(Stash))
+		{
+			EnsureStash();
+		}
+		if (!IsUsable(Stash))
+		{
+			return false;
+		}
+		try
+		{
+			foreach (GameInventory inventory in GraphUtils.FindAllChildrenType<GameInventory>(Stash))
+			{
+				if (inventory == null || !GraphUtils.CanAccept(inventory, item))
+				{
+					continue;
+				}
+				if (GraphUtils.TryAcceptAll(inventory, item) > 0)
+				{
+					MarkDirty();
+					Log.Log("Dropped " + item.identifier + " into the hidden wall stash.");
+					return true;
+				}
+			}
+			Log.Log("No room in the hidden wall stash for " + item.identifier + ".");
+		}
+		catch (Exception exception)
+		{
+			Log.Error("Failed to drop an item into the hidden wall stash: " + exception);
+		}
+		return false;
+	}
+
 	public static void EnsureUpdater()
 	{
 		if (updaterObject != null)

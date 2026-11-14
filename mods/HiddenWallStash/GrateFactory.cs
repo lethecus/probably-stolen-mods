@@ -50,6 +50,14 @@ public static class GrateFactory
 		collider.offset = Vector2.zero;
 		collider.isTrigger = true;
 
+		// Use the game's own outline component so the grate highlights like every other
+		// interactable when the mouse is over it.
+		EPOOutline.Outlinable outline = grate.AddComponent<EPOOutline.Outlinable>();
+		outline.TryAddTarget(new EPOOutline.OutlineTarget(renderer, 0));
+		outline.OutlineParameters.BlurShift = 0f;
+		outline.OutlineParameters.DilateShift = 1f;
+		outline.enabled = false;
+
 		grate.AddComponent<GrateBehaviour>();
 		HiddenWallStash.HiddenWallStashMod.Log.Log("Created the hidden wall grate.");
 	}
