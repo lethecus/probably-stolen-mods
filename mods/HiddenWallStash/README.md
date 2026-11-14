@@ -5,7 +5,7 @@ A concealed 15x13 smuggler storage with ten tabs, installed at the start of ever
 - Mod ID: `hidden_wall_stash`
 - Version: 1.1
 - Author: YourName
-- Game version: 100-REV13
+- Game version: 1.0.0.14
 
 ## Install
 
