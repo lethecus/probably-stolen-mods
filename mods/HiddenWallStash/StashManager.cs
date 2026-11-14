@@ -345,6 +345,37 @@ public static class StashManager
 		return hash;
 	}
 
+	// The tab inventories live inside the stash's content window, so walk the window's
+	// render tree to find them. Works for both freshly created and decoded stashes.
+	private static IEnumerable<GameGridInventory> EnumerateStashGrids()
+	{
+		PixelWindow window = Stash != null ? Stash.contentWindow : null;
+		if (window == null || window.handler == null)
+		{
+			yield break;
+		}
+		TreeNodeRender[] nodes = window.handler.GetComponentsInChildren<TreeNodeRender>(true);
+		if (nodes == null)
+		{
+			yield break;
+		}
+		foreach (TreeNodeRender node in nodes)
+		{
+			if (node == null || !(node.element is MachineryTabs tabs))
+			{
+				continue;
+			}
+			for (int i = 0; i < tabs.count; i++)
+			{
+				MachineryIntake intake = tabs.GetPage(i) as MachineryIntake;
+				if (intake != null && intake.content is GameGridInventory grid)
+				{
+					yield return grid;
+				}
+			}
+		}
+	}
+
 	// Drops an item straight into the stash, used when the mouse is released over the grate.
 	public static bool TryDropIntoStash(GameItem item)
 	{
@@ -362,27 +393,9 @@ public static class StashManager
 		}
 		try
 		{
-			PixelWindow window = Stash.contentWindow;
-			foreach (GameGridInventory grid in Resources.FindObjectsOfTypeAll<GameGridInventory>())
+			foreach (GameGridInventory grid in EnumerateStashGrids())
 			{
-				if (grid == null)
-				{
-					continue;
-				}
-				PixelWindow parentWindow = null;
-				try
-				{
-					parentWindow = grid.handler != null ? grid.handler.FindParentWindow() : null;
-				}
-				catch (Exception)
-				{
-					parentWindow = null;
-				}
-				if (parentWindow == null || parentWindow != window)
-				{
-					continue;
-				}
-				if (!GraphUtils.CanAccept(grid, item))
+				if (grid == null || !GraphUtils.CanAccept(grid, item))
 				{
 					continue;
 				}
