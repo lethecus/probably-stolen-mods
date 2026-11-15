@@ -18,9 +18,20 @@ namespace TinkerChance
 			Log = new ModLog(manifest);
 		}
 
-		public void OnEnable()
+		private static void ReloadSettings()
 		{
 			TinkerSettings.Load();
+			if (Log != null)
+			{
+				Log.Log("Settings loaded: keep chance " + TinkerSettings.Chance + "%, hotkey " + TinkerSettings.Hotkey + ".");
+			}
+		}
+
+		public void OnEnable()
+		{
+			// Defaults only - the mod-data store needs a loaded run.
+			TinkerSettings.Load();
+			ModHook.OnGameLoadedLate += ReloadSettings;
 
 			harmony = new Harmony("mod.tinker_chance");
 			harmony.PatchAll(typeof(TinkerChanceMod).Assembly);
@@ -37,6 +48,7 @@ namespace TinkerChance
 
 		public void OnDisable()
 		{
+			ModHook.OnGameLoadedLate -= ReloadSettings;
 			if (harmony != null)
 			{
 				harmony.UnpatchAll("mod.tinker_chance");
