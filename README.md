@@ -10,7 +10,8 @@ the build can be inspected, reproduced and compared instead of taken on trust.
   and read/write only the game's normal files and folders.
 
 Included mods: AutoSorterPlus, CassetteRandomize, CassetteTapeSize, ContaminantConverter,
-WaterJugTools, CustomerCounter, HiddenWallStash, BlankCardPrinter, NextOpeningHighlightFix.
+WaterJugTools, CustomerCounter, HiddenWallStash, BlankCardPrinter, NextOpeningHighlightFix,
+TinkerChance.
 
 Not included: some mods are kept for personal use only and are intentionally not published here.
 
