@@ -16,10 +16,10 @@ namespace CassetteRandomize
 
 		internal static GameItem Create()
 		{			GameGridInventory storage = new GameGridInventory(6, 6);
-			// 6 columns, 7 visible rows, 90 rows total. The extra visible row
+			// 6 columns, 7 visible rows, 50 rows total. The extra visible row
 			// at the bottom stays free for dropping new tapes; the scrollbar
 			// reaches the remaining rows.
-			GameGridScrollableInventory deck = new GameGridScrollableInventory(6, 7, 90, 0.5f);
+			GameGridScrollableInventory deck = new GameGridScrollableInventory(6, 7, 50, 0.5f);
 
 			MachineryButton previous = MachineryButton.FromAtlas("Window/elements_inner", "previous");
 			MachineryButton play = MachineryButton.FromAtlas("Window/elements_inner", "play");
@@ -158,7 +158,7 @@ namespace CassetteRandomize
 
 			Decks.Remove(deck);
 			Decks.Add(deck, machine);
-			CassetteRandomizeMod.Log?.Log("Created the scrollable cassette player (6 columns, 7 visible rows, 90 rows total).");
+			CassetteRandomizeMod.Log?.Log("Created the scrollable cassette player (6 columns, 7 visible rows, 50 rows total).");
 			return machine;
 		}
 
