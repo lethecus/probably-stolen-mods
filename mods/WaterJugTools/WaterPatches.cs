@@ -3,16 +3,52 @@ using HarmonyLib;
 namespace WaterJugTools
 {
 	// The shop tap calls AddWater with a fixed 9,999,999-part request. Anything
-	// larger than that (12 L/20 L tanks) stays partly empty. -1 means "fill the
-	// container's remaining capacity", so every container tops off completely.
+	// larger than that (12 L/20 L tanks and modded multi-litre tanks) stays partly
+	// empty. -1 means "fill the container's remaining capacity", so every container
+	// tops off completely.
+	//
+	// Other mods patch AddWater as well, and two things can eat the change:
+	//  - a prefix that asks for object[] __args makes Harmony write that array back
+	//    over the arguments after the prefixes run, discarding a plain ref change;
+	//  - a later prefix can replace the value again.
+	// So the amount is edited through the shared __args array, and a postfix tops
+	// the container up if the original request still reached AddWater unchanged.
 	[HarmonyPatch(typeof(WaterHelper), "AddWater")]
 	internal static class TapFillsToCapacityPatch
 	{
-		private static void Prefix(ref int addAmount)
+		private const int TapRequest = 9999999;
+
+		private static bool toppingUp;
+
+		private static void Prefix(object[] __args)
 		{
-			if (addAmount == 9999999)
+			if (__args == null || __args.Length < 3 || !(__args[2] is int amount) || amount != TapRequest)
 			{
-				addAmount = -1;
+				return;
+			}
+
+			__args[2] = -1;
+			WaterJugToolsMod.Log?.Log("Tap fill: request " + amount + " -> fill to capacity.");
+		}
+
+		private static void Postfix(GameItem waterContainer, int grade, int __2, bool __runOriginal)
+		{
+			if (!__runOriginal || toppingUp || __2 != TapRequest || waterContainer == null)
+			{
+				return;
+			}
+
+			toppingUp = true;
+			try
+			{
+				int before = WaterHelper.GetTotalVolume(waterContainer);
+				WaterHelper.AddWater(waterContainer, grade);
+				int after = WaterHelper.GetTotalVolume(waterContainer);
+				WaterJugToolsMod.Log?.Log("Tap fill: another mod kept the fixed amount; topped up " + before + " -> " + after + ".");
+			}
+			finally
+			{
+				toppingUp = false;
 			}
 		}
 	}
