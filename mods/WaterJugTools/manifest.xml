@@ -4,7 +4,10 @@
   <Name>Water Jug Tools</Name>
   <Author>Local</Author>
   <ModVersion>1.1</ModVersion>
-  <Description>Adds an Empty action to the right-click menu for owned liquid containers, and makes the shop tap fill any container to its full capacity - including when other mods change how much the tap fills at once.</Description>
+  <Description>Adds an Empty action to the right-click menu for owned liquid containers, and makes the shop tap fill any container to its full capacity.
+
+https://github.com/lethecus/probably-stolen-mods
+The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
     <Version>1.0.0.14</Version>
   </GameVersions>
