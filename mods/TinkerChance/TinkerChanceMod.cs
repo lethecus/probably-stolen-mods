@@ -41,6 +41,19 @@ namespace TinkerChance
 			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 20%", delegate { TinkerSettings.SetChance(20); }, false);
 			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 50%", delegate { TinkerSettings.SetChance(50); }, false);
 			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 100%", delegate { TinkerSettings.SetChance(100); }, false);
+			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Test consume (spawn scrap)", delegate
+			{
+				GameItem item = ModHelper.SpawnItem("scrap_metal");
+				if (item == null)
+				{
+					if (Log != null) { Log.Log("Test: could not spawn scrap_metal"); }
+					return;
+				}
+				if (Log != null) { Log.Log("Test: calling ConsumeUpgradeMaterial at " + TinkerSettings.Chance + "%"); }
+				StartingPerkContent.ConsumeUpgradeMaterial(item);
+				if (Log != null) { Log.Log("Test: finished (see the Upgrade material line above)"); }
+			}, false);
+
 			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Log current chance", delegate
 			{
 				if (Log != null)
