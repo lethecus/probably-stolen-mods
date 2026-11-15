@@ -8,6 +8,8 @@
 
 Works on the game's own upgrade materials - machines, modules, toolboxes, water tanks, reactors, cages, husbandry - and also on Scavenging Tool Upgrades, which rolls its own hardcoded 20% and is patched when that mod is installed. Gun repair kits are unaffected: the game destroys those unconditionally and never rolls Tinkerer on them.
 
+Slider sets chance live no need to save or close the window.
+
 100% to test, 20% for vanilla balance, 0% to make the perk do nothing.
 
 https://github.com/lethecus/probably-stolen-mods
