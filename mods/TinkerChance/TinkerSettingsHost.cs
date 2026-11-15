@@ -4,18 +4,19 @@ using UnityEngine;
 namespace TinkerChance
 {
 	/// <summary>
-	/// Owns the settings window and the hotkey. Created by the mod on enable and destroyed on disable,
-	/// so nothing survives the mod being switched off.
+	/// Owns the settings window and the hotkey.
+	///
+	/// The window is drawn with IMGUI rather than the game's PixelWindow: a standalone PixelWindow
+	/// cannot be constructed outside the game's UI graph (TreeNodeRender throws NullReferenceException
+	/// in its constructor), and this mod only needs a slider and two buttons.
 	/// </summary>
 	internal sealed class TinkerSettingsHost : MonoBehaviour
 	{
-		private PixelWindow window;
+		private const int WindowId = 0x7A1C;
 
-		private MachineryText chanceLabel;
+		private Rect windowRect = new Rect(120f, 120f, 340f, 196f);
 
-		private MachineryText hotkeyLabel;
-
-		private MachinerySlider slider;
+		private bool visible;
 
 		private bool capturing;
 
@@ -32,11 +33,11 @@ namespace TinkerChance
 
 			if (Input.GetKeyDown(TinkerSettings.Hotkey))
 			{
-				Toggle();
+				visible = !visible;
 			}
-			else if (window != null && Input.GetKeyDown(KeyCode.Escape))
+			else if (visible && Input.GetKeyDown(KeyCode.Escape))
 			{
-				Close();
+				visible = false;
 			}
 		}
 
@@ -60,100 +61,50 @@ namespace TinkerChance
 
 				TinkerSettings.SetHotkey(key);
 				capturing = false;
-				UpdateHotkeyLabel();
 				return;
 			}
 		}
 
-		private void Toggle()
+		private void OnGUI()
 		{
-			if (window == null)
+			if (!visible)
 			{
-				Open();
+				return;
 			}
-			else
-			{
-				Close();
-			}
+			windowRect = GUI.Window(WindowId, windowRect, DrawWindow, "Tinkerer Chance");
 		}
 
-		private void Open()
+		private void DrawWindow(int id)
 		{
-			window = new PixelWindow(canMove: true, "Tinkerer Chance", WindowStyle.Machinery);
-			MachineryPanelRow row = new MachineryPanelRow();
-			window.Attach(row);
+			GUILayout.Space(6f);
+			GUILayout.Label("Keep chance: " + TinkerSettings.Chance + "%");
 
-			chanceLabel = new MachineryText(null, 10);
-			UpdateChanceLabel();
-
-			slider = new MachinerySlider(TinkerSettings.Chance, 150);
-			slider.SetRange(0f, 100f, 1f);
-			slider.onChanged = delegate(float value)
+			int picked = Mathf.RoundToInt(GUILayout.HorizontalSlider(TinkerSettings.Chance, 0f, 100f));
+			if (picked != TinkerSettings.Chance)
 			{
-				TinkerSettings.SetChance(Mathf.RoundToInt(value));
-				UpdateChanceLabel();
-			};
-			slider.onReleased = delegate(float value)
+				TinkerSettings.SetChance(picked);
+			}
+
+			GUILayout.Space(6f);
+			GUILayout.Label("Hotkey: " + (capturing ? "press a key..." : TinkerSettings.Hotkey.ToString()));
+
+			if (GUILayout.Button(capturing ? "Cancel rebind" : "Change hotkey"))
 			{
-				TinkerSettings.SetChance(Mathf.RoundToInt(value));
-				UpdateChanceLabel();
-			};
+				capturing = !capturing;
+			}
 
-			hotkeyLabel = new MachineryText(null, 10);
-			UpdateHotkeyLabel();
-
-			MachineryButton rebind = new MachineryButton("Change hotkey", delegate
-			{
-				capturing = true;
-				hotkeyLabel.SetText("Press a key...");
-			}, -1, -1);
-
-			MachineryButton reset = new MachineryButton("Reset to 20%", delegate
+			if (GUILayout.Button("Reset to " + TinkerSettings.DefaultChance + "%"))
 			{
 				TinkerSettings.SetChance(TinkerSettings.DefaultChance);
-				if (slider != null)
-				{
-					slider.SetInt(TinkerSettings.DefaultChance);
-				}
-				UpdateChanceLabel();
-			}, -1, -1);
-
-			MachineryButton close = new MachineryButton("Close", Close, -1, -1);
-
-			MachineryStack stack = MachineryStack.Vertical(chanceLabel, slider, hotkeyLabel, rebind, reset, close);
-			row.Add(MachineHelper.Panel("Tinkerer", stack, "control", true));
-			window.Show();
-		}
-
-		private void UpdateChanceLabel()
-		{
-			if (chanceLabel != null)
-			{
-				chanceLabel.SetText("Keep chance: " + TinkerSettings.Chance + "%");
 			}
-		}
 
-		private void UpdateHotkeyLabel()
-		{
-			if (hotkeyLabel != null)
+			GUILayout.Space(4f);
+			if (GUILayout.Button("Close"))
 			{
-				hotkeyLabel.SetText("Hotkey: " + TinkerSettings.Hotkey);
+				visible = false;
 			}
-		}
 
-		private void Close()
-		{
-			capturing = false;
-			if (window != null)
-			{
-				window.Destroy();
-				window = null;
-			}
-		}
-
-		private void OnDestroy()
-		{
-			Close();
+			GUI.DragWindow(new Rect(0f, 0f, 10000f, 22f));
 		}
 	}
 }

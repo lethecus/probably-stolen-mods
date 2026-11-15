@@ -18,9 +18,22 @@ namespace TinkerChance
 				return false;
 			}
 
-			if (!StartingPerk.IsTinkerer() || !RNG.Roll(TinkerSettings.Chance))
+			bool tinkerer = StartingPerk.IsTinkerer();
+			int chance = TinkerSettings.Chance;
+			bool keep = tinkerer && RNG.Roll(chance);
+
+			if (!keep)
 			{
 				material.Destroy();
+			}
+
+			if (TinkerChanceMod.Log != null)
+			{
+				TinkerChanceMod.Log.Log(string.Format(
+					"Upgrade material {0} (Tinkerer={1}, chance={2}%)",
+					keep ? "kept" : "consumed",
+					tinkerer,
+					chance));
 			}
 
 			return false;

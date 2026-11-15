@@ -36,6 +36,19 @@ namespace TinkerChance
 			harmony = new Harmony("mod.tinker_chance");
 			harmony.PatchAll(typeof(TinkerChanceMod).Assembly);
 
+			// Fallback for testing: set the chance from the debug menu, no window needed.
+			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 0%", delegate { TinkerSettings.SetChance(0); }, false);
+			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 20%", delegate { TinkerSettings.SetChance(20); }, false);
+			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 50%", delegate { TinkerSettings.SetChance(50); }, false);
+			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 100%", delegate { TinkerSettings.SetChance(100); }, false);
+			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Log current chance", delegate
+			{
+				if (Log != null)
+				{
+					Log.Log("Current keep chance: " + TinkerSettings.Chance + "%");
+				}
+			}, false);
+
 			host = new GameObject("TinkerChance.Settings");
 			Object.DontDestroyOnLoad(host);
 			host.AddComponent<TinkerSettingsHost>();
@@ -49,6 +62,7 @@ namespace TinkerChance
 		public void OnDisable()
 		{
 			ModHook.OnGameLoadedLate -= ReloadSettings;
+			ModHelper.RemoveDebugFunctions(ModId);
 			if (harmony != null)
 			{
 				harmony.UnpatchAll("mod.tinker_chance");
