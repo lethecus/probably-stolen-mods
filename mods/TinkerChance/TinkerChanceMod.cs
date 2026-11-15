@@ -21,6 +21,7 @@ namespace TinkerChance
 		private static void ReloadSettings()
 		{
 			TinkerSettings.Load();
+			OtherModPatches.ApplyIfNeeded(harmony);
 			if (Log != null)
 			{
 				Log.Log("Settings loaded: keep chance " + TinkerSettings.Chance + "%, hotkey " + TinkerSettings.Hotkey + ".");

@@ -80,10 +80,11 @@ namespace TinkerChance
 		}
 
 		/// <summary>Replaces the 20 loaded right before RNG.Roll(int) with TinkerChanceApi.Chance.</summary>
-		private static IEnumerable<CodeInstruction> ReplaceTwenty(IEnumerable<CodeInstruction> instructions)
+		private static IEnumerable<CodeInstruction> ReplaceTwenty(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
 		{
 			List<CodeInstruction> list = new List<CodeInstruction>(instructions);
 			MethodInfo getter = typeof(TinkerChanceApi).GetProperty(nameof(TinkerChanceApi.Chance)).GetGetMethod();
+			int replaced = 0;
 
 			for (int i = 1; i < list.Count; i++)
 			{
@@ -106,9 +107,11 @@ namespace TinkerChance
 				if (loadsTwenty)
 				{
 					list[i - 1] = new CodeInstruction(OpCodes.Call, getter);
+					replaced++;
 				}
 			}
 
+			TinkerChanceMod.Log?.Log(string.Format("Transpiled {0}: {1} roll(s) rewritten to the configured chance.", __originalMethod.Name, replaced));
 			return list;
 		}
 	}
