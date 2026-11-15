@@ -35,7 +35,7 @@ namespace TinkerChance
 
 			harmony = new Harmony("mod.tinker_chance");
 			harmony.PatchAll(typeof(TinkerChanceMod).Assembly);
-			OtherModPatches.Apply(harmony);
+			OtherModPatches.ApplyIfNeeded(harmony);
 
 			// Fallback for testing: set the chance from the debug menu, no window needed.
 			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 0%", delegate { TinkerSettings.SetChance(0); }, false);

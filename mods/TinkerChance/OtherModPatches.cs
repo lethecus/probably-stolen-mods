@@ -19,13 +19,30 @@ namespace TinkerChance
 	/// </summary>
 	internal static class OtherModPatches
 	{
-		internal static void Apply(Harmony harmony)
+		private static bool applied;
+
+		/// <summary>
+		/// Safe to call repeatedly: the target mod's assembly may not be loaded when our OnEnable runs,
+		/// so this is attempted again from ModHook.OnGameLoadedLate until the patches take.
+		/// </summary>
+		internal static void ApplyIfNeeded(Harmony harmony)
 		{
-			Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.Rules", "Upgrade");
-			Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.NewTools", "Spend");
+			if (applied || harmony == null)
+			{
+				return;
+			}
+
+			bool upgrade = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.Rules", "Upgrade");
+			bool spend = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.NewTools", "Spend");
+			applied = upgrade || spend;
+
+			if (!applied)
+			{
+				TinkerChanceMod.Log?.Log("ScavToolUpgrade not loaded yet; will retry after the game loads.");
+			}
 		}
 
-		private static void Patch(Harmony harmony, string assemblyName, string typeName, string methodName)
+		private static bool Patch(Harmony harmony, string assemblyName, string typeName, string methodName)
 		{
 			try
 			{
@@ -40,7 +57,7 @@ namespace TinkerChance
 				}
 				if (assembly == null)
 				{
-					return;
+					return false;
 				}
 
 				Type type = assembly.GetType(typeName, throwOnError: false);
@@ -48,15 +65,17 @@ namespace TinkerChance
 				if (method == null)
 				{
 					TinkerChanceMod.Log?.Warning("Could not find " + typeName + "." + methodName + " to patch.");
-					return;
+					return false;
 				}
 
 				harmony.Patch(method, transpiler: new HarmonyMethod(typeof(OtherModPatches), nameof(ReplaceTwenty)));
 				TinkerChanceMod.Log?.Log("Patched " + typeName + "." + methodName + " to use the configured chance.");
+				return true;
 			}
 			catch (Exception ex)
 			{
 				TinkerChanceMod.Log?.Warning("Could not patch " + typeName + "." + methodName + ": " + ex.Message);
+				return false;
 			}
 		}
 
