@@ -21,7 +21,7 @@ namespace TinkerChance
 		private static void ReloadSettings()
 		{
 			TinkerSettings.Load();
-			OtherModPatches.ApplyIfNeeded(harmony);
+			OtherModPatches.ApplyIfNeeded(harmony, true);
 			if (Log != null)
 			{
 				Log.Log("Settings loaded: keep chance " + TinkerSettings.Chance + "%, hotkey " + TinkerSettings.Hotkey + ".");
@@ -36,7 +36,9 @@ namespace TinkerChance
 
 			harmony = new Harmony("mod.tinker_chance");
 			harmony.PatchAll(typeof(TinkerChanceMod).Assembly);
-			OtherModPatches.ApplyIfNeeded(harmony);
+
+			// Silent here: the target mod almost always loads after us, so a miss now means nothing.
+			OtherModPatches.ApplyIfNeeded(harmony, false);
 
 			// Fallback for testing: set the chance from the debug menu, no window needed.
 			ModHelper.AddDebugFunction(ModId, "Tinkerer", "Chance 0%", delegate { TinkerSettings.SetChance(0); }, false);

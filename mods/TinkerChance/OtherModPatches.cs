@@ -19,27 +19,61 @@ namespace TinkerChance
 	/// </summary>
 	internal static class OtherModPatches
 	{
-		private static bool applied;
+		private static bool upgradePatched;
+
+		private static bool spendPatched;
+
+		private static bool gaveUp;
 
 		/// <summary>
-		/// Safe to call repeatedly: the target mod's assembly may not be loaded when our OnEnable runs,
-		/// so this is attempted again from ModHook.OnGameLoadedLate until the patches take.
+		/// Safe to call repeatedly: the target mod's assembly is usually not loaded yet when our OnEnable
+		/// runs, so this is attempted again from ModHook.OnGameLoadedLate, after every mod has loaded.
+		/// If the mod is not installed at that point the patch is abandoned silently - it is an optional
+		/// integration, not a problem worth logging.
 		/// </summary>
-		internal static void ApplyIfNeeded(Harmony harmony)
+		internal static void ApplyIfNeeded(Harmony harmony, bool finalAttempt)
 		{
-			if (applied || harmony == null)
+			if (harmony == null || gaveUp || (upgradePatched && spendPatched))
 			{
 				return;
 			}
 
-			bool upgrade = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.Rules", "Upgrade");
-			bool spend = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.NewTools", "Spend");
-			applied = upgrade || spend;
-
-			if (!applied)
+			if (!HasAssembly("ScavToolUpgrade"))
 			{
-				TinkerChanceMod.Log?.Log("ScavToolUpgrade not loaded yet; will retry after the game loads.");
+				if (finalAttempt)
+				{
+					gaveUp = true;
+				}
+				return;
 			}
+
+			if (!upgradePatched)
+			{
+				upgradePatched = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.Rules", "Upgrade");
+			}
+			if (!spendPatched)
+			{
+				spendPatched = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.NewTools", "Spend");
+			}
+
+			if (finalAttempt && !upgradePatched && !spendPatched)
+			{
+				gaveUp = true;
+				TinkerChanceMod.Log?.Warning("ScavToolUpgrade is installed but its upgrade methods could not be patched; tool upgrades keep the vanilla 20%.");
+			}
+		}
+
+		private static bool HasAssembly(string assemblyName)
+		{
+			foreach (Assembly candidate in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				if (candidate.GetName().Name == assemblyName)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		private static bool Patch(Harmony harmony, string assemblyName, string typeName, string methodName)
