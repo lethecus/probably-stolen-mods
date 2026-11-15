@@ -8,12 +8,13 @@ namespace CassetteRandomize
 
 		public int bass;
 		public int treble;
+		public int voice;
 		public int balance;
 		public bool mono;
 
 		public string Encode()
 		{
-			return bass + "," + treble + "," + balance + "," + (mono ? 1 : 0);
+			return bass + "," + treble + "," + balance + "," + (mono ? 1 : 0) + "," + voice;
 		}
 
 		public static bool TryDecode(string text, out Tone tone)
@@ -24,7 +25,7 @@ namespace CassetteRandomize
 				return false;
 			}
 			string[] parts = text.Split(',');
-			if (parts.Length != 4
+			if ((parts.Length != 4 && parts.Length != 5)
 				|| !int.TryParse(parts[0], out int bass)
 				|| !int.TryParse(parts[1], out int treble)
 				|| !int.TryParse(parts[2], out int balance)
@@ -36,6 +37,8 @@ namespace CassetteRandomize
 			tone.treble = Mathf.Clamp(treble, -Range, Range);
 			tone.balance = Mathf.Clamp(balance, -Range, Range);
 			tone.mono = mono != 0;
+			// Older saves and presets carry four fields; they simply have no voice band.
+			tone.voice = parts.Length == 5 && int.TryParse(parts[4], out int voice) ? Mathf.Clamp(voice, -Range, Range) : 0;
 			return true;
 		}
 	}
@@ -130,7 +133,7 @@ namespace CassetteRandomize
 				if (encoded != lastApplied)
 				{
 					lastApplied = encoded;
-					CassetteRandomizeMod.Log?.Log("Equalizer tone: bass=" + tone.bass + " treble=" + tone.treble + " balance=" + tone.balance + " mono=" + tone.mono + ".");
+					CassetteRandomizeMod.Log?.Log("Equalizer tone: bass=" + tone.bass + " treble=" + tone.treble + " voice=" + tone.voice + " balance=" + tone.balance + " mono=" + tone.mono + ".");
 				}
 			}
 			else

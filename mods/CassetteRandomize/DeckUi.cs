@@ -48,6 +48,8 @@ namespace CassetteRandomize
 		private readonly MachinerySlider bassSlider;
 		private readonly MachineryText trebleText;
 		private readonly MachinerySlider trebleSlider;
+		private readonly MachineryText voiceText;
+		private readonly MachinerySlider voiceSlider;
 		private readonly MachineryText balanceText;
 		private readonly MachinerySlider balanceSlider;
 		private readonly MachineryRadioButton monoSwitch;
@@ -81,6 +83,8 @@ namespace CassetteRandomize
 			bassSlider = NewToneSlider();
 			trebleText = NewText();
 			trebleSlider = NewToneSlider();
+			voiceText = NewText();
+			voiceSlider = NewToneSlider();
 			balanceText = NewText();
 			balanceSlider = NewToneSlider();
 
@@ -135,6 +139,8 @@ namespace CassetteRandomize
 			toneColumn.Add(bassSlider);
 			toneColumn.Add(trebleText);
 			toneColumn.Add(trebleSlider);
+			toneColumn.Add(voiceText);
+			toneColumn.Add(voiceSlider);
 
 			MachineryStack sliders = new MachineryStack(false, 8);
 			sliders.Add(volumeColumn);
@@ -248,6 +254,7 @@ namespace CassetteRandomize
 		{
 			bassSlider.SetValue(tone.bass, false);
 			trebleSlider.SetValue(tone.treble, false);
+			voiceSlider.SetValue(tone.voice, false);
 			balanceSlider.SetValue(tone.balance, false);
 			monoSwitch.SetOn(tone.mono, false);
 		}
@@ -258,6 +265,7 @@ namespace CassetteRandomize
 			{
 				bass = bassSlider.GetInt(),
 				treble = trebleSlider.GetInt(),
+				voice = voiceSlider.GetInt(),
 				balance = balanceSlider.GetInt(),
 				mono = monoSwitch.isOn
 			};
@@ -273,6 +281,7 @@ namespace CassetteRandomize
 			volumeText.SetText("Volume: " + volumeSlider.GetInt() + "%");
 			bassText.SetText("Bass: " + Signed(bassSlider.GetInt()));
 			trebleText.SetText("Treble: " + Signed(trebleSlider.GetInt()));
+			voiceText.SetText("Voice: " + Signed(voiceSlider.GetInt()));
 			int balance = balanceSlider.GetInt();
 			string side = balance == 0
 				? "Center"

@@ -22,6 +22,8 @@ namespace CassetteRandomize
 			public bool shelves;
 			public Biquad low;
 			public Biquad high;
+			public bool voice;
+			public Biquad voiceFilter;
 			public float leftGain = 1f;
 			public float rightGain = 1f;
 			public bool mono;
@@ -33,6 +35,8 @@ namespace CassetteRandomize
 		private const float DbPerStep = 1.2f;
 		private const float BassFrequency = 200f;
 		private const float TrebleFrequency = 4000f;
+		private const float VoiceFrequency = 2500f;
+		private const float VoiceQ = 1f;
 		private const float BandLowest = 50f;
 		private const float BandQ = 4f;
 		private const float DisplayTiltDbPerOctave = 3f;
@@ -55,6 +59,8 @@ namespace CassetteRandomize
 		private readonly float[] lowZ2 = new float[2];
 		private readonly float[] highZ1 = new float[2];
 		private readonly float[] highZ2 = new float[2];
+		private readonly float[] voiceZ1 = new float[2];
+		private readonly float[] voiceZ2 = new float[2];
 		private readonly Biquad[] bandFilters = new Biquad[Bands];
 		private readonly float[] bandZ1 = new float[Bands];
 		private readonly float[] bandZ2 = new float[Bands];
@@ -123,6 +129,8 @@ namespace CassetteRandomize
 			next.shelves = tone.bass != 0 || tone.treble != 0;
 			next.low = LowShelf(BassFrequency, tone.bass * DbPerStep);
 			next.high = HighShelf(TrebleFrequency, tone.treble * DbPerStep);
+			next.voice = tone.voice != 0;
+			next.voiceFilter = Peaking(VoiceFrequency, VoiceQ, tone.voice * DbPerStep);
 			float pan = Mathf.Clamp(tone.balance / 10f, -1f, 1f);
 			next.leftGain = pan > 0f ? 1f - pan : 1f;
 			next.rightGain = pan < 0f ? 1f + pan : 1f;
@@ -223,6 +231,18 @@ namespace CassetteRandomize
 						right = left;
 					}
 				}
+				if (current.voice)
+				{
+					left = Run(ref current.voiceFilter, left, ref voiceZ1[0], ref voiceZ2[0]);
+					if (stereo)
+					{
+						right = Run(ref current.voiceFilter, right, ref voiceZ1[1], ref voiceZ2[1]);
+					}
+					else
+					{
+						right = left;
+					}
+				}
 				float mono = (left + right) * 0.5f;
 				if (scopeIndex < ScopeSize && i % 4 == 0)
 				{
@@ -317,6 +337,24 @@ namespace CassetteRandomize
 			q.b2 = a * (a + 1f + (a - 1f) * cos - beta) / denom;
 			q.a1 = 2f * (a - 1f - (a + 1f) * cos) / denom;
 			q.a2 = (a + 1f - (a - 1f) * cos - beta) / denom;
+			return q;
+		}
+
+		// RBJ peaking EQ: boosts or cuts a band around the centre frequency while
+		// leaving everything outside it untouched. Used for the voice presence band.
+		private Biquad Peaking(float frequency, float quality, float gainDb)
+		{
+			float a = Mathf.Pow(10f, gainDb / 40f);
+			float w = MathF.PI * 2f * Mathf.Min(frequency, sampleRate * 0.45f) / sampleRate;
+			float cos = Mathf.Cos(w);
+			float alpha = Mathf.Sin(w) / (2f * quality);
+			float denom = 1f + alpha / a;
+			Biquad q = default;
+			q.b0 = (1f + alpha * a) / denom;
+			q.b1 = -2f * cos / denom;
+			q.b2 = (1f - alpha * a) / denom;
+			q.a1 = -2f * cos / denom;
+			q.a2 = (1f - alpha / a) / denom;
 			return q;
 		}
 
