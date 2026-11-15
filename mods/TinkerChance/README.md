@@ -7,7 +7,7 @@ Turns the Tinkerer perk into a setting instead of a fixed 20% chance: pick any k
 - **Change hotkey**: click, then press any key; it is saved immediately.
 - **Reset to 20%** restores the vanilla behaviour.
 
-Both settings persist between sessions via mod data.
+Both settings persist between sessions in `ModData\tinker_chance\settings.txt`, so they are global rather than tied to one save file and apply from the moment the mod is enabled.
 
 ## Coverage
 

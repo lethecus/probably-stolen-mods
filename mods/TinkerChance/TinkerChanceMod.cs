@@ -30,7 +30,7 @@ namespace TinkerChance
 
 		public void OnEnable()
 		{
-			// Defaults only - the mod-data store needs a loaded run.
+			// File-backed, so the saved chance is known before any run is loaded.
 			TinkerSettings.Load();
 			ModHook.OnGameLoadedLate += ReloadSettings;
 
