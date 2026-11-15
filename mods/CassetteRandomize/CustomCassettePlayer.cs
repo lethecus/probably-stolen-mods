@@ -16,10 +16,10 @@ namespace CassetteRandomize
 
 		internal static GameItem Create()
 		{			GameGridInventory storage = new GameGridInventory(6, 6);
-			// 6 columns, 7 visible rows, 50 rows total. The extra visible row
+			// 6 columns, 7 visible rows, 90 rows total. The extra visible row
 			// at the bottom stays free for dropping new tapes; the scrollbar
 			// reaches the remaining rows.
-			GameGridScrollableInventory deck = new GameGridScrollableInventory(6, 7, 50, 0.5f);
+			GameGridScrollableInventory deck = new GameGridScrollableInventory(6, 7, 90, 0.5f);
 
 			MachineryButton previous = MachineryButton.FromAtlas("Window/elements_inner", "previous");
 			MachineryButton play = MachineryButton.FromAtlas("Window/elements_inner", "play");
@@ -158,7 +158,7 @@ namespace CassetteRandomize
 
 			Decks.Remove(deck);
 			Decks.Add(deck, machine);
-			CassetteRandomizeMod.Log?.Log("Created the scrollable cassette player (6 columns, 7 visible rows, 50 rows total).");
+			CassetteRandomizeMod.Log?.Log("Created the scrollable cassette player (6 columns, 7 visible rows, 90 rows total).");
 			return machine;
 		}
 
@@ -428,19 +428,7 @@ namespace CassetteRandomize
 			}
 
 			int current = machine.GetTagReadonly("CURRENT_PLAYING_CASSETTE_INDEX_TAG").GetInt();
-			int index;
-			if (playable.Count > 1 && playable.Contains(current))
-			{
-				do
-				{
-					index = playable[UnityEngine.Random.Range(0, playable.Count)];
-				}
-				while (index == current);
-			}
-			else
-			{
-				index = playable[UnityEngine.Random.Range(0, playable.Count)];
-			}
+			int index = PickShuffled(machine, tracks, playable, current);
 
 			// Route through the normal inventory-changed path so the audio
 			// coroutine and green playing-frame overlay behave like Next.
@@ -449,6 +437,160 @@ namespace CassetteRandomize
 			machine.ModifyTag("CURRENT_PLAYING_TRACK_ID_TAG", tag => tag.Enable().SetString(""));
 			OnCassetteInventoryChanged(machine, deck);
 			return true;
+		}
+
+		private sealed class ShuffleBag
+		{
+			internal readonly Dictionary<string, int> Remaining = new Dictionary<string, int>();
+
+			internal readonly Dictionary<string, int> Played = new Dictionary<string, int>();
+		}
+
+		// One bag per cassette player, session-scoped: a load starts a fresh cycle.
+		private static readonly ConditionalWeakTable<GameItem, ShuffleBag> Bags =
+			new ConditionalWeakTable<GameItem, ShuffleBag>();
+
+		private static readonly System.Random ShuffleRandom = new System.Random();
+
+		// Random without replacement: every playable tape is drawn once per cycle, then
+		// the cycle reshuffles. Drawn by track identity and copy count, so a song on
+		// three cassettes is drawn three times while duplicate songs never distort the
+		// rest of the deck. The pool is reconciled with the deck on every draw, so a
+		// tape added or removed mid-cycle joins or leaves the remaining pool at once.
+		private static int PickShuffled(GameItem machine, List<string> tracks, List<int> playable, int current)
+		{
+			ShuffleBag bag = Bags.GetValue(machine, _ => new ShuffleBag());
+
+			Dictionary<string, int> counts = new Dictionary<string, int>();
+			foreach (int i in playable)
+			{
+				string track = tracks[i];
+				counts[track] = counts.TryGetValue(track, out int n) ? n + 1 : 1;
+			}
+
+			Trim(bag.Remaining, counts);
+			Trim(bag.Played, counts);
+			foreach (KeyValuePair<string, int> pair in counts)
+			{
+				int have = Count(bag.Remaining, pair.Key) + Count(bag.Played, pair.Key);
+				if (have < pair.Value)
+				{
+					bag.Remaining[pair.Key] = Count(bag.Remaining, pair.Key) + (pair.Value - have);
+				}
+			}
+
+			if (bag.Remaining.Count == 0)
+			{
+				foreach (KeyValuePair<string, int> pair in bag.Played)
+				{
+					bag.Remaining[pair.Key] = Count(bag.Remaining, pair.Key) + pair.Value;
+				}
+				bag.Played.Clear();
+			}
+
+			string currentTrack = current >= 0 && current < tracks.Count ? tracks[current] : null;
+			string chosen = Draw(bag.Remaining, currentTrack);
+			if (chosen == null)
+			{
+				return playable[UnityEngine.Random.Range(0, playable.Count)];
+			}
+
+			bag.Remaining[chosen] = Count(bag.Remaining, chosen) - 1;
+			if (bag.Remaining[chosen] <= 0)
+			{
+				bag.Remaining.Remove(chosen);
+			}
+			bag.Played[chosen] = Count(bag.Played, chosen) + 1;
+
+			return ResolveIndex(tracks, playable, chosen, current);
+		}
+
+		private static void Trim(Dictionary<string, int> pool, Dictionary<string, int> counts)
+		{
+			foreach (string key in new List<string>(pool.Keys))
+			{
+				if (counts.TryGetValue(key, out int allowed))
+				{
+					if (pool[key] > allowed)
+					{
+						pool[key] = allowed;
+					}
+				}
+				else
+				{
+					pool.Remove(key);
+				}
+			}
+		}
+
+		private static int Count(Dictionary<string, int> pool, string key)
+		{
+			return pool.TryGetValue(key, out int n) ? n : 0;
+		}
+
+		private static string Draw(Dictionary<string, int> pool, string avoid)
+		{
+			int total = 0;
+			foreach (int n in pool.Values)
+			{
+				total += n;
+			}
+			if (total <= 0)
+			{
+				return null;
+			}
+
+			for (int attempt = 0; attempt < 8; attempt++)
+			{
+				int pick = ShuffleRandom.Next(total);
+				foreach (KeyValuePair<string, int> pair in pool)
+				{
+					pick -= pair.Value;
+					if (pick >= 0)
+					{
+						continue;
+					}
+					if (attempt < 7 && pair.Key == avoid && pool.Count > 1)
+					{
+						break;
+					}
+					return pair.Key;
+				}
+			}
+
+			foreach (KeyValuePair<string, int> pair in pool)
+			{
+				if (pair.Value > 0)
+				{
+					return pair.Key;
+				}
+			}
+			return null;
+		}
+
+		private static int ResolveIndex(List<string> tracks, List<int> playable, string track, int current)
+		{
+			List<int> matches = new List<int>();
+			foreach (int i in playable)
+			{
+				if (tracks[i] == track)
+				{
+					matches.Add(i);
+				}
+			}
+			if (matches.Count == 0)
+			{
+				return playable[UnityEngine.Random.Range(0, playable.Count)];
+			}
+			if (matches.Count > 1)
+			{
+				matches.Remove(current);
+				if (matches.Count == 0)
+				{
+					matches.Add(current);
+				}
+			}
+			return matches[ShuffleRandom.Next(matches.Count)];
 		}
 	}
 }

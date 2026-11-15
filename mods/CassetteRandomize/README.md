@@ -1,9 +1,12 @@
 # Cassette Randomize
 
-Replaces the tape player with a 50-row scrollable cassette deck (300 single-cell tapes, 7 rows visible) and a hi-fi equalizer panel: spectrum and oscilloscope, seek slider with track clock, volume, bass, treble, balance, mono, three savable presets and a collapsible storage drawer. The Randomize button starts a random playable cassette and keeps shuffling at the end of every track until Stop is pressed.
+Modifies the tape player with a 90-row scrollable cassette deck (If using my other mod that turns all tapes into single cells 540 tapes fit within, 7 rows visible) and a hi-fi equalizer panel: spectrum and oscilloscope, seek slider with track clock, volume, bass, treble, balance, mono, three savable presets and a collapsible storage drawer. The Randomize button starts a random playable cassette and keeps shuffling at the end of every track until it is stopped.
+
+https://github.com/lethecus/probably-stolen-mods
+The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `cassette_randomize`
-- Version: 3.0
+- Version: 3.1.1
 - Author: Local
 - Game version: 1.0.0.14
 
