@@ -9,7 +9,7 @@ https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `fast_charger`
-- Version: 1.1
+- Version: 1.5
 - Author: Local
 - Game version: 1.0.0.14
 
@@ -42,6 +42,8 @@ The mod's own settings page (Mods -> Fast Charger):
 | Appearance -> Animation speed | 8 | 4-20 fps | |
 
 Settings are read once per load, so a restart is needed before a change takes effect.
+
+Batteries are drawn inside the bays and tuck under the top panel. The rainbow animation restarts with the save, so freshly spawned or loaded machines both scroll.
 
 ## Install
 

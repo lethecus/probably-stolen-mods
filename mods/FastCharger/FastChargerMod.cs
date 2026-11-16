@@ -42,6 +42,12 @@ namespace FastCharger
 
 		private static bool lastPower;
 
+		private static float nextScan;
+
+		private static int lastTracked = -1;
+
+		private static float nextTickLog;
+
 		private static int appliedCharger = 30;
 
 		private static int appliedBloc = 20;
@@ -51,6 +57,11 @@ namespace FastCharger
 		private static int appliedFps = 8;
 
 		private const int FrameCount = 8;
+
+		// Height of the panel strip at the top of the charger art; battery sprites are cropped by it.
+		private const float PanelPixels = 10f;
+
+		private static readonly Dictionary<string, Sprite> batteryCrops = new Dictionary<string, Sprite>();
 
 		private static int ChargerCharge
 		{
@@ -110,7 +121,7 @@ namespace FastCharger
 				chargerRate = config.Define("charge_rate", 30, "Fast charger", () => "Charge per cycle", 0, 500, () => "Energy restored to each battery per machine cycle. Vanilla recharger is 3 (6 with the Commercial Power upgrade).", true);
 				blocRate = config.Define("bloc_rate", 20, "Fast bloc", () => "Charge per cycle", 0, 500, () => "Energy restored to each adjacent battery or machine cell per cycle. Vanilla powerblock is 2 (4 with the Commercial Power upgrade).", true);
 				animate = config.Define("animate_rainbow", true, "Appearance", () => "Animate rainbow", () => "Scrolls the rainbow colours across the machines. Off keeps the static frame 0 art.", true);
-				animFps = config.Define("animation_fps", 8, "Appearance", () => "Animation speed (fps)", 4, 20, () => "Rainbow frames per second. 8 is a calm scroll.", true);
+				animFps = config.Define("animation_fps", 12, "Appearance", () => "Animation speed (fps)", 4, 20, () => "Rainbow frames per second. 8 is a calm scroll, 12-16 is clearly moving.", true);
 			}
 			catch (Exception ex)
 			{
@@ -122,6 +133,8 @@ namespace FastCharger
 			ModHook.OnModItemDirectoryInit += OnItemDirectory;
 			ModHook.OnPlaceInventorInventoryItemLate += OnInventorStock;
 			ModHook.OnGameLoadedLate += ApplySettings;
+			ModHook.OnGameLoadedLate += ScanItems;
+			ModHook.OnGameLoadedLate += StartAnimation;
 			ModHook.OnGameLoadedLate += StampJacksonDay;
 			ModHook.OnWakingUpLate += StampJacksonDay;
 
@@ -141,14 +154,7 @@ namespace FastCharger
 
 			Log?.Log("Fast charger enabled: charger " + ChargerCharge + " per cycle, bloc " + BlocCharge + " per cycle.");
 
-			try
-			{
-				ModHelper.StartCoroutine(ModId, AnimateLoop());
-			}
-			catch (Exception ex)
-			{
-				Log?.Warning("Could not start the rainbow animation: " + ex.Message);
-			}
+			StartAnimation();
 		}
 
 		public void OnDisable()
@@ -156,8 +162,23 @@ namespace FastCharger
 			ModHook.OnModItemDirectoryInit -= OnItemDirectory;
 			ModHook.OnPlaceInventorInventoryItemLate -= OnInventorStock;
 			ModHook.OnGameLoadedLate -= ApplySettings;
+			ModHook.OnGameLoadedLate -= ScanItems;
+			ModHook.OnGameLoadedLate -= StartAnimation;
 			ModHook.OnGameLoadedLate -= StampJacksonDay;
 			ModHook.OnWakingUpLate -= StampJacksonDay;
+		}
+
+		private static void StartAnimation()
+		{
+			try
+			{
+				ModHelper.StopAllCoroutines(ModId);
+				ModHelper.StartCoroutine(ModId, AnimateLoop());
+			}
+			catch (Exception ex)
+			{
+				Log?.Warning("Could not start the rainbow animation: " + ex.Message);
+			}
 		}
 
 		/// <summary>Reads the settings once per load: the sliders say "restart required", so mid-day changes wait.</summary>
@@ -253,7 +274,8 @@ namespace FastCharger
 			inventory.onSlotRemoveItemFunc += (GameItem _, GameInventory _, SlotMarker _) => AudioManager.Instance.Play3("battery_removed");
 
 			machine.getItemSpriteModifierForItemFunc = (GameItem _) => ChargerSprites(inventory);
-			liveItems.Add(machine);
+			machine.onLoaded = (Action<GameItem>)Delegate.Combine(machine.onLoaded, new Action<GameItem>(Register));
+			Register(machine);
 			return machine;
 		}
 
@@ -264,10 +286,10 @@ namespace FastCharger
 
 			foreach (GameItem child in inventory.childItems)
 			{
-				Sprite battery = ItemSprite(child);
+				Sprite battery = BatterySprite(child);
 				if (battery != null)
 				{
-					modifiers.Add(new ItemSpriteModifier(battery, new Vector2(index * 16f, 0f)));
+					modifiers.Add(new ItemSpriteModifier(battery, new Vector2(index * 16f, -PanelPixels)));
 				}
 				index++;
 			}
@@ -345,8 +367,54 @@ namespace FastCharger
 				}
 			};
 
-			liveItems.Add(item);
+			Register(item);
 			return item;
+		}
+
+		private static void Register(GameItem item)
+		{
+			if (item == null || liveItems.Contains(item))
+			{
+				return;
+			}
+			liveItems.Add(item);
+		}
+
+		/// <summary>Items restored from a save do not always pass through the factory, so find them once per load.</summary>
+		private static void ScanItems()
+		{
+			try
+			{
+				if (PlayerStore.Instance == null)
+				{
+					return;
+				}
+
+				int found = 0;
+				List<GameItem> all = PlayerStore.Instance.FindAllItem();
+
+				foreach (GameItem item in all)
+				{
+					if (item == null)
+					{
+						continue;
+					}
+					if (item.identifier == ChargerId || item.identifier == BlocId)
+					{
+						Register(item);
+						found++;
+					}
+				}
+				if (liveItems.Count != lastTracked)
+				{
+					lastTracked = liveItems.Count;
+					Log?.Log("Animation tracking " + liveItems.Count + " machine(s) (" + found + " found in this scan).");
+				}
+			}
+			catch (Exception ex)
+			{
+				Log?.Warning("Could not scan for existing fast chargers: " + ex.Message);
+			}
 		}
 
 		private static void SetBlocSprite(GameItem item, bool powered)
@@ -381,6 +449,12 @@ namespace FastCharger
 				float wait = 0.5f;
 				try
 				{
+					if (UnityEngine.Time.time >= nextScan)
+					{
+						nextScan = UnityEngine.Time.time + 2f;
+						ScanItems();
+					}
+
 					bool animating = AnimateEnabled;
 					bool powered = PlayerStore.Instance != null && PlayerStore.Instance.isPowerOn;
 					int next = animating ? (frame + 1) % FrameCount : 0;
@@ -393,6 +467,12 @@ namespace FastCharger
 					}
 
 					wait = animating ? 1f / Fps : 0.5f;
+
+					if (UnityEngine.Time.time >= nextTickLog)
+					{
+						nextTickLog = UnityEngine.Time.time + 5f;
+						Log?.Log("Anim tick: frame " + frame + ", " + liveItems.Count + " item(s), " + (animating ? Fps + " fps" : "paused") + ".");
+					}
 				}
 				catch (Exception ex)
 				{
@@ -439,6 +519,31 @@ namespace FastCharger
 				return sprite;
 			}
 			return null;
+		}
+
+		/// <summary>Battery sprite with its top cut off, so it tucks under the panel like in the vanilla charger.</summary>
+		private static Sprite BatterySprite(GameItem item)
+		{
+			Sprite sprite = ItemSprite(item);
+			if (sprite == null)
+			{
+				return null;
+			}
+			if (sprite.rect.height <= PanelPixels)
+			{
+				return null;
+			}
+
+			string key = sprite.texture.name + "#" + sprite.name + "#" + (int)sprite.rect.height;
+			if (batteryCrops.TryGetValue(key, out Sprite cropped))
+			{
+				return cropped;
+			}
+
+			Rect rect = sprite.rect;
+			cropped = Sprite.Create(sprite.texture, new Rect(rect.x, rect.y, rect.width, rect.height - PanelPixels), new Vector2(0.5f, 0f), sprite.pixelsPerUnit);
+			batteryCrops[key] = cropped;
+			return cropped;
 		}
 
 		private static Sprite ItemSprite(GameItem item)
