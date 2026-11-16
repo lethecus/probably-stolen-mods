@@ -1,36 +1,36 @@
-{
-  "game": "probablystolen",
-  "note": "Nexus mod and file ids used by tools/nexus-upload.ps1. A 'file id' is a file group; new versions are added to it. The API key lives outside the repo at %APPDATA%\\NexusAPI\\key.txt.",
-  "mods": [
-    {
-      "mod_id": "1448",
-      "name": "Blank Card Printer",
-      "file_id": null,
-      "file_name": null
-    },
-    {
-      "mod_id": "1449",
-      "name": "Cassette Player Upgrade",
-      "file_id": "8389923",
-      "file_name": "CassetteRandomize 3.1.1"
-    },
-    {
-      "mod_id": "1453",
-      "name": "Hidden Wall Stash",
-      "file_id": "8389917",
-      "file_name": "HiddenWallStash 1.2"
-    },
-    {
-      "mod_id": "1466",
-      "name": "Tinkers Chance",
-      "file_id": "8389818",
-      "file_name": "TinkerChance 1.3"
-    },
-    {
-      "mod_id": "1472",
-      "name": "Fast Charger",
-      "file_id": "2333",
-      "file_name": "FastCharger 1.7"
-    }
-  ]
+﻿{
+    "game":  "probablystolen",
+    "note":  "Nexus mod and file ids used by tools/nexus-upload.ps1. A \u0027file id\u0027 is a file group; new versions are added to it. The API key lives outside the repo at %APPDATA%\\NexusAPI\\key.txt.",
+    "mods":  [
+                 {
+                     "mod_id":  "1448",
+                     "name":  "Blank Card Printer",
+                     "file_id":  "2271",
+                     "file_name":  "Blank Card Printer V1.2"
+                 },
+                 {
+                     "mod_id":  "1449",
+                     "name":  "Cassette Player Upgrade",
+                     "file_id":  "8389923",
+                     "file_name":  "CassetteRandomize 3.1.1"
+                 },
+                 {
+                     "mod_id":  "1453",
+                     "name":  "Hidden Wall Stash",
+                     "file_id":  "8389917",
+                     "file_name":  "HiddenWallStash 1.2"
+                 },
+                 {
+                     "mod_id":  "1466",
+                     "name":  "Tinkers Chance",
+                     "file_id":  "8389818",
+                     "file_name":  "TinkerChance 1.3"
+                 },
+                 {
+                     "mod_id":  "1472",
+                     "name":  "Fast Charger",
+                     "file_id":  "2333",
+                     "file_name":  "FastCharger 1.7"
+                 }
+             ]
 }
