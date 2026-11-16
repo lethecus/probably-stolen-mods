@@ -2,7 +2,7 @@
 <Manifest>
   <ID>customer_counter</ID>
   <Name>Customer Counter</Name>
-  <Author>Local</Author>
+  <Author>Lethecus</Author>
   <ModVersion>1.0</ModVersion>
   <Description>A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.
 
