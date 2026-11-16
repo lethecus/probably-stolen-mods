@@ -16,7 +16,7 @@ https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `calendar_tv`
-- Version: 1.0
+- Version: 1.0.7
 - Author: Lethecus
 - Game version: 1.0.0.14
 
@@ -78,3 +78,15 @@ as it is. Mixes have no usable playlist page - YouTube answers "This playlist ty
 the page is opened directly - but the watch page carries the radio queue and keeps handing out the next
 track, so `next` and the end-of-track advance both work. Account-specific ids such as `RDMM` (My Mix)
 cannot be rebuilt without a Google session.
+## Note on input focus (1.0.1)
+
+The mod never calls `SteamHTMLSurface.SetKeyFocus(browser, true)`. A Steam HTML surface that holds
+focus makes Steam route mouse input to the browser instead of the game, which in practice blocks clicking
+and dragging anything in the shop until the video is switched off. Playback, next-track and the restart
+are all driven through `ExecuteJavascript`, so the surface does not need focus at all.
+## Note on input (1.0.7)
+
+The mod must not set `KeyBindHelper.SuppressHotkeys`. That flag is read by `InputActionManager` together
+with `StoreUIManager.IsAnyTyping()` and it gates **mouse buttons** as well as hotkeys, so leaving it on
+while the video plays makes every click and drag in the shop silently fail (hovering, the phone and other
+UI events keep working, which makes it look like an invisible wall).

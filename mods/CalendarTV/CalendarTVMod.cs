@@ -78,6 +78,8 @@ namespace CalendarTV
 
 		private static RawImage view;
 
+		private static GameObject maskObject;
+
 		private static Sprite maskSprite;
 
 		private static StoreCalendar sign;
@@ -483,9 +485,10 @@ namespace CalendarTV
 					dayText.enabled = false;
 				}
 				PauseMusic();
+
 				if (browserReady)
 				{
-					SteamHTMLSurface.SetKeyFocus(browser, true);
+					SteamHTMLSurface.SetKeyFocus(browser, false); // never take keyboard/mouse focus: Steam routes input away from the game while a surface has it
 					LoadCurrentUrl();
 				}
 			}
@@ -517,6 +520,7 @@ namespace CalendarTV
 			}
 
 			Log?.Log(on ? "Wall screen: video on." : "Wall screen: video off.");
+
 		}
 
 		private static void EnsureView()
@@ -527,9 +531,10 @@ namespace CalendarTV
 			}
 			try
 			{
-				// The calendar face is a rounded rectangle 200x126 px; the video is square, so a rounded
-				// stencil mask keeps its corners from poking over the bezel.
+				// The calendar face is a rounded rectangle; the video is square, so a rounded stencil mask
+				// keeps its corners from poking over the bezel.
 				GameObject maskGo = new GameObject("CalendarTVMask", typeof(RectTransform), typeof(Image), typeof(Mask));
+				maskObject = maskGo;
 				maskGo.transform.SetParent(dayText.transform, false);
 				maskGo.transform.SetSiblingIndex(dayText.transform.GetSiblingIndex() + 1);
 				RectTransform maskRect = maskGo.GetComponent<RectTransform>();
@@ -555,9 +560,8 @@ namespace CalendarTV
 				rect.localScale = Vector3.one;
 				view = go.GetComponent<RawImage>();
 				view.color = Color.white;
-				view.raycastTarget = true;
+				view.raycastTarget = false;
 				view.enabled = false;
-				go.AddComponent<ClickCatcher>();
 			}
 			catch (Exception ex)
 			{
@@ -997,7 +1001,7 @@ namespace CalendarTV
 			browser = result.unBrowserHandle;
 			browserReady = true;
 			SteamHTMLSurface.SetSize(browser, 1280, 720);
-			SteamHTMLSurface.SetKeyFocus(browser, true);
+			SteamHTMLSurface.SetKeyFocus(browser, false); // never take keyboard/mouse focus: Steam routes input away from the game while a surface has it
 			Log?.Log("Steam HTML browser ready.");
 			if (active)
 			{
@@ -1200,17 +1204,6 @@ namespace CalendarTV
 			}
 		}
 
-		/// <summary>While the wall player is on, the game's keybind hotkeys do not fire.</summary>
-		[HarmonyPatch(typeof(KeyBindHelper), "get_SuppressHotkeys")]
-		internal static class SuppressHotkeysPatch
-		{
-			private static void Postfix(ref bool __result)
-			{
-				if (active)
-				{
-					__result = true;
-				}
-			}
-		}
+
 	}
 }
