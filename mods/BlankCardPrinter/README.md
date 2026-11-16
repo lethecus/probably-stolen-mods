@@ -1,7 +1,7 @@
 # Blank Card Printer
 
 Adds a Card Printer machine that prints vanilla blank keycards. It needs a battery in its power slot;
-the Print button shows the price before you press it. Find it in toolTable scavenging or buy it from
+the Print button shows the price before you press it. Find it in scavenging or buy it from
 the inventor.
 
 Easy mode (default) keeps the original cost: 3 power and 10 credits per card, no material. Normal mode
