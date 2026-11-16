@@ -4,7 +4,10 @@
   <Name>Compact Cassettes</Name>
   <Author>Local</Author>
   <ModVersion>1.0</ModVersion>
-  <Description>Shrinks every music cassette from its 2x2 grid footprint down to a single 1x1 cell. Applies to newly created tapes and to tapes already stored in a save, so more cassettes fit in the player, in containers and in shop storage. The tape keeps its grid position; its sprite is drawn at one cell.</Description>
+  <Description>Shrinks every music cassette from its 2x2 grid footprint down to a single 1x1 cell. Applies to newly created tapes and to tapes already stored in a save, so more cassettes fit in the player, in containers and in shop storage. The tape keeps its grid position; its sprite is drawn at one cell.
+
+https://github.com/lethecus/probably-stolen-mods
+The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
     <Version>1.0.0.14</Version>
   </GameVersions>

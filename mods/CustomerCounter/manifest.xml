@@ -4,7 +4,10 @@
   <Name>Customer Counter</Name>
   <Author>Local</Author>
   <ModVersion>1.0</ModVersion>
-  <Description>A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.</Description>
+  <Description>A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.
+
+https://github.com/lethecus/probably-stolen-mods
+The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
     <Version>1.0.0.14</Version>
   </GameVersions>
