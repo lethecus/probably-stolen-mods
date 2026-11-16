@@ -15,7 +15,7 @@ Slider sets chance live no need to save or close the window.
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
-    <Version>1.0.0.14</Version>
+    <Version>1.0.0.14-1.0.*</Version>
   </GameVersions>
   <Prerequisites />
   <Assemblies>

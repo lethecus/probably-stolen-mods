@@ -4,12 +4,12 @@
   <Name>Next Opening Highlight Fix</Name>
   <Author>Lethecus</Author>
   <ModVersion>1.0</ModVersion>
-  <Description>Stops the repeating "Could not refresh item highlights" NullReferenceException from Next Opening: Suppliers &amp; Odin. Logs the full stack once for diagnosis. Requires Next Opening: Suppliers &amp; Odin.
+  <Description>Stops the repeating 'Could not refresh item highlights' NullReferenceException from Next Opening: Suppliers &amp; Odin. Logs the full stack once for diagnosis. Requires Next Opening: Suppliers &amp; Odin.
 
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
-    <Version>1.0.0.14</Version>
+    <Version>1.0.0.14-1.0.*</Version>
   </GameVersions>
   <Prerequisites>
     <Mod>nextopeningvisitors</Mod>

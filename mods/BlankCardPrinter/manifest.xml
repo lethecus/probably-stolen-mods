@@ -11,7 +11,7 @@ Easy mode (default) keeps the original cost: 3 power and 10 credits per card, no
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
-    <Version>1.0.0.14</Version>
+    <Version>1.0.0.14-1.0.*</Version>
   </GameVersions>
   <Prerequisites />
   <Assemblies>

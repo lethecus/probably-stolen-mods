@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mod>
+  <ID>calendar_tv</ID>
+  <Name>Calendar TV</Name>
+  <Author>Lethecus</Author>
+  <ModVersion>1.0</ModVersion>
+  <Description>This mod is heavily inspired by Frequency TV (https://steamcommunity.com/sharedfiles/filedetails/?id=3836903387). The difference between this mod and that one is very simple: this is not a full access system. It is a playlist video player that only sits on the calendar screen when a hotkey is pressed (default I, rebindable inside the game's options menu, and a skip button also rebindable in options). It does allow randomizing play of the list, defaulted off; that setting is in the mod's own menu. It only plays public, unlisted and mix playlist URLs. If there is a play error it skips that video within a few seconds.
+
+Volume is handled by the video site's own player: if the sign is silent, check the Windows Volume Mixer - 'Steam Client WebHelper' may be muted or low. The game's volume slider does not affect it.
+
+https://github.com/lethecus/probably-stolen-mods
+The source for all my mods if you wish to confirm nothing shady going on.</Description>
+  <GameVersions>
+    <Version>1.0.0.14-1.0.*</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>CalendarTV.dll</Assembly>
+  </Assemblies>
+  <Capabilities>
+    <Capability>steam</Capability>
+    <!-- The mod itself only drives Steam's HTML surface, but everything it shows comes from
+         youtube.com, so the internet access is declared instead of hidden behind the surface. -->
+    <Capability>network</Capability>
+  </Capabilities>
+</Mod>
