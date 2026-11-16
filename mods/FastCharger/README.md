@@ -9,7 +9,7 @@ https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `fast_charger`
-- Version: 1.5
+- Version: 1.7
 - Author: Local
 - Game version: 1.0.0.14
 

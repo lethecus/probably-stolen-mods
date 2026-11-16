@@ -216,14 +216,15 @@ namespace FastCharger
 
 		private static GameItem CreateFastCharger()
 		{
-			GameGridInventory inventory = new GameGridInventory(8, 1);
+			GameGridInventory inventory = new GameGridInventory(8, 2);
 			inventory.mayInventoryAddItemFunc = (GameItem item, GameInventory _) =>
 			{
-				if (item == null || !GeneralHelper.IsItemOwned(item))
+				if (item == null || !GeneralHelper.IsItemOwned(item) || !item.IsTag("power_source_item"))
 				{
 					return false;
 				}
-				return !PowerHelper.IsDisposablePowerSource(item) && item.IsTag("power_source_item");
+				// Disposable cells cannot be recharged; hypertech cells are refused by the charge code itself.
+				return !PowerHelper.IsDisposablePowerSource(item) && !HypertechBatteryHelper.IsHypertechBattery(item);
 			};
 
 			PixelWindow window = MachineHelper.CreateMachineryWindow(true, MachineHelper.Panel(LocHelper.GetLocalizedMechanic("mech_recharger_label_battery"), inventory, "batteries"));
@@ -232,7 +233,7 @@ namespace FastCharger
 				.SetContentWindow(window)
 				.SetSpriteAndShapeFromMod(ModId, "fast_charger_0");
 			machine.name = "Fast Charger";
-			machine.shortDescription = "Eight battery bays and a luxury charging array. Restores far more energy per cycle than a standard recharger; the amount is set in the Fast Charger mod settings.";
+			machine.shortDescription = "Eight battery bays and a luxury charging array. Restores far more energy per cycle than a standard recharger; the amount is set in the Fast Charger mod settings. Rechargeable energy cells only - disposable and hypertech cells are not accepted.";
 			machine.flavorText = "Station-grade hardware, sold to people who do not like waiting.";
 			machine.unitValue = 450L;
 			machine.SetGameItemType("MACHINE");
