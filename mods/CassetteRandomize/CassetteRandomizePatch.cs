@@ -39,6 +39,19 @@ namespace CassetteRandomize
 		}
 	}
 
+	// The equalizer is applied to the music source, so every new track has to carry
+	// the saved tone again: a scene rebuild can re-bind the filter or leave it
+	// bypassed, which used to silence the tone until the deck was reopened.
+	[HarmonyPatch(typeof(AudioManager), "PlayMusic")]
+	internal static class PlayMusicTonePatch
+	{
+		private static void Postfix()
+		{
+			EmporiumEntry entry = EmporiumEntry.Instance;
+			DeckSettings.ApplyTone(entry != null ? entry.cassettePlayer : null);
+		}
+	}
+
 	// The vanilla OnTrackDone always advances with the Next button. When the
 	// player owns our custom deck, route it through our shuffle-aware path
 	// instead (the stock GetCassetteInventory cast cannot see a scrollable deck).

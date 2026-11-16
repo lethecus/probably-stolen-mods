@@ -81,18 +81,26 @@ namespace CassetteRandomize
 
 		public static AudioFx Ensure()
 		{
-			if (instance != null)
-			{
-				return instance;
-			}
 			AudioManager manager = AudioManager.Instance;
 			if (manager == null || manager.audioSourceMusic == null)
 			{
 				return null;
 			}
-			instance = manager.audioSourceMusic.gameObject.AddComponent<AudioFx>();
-			instance.source = manager.audioSourceMusic;
-			CassetteRandomizeMod.Log?.Log("Equalizer filter attached to " + manager.audioSourceMusic.gameObject.name + ".");
+			AudioSource music = manager.audioSourceMusic;
+			// A scene rebuild replaces AudioSourceMusic; the old component would then
+			// sit on a dead object and pass the new music through unfiltered.
+			if (instance != null && instance.source == music)
+			{
+				return instance;
+			}
+			if (instance != null)
+			{
+				UnityEngine.Object.Destroy(instance);
+				instance = null;
+			}
+			instance = music.gameObject.AddComponent<AudioFx>();
+			instance.source = music;
+			CassetteRandomizeMod.Log?.Log("Equalizer filter attached to " + music.gameObject.name + ".");
 			return instance;
 		}
 

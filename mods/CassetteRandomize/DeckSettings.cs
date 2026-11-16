@@ -117,6 +117,10 @@ namespace CassetteRandomize
 			machine.ModifyTag(PresetsTag, tag => tag.Enable().SetString(joined), false);
 		}
 
+		// Re-applies the tone saved on the active cassette player. A machine passed in
+		// before the store has claimed it (item creation, scene rebuild) has no tone tag
+		// yet, so applying it would flatten the equalizer; instead leave the filter
+		// untouched until the real player supplies a saved tone.
 		internal static void ApplyTone(GameItem machine)
 		{
 			AudioFx fx = AudioFx.Ensure();
@@ -125,20 +129,27 @@ namespace CassetteRandomize
 				CassetteRandomizeMod.Log?.Warning("Equalizer filter unavailable: no music AudioSource yet.");
 				return;
 			}
-			if (machine != null && EmporiumEntry.Instance != null && machine == EmporiumEntry.Instance.cassettePlayer)
+			EmporiumEntry entry = EmporiumEntry.Instance;
+			GameItem player = machine;
+			if (player == null || string.IsNullOrEmpty(player.GetTagReadonly(ToneTag).GetString()))
 			{
-				Tone tone = GetTone(machine);
-				fx.SetTone(tone);
-				string encoded = tone.Encode();
-				if (encoded != lastApplied)
-				{
-					lastApplied = encoded;
-					CassetteRandomizeMod.Log?.Log("Equalizer tone: bass=" + tone.bass + " treble=" + tone.treble + " voice=" + tone.voice + " balance=" + tone.balance + " mono=" + tone.mono + ".");
-				}
+				player = entry != null ? entry.cassettePlayer : null;
 			}
-			else
+			if (player == null)
 			{
 				fx.Bypass();
+				return;
+			}
+			string encoded = player.GetTagReadonly(ToneTag).GetString();
+			if (string.IsNullOrEmpty(encoded) || !Tone.TryDecode(encoded, out Tone tone))
+			{
+				return;
+			}
+			fx.SetTone(tone);
+			if (encoded != lastApplied)
+			{
+				lastApplied = encoded;
+				CassetteRandomizeMod.Log?.Log("Equalizer tone: bass=" + tone.bass + " treble=" + tone.treble + " voice=" + tone.voice + " balance=" + tone.balance + " mono=" + tone.mono + ".");
 			}
 		}
 

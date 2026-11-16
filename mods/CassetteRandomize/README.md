@@ -6,7 +6,7 @@ https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `cassette_randomize`
-- Version: 3.1.1
+- Version: 3.4
 - Author: Local
 - Game version: 1.0.0.14
 
