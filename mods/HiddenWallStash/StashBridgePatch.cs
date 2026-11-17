@@ -37,6 +37,10 @@ namespace HiddenWallStash
 					return;
 				}
 				List<GameItem> extra = GraphUtils.FindAllChildrenType<GameItem>((GraphNodeStorage)(object)stash, (Func<GameItem, bool>)null, (Func<GameItem, bool>)null);
+				// The stash item itself goes in too: systems that ask "which containers exist" (AutoStorage's rule
+				// list, presets) need the container, not just its contents. Without it the stash cannot be picked
+				// as a destination anywhere.
+				extra.Insert(0, stash);
 				if (extra == null || extra.Count == 0)
 				{
 					return;

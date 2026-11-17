@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>HiddenWallStash</AssemblyName>
@@ -19,6 +19,7 @@
     <Compile Include="GrateFactory.cs" />
     <Compile Include="GrateBehaviour.cs" />
     <Compile Include="GrateDropPatch.cs" />
+    <Compile Include="StashBridgePatch.cs" />
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
