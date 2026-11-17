@@ -4,7 +4,7 @@ Adds an Empty action to the right-click menu for owned liquid containers, and ma
 
 - Mod ID: `water_jug_tools`
 - Version: 1.1
-- Author: Local
+- Author: Lethecus
 - Game version: 1.0.0.14
 
 ## Install

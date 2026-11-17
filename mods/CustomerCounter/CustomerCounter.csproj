@@ -19,15 +19,15 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>D:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(GameDir)\Probably Stolen_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>D:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>$(GameDir)\Probably Stolen_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\SteamLibrary\steamapps\common\Probably Stolen\Probably Stolen_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GameDir)\Probably Stolen_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

@@ -5,3 +5,4 @@ obj/
 Logs/
 *.zip
 tools/sync.config.json
+dist/

@@ -3,13 +3,15 @@
   <ID>hidden_wall_stash</ID>
   <Name>Hidden Wall Stash</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.2</ModVersion>
-  <Description>A concealed 15x13 smuggler storage with ten tabs, installed at the start of every game. Hover the metal grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it without opening. 15x13 cells on each of its ten tabs. Uninstall note: empty the stash before disabling this mod, or its contents are lost.
+  <ModVersion>1.5</ModVersion>
+  <Description>A concealed smuggler storage with ten tabs, installed at the start of every game. Hover the metal grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it without opening. Each tab is 15x13 cells by default, and the size is configurable in the mod settings from 5 to 25 cells per side. The new size is applied on the next load. Shrinking repacks each tab and moves overflow into free tabs so nothing is lost; if everything cannot fit, the resize is refused and the stash stays as it was. Uninstall note: empty the stash before disabling this mod, or its contents are lost.
+
+1.5 counts the stash as shop storage, so it behaves like any other container: machines inside get their nightly cycle, hoppers can link to it and AutoStorage can fill it. It also counts toward nightly service cost and end-of-day value, as normal storage does. Security inspections still ignore it. If you prefer an inert stash, turn off "Count stash contents as shop storage" in the mod settings.
 
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
-    <Version>1.0.0.14-1.0.*</Version>
+    <Version>0.0.0-1.0.*</Version>
   </GameVersions>
   <Prerequisites />
   <Assemblies>

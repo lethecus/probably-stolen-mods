@@ -3,15 +3,35 @@ using System;
 public static class StashItemFactory
 {
 	public const int TabCount = 10;
-	public const int GridWidth = 15;
-	public const int GridHeight = 13;
+
+	/// <summary>Mod-data key holding the size the stash was last built at, so a decode never uses a
+	/// different size than the save (which would drop items that fall outside the new grid).</summary>
+	public const string SizeKey = "stash_size";
 
 	public static GameItem Create()
 	{
+		int width;
+		int height;
+		if (!StashManager.TryReadStoredSize(out width, out height))
+		{
+			if (StashManager.IsDecoding)
+			{
+				// Restoring a save: build the largest grid so nothing the save contains can be dropped.
+				// ApplyConfiguredSize then shrinks to the requested size without losing anything.
+				width = HiddenWallStash.HiddenWallStashMod.MaxSide;
+				height = HiddenWallStash.HiddenWallStashMod.MaxSide;
+			}
+			else
+			{
+				width = HiddenWallStash.HiddenWallStashMod.StashWidth;
+				height = HiddenWallStash.HiddenWallStashMod.StashHeight;
+			}
+		}
+
 		MachineryTabs tabs = new MachineryTabs();
 		for (int i = 0; i < TabCount; i++)
 		{
-			GameGridInventory grid = new GameGridInventory(GridWidth, GridHeight);
+			GameGridInventory grid = new GameGridInventory(width, height);
 			grid.identifier = "smuggler_bay";
 			tabs.AddTab(LocHelper.GetLocalizedMechanic("mech_storage_bay_tab", i + 1), MachineHelper.WrapInIntake(grid));
 		}

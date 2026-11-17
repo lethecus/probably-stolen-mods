@@ -14,7 +14,7 @@ The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `blank_card_printer`
 - Version: 1.3
-- Author: Local
+- Author: Lethecus
 - Game version: 1.0.0.14
 
 ## Settings

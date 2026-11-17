@@ -4,7 +4,7 @@ A small LCD panel next to the shop clock that shows how many customers are still
 
 - Mod ID: `customer_counter`
 - Version: 1.0
-- Author: Local
+- Author: Lethecus
 - Game version: 1.0.0.14
 
 ## Install

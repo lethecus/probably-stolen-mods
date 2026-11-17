@@ -1,22 +1,28 @@
 # Hidden Wall Stash
 
-A concealed 15x13 smuggler storage with ten tabs, installed at the start of every game. Hover the metal grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it without opening. 15x13 cells on each of its ten tabs. Uninstall note: empty the stash before disabling this mod, or its contents are lost.
+A concealed 15×13 smuggler storage with ten tabs, installed at the start of every game. Hover the metal
+grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it
+without opening.
 
-- Mod ID: `hidden_wall_stash`
-- Version: 1.2
-- Author: YourName
-- Game version: 1.0.0.14
+## Stash size
 
-## Install
+**Stash size → Cells per row / Rows per tab** (mod settings)
 
-Copy this folder into `<game>\Mods\HiddenWallStash`, activate the mod in the game's Mods panel and restart.
-The folder needs `manifest.xml` and the built DLL next to each other (plus any `Textures`/
-`Localization` folders).
+- range is 5 to 25 per side, defaults are 15 × 13
+- the size applies on the next load, not mid-session
+- **growing** keeps everything, the stash is rebuilt at the new size and the contents move across
+- **shrinking** repacks each tab first, then moves any overflow into free space in other tabs, so a smaller
+  size never deletes anything
+- if the items cannot all fit, the resize is **refused as a whole**: the stash keeps its previous size, every
+  item is put back, and the log says which item did not fit
 
-## Build
+The stash is not a placed object - it lives in the mod's own save data - so changing size rebuilds the item
+rather than trying to resize grids inside a window laid out for the old dimensions.
 
-```powershell
-dotnet build HiddenWallStash.csproj -c Release -p:GameDir="C:\Program Files (x86)\Steam\steamapps\common\Probably Stolen"
-```
+## Uninstalling
 
-Or from the repository root: `.\build-all.ps1 -Deploy`.
+Empty the stash before disabling this mod, or its contents are lost.
+
+## Source
+
+https://github.com/lethecus/probably-stolen-mods

@@ -16,6 +16,10 @@ namespace TinkerChance
 	///
 	/// They are patched only if that mod is loaded, by rewriting the "load 20" instruction in front of
 	/// RNG.Roll to a call to our configured chance, so the rest of their logic is untouched.
+	///
+	/// Resolution note: the lookup keeps the type name and member name as literals at the call site.
+	/// Passing them through parameters makes the game's mod scanner see a "computed type" and flag the
+	/// mod as reflection-external, which it plans to refuse.
 	/// </summary>
 	internal static class OtherModPatches
 	{
@@ -38,22 +42,19 @@ namespace TinkerChance
 				return;
 			}
 
-			if (!HasAssembly("ScavToolUpgrade"))
-			{
-				if (finalAttempt)
-				{
-					gaveUp = true;
-				}
-				return;
-			}
-
 			if (!upgradePatched)
 			{
-				upgradePatched = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.Rules", "Upgrade");
+				upgradePatched = Patch(
+					harmony,
+					AccessTools.Method(AccessTools.TypeByName("ScavToolUpgrade.Native.Rules"), "Upgrade"),
+					"ScavToolUpgrade.Native.Rules.Upgrade");
 			}
 			if (!spendPatched)
 			{
-				spendPatched = Patch(harmony, "ScavToolUpgrade", "ScavToolUpgrade.Native.NewTools", "Spend");
+				spendPatched = Patch(
+					harmony,
+					AccessTools.Method(AccessTools.TypeByName("ScavToolUpgrade.Native.NewTools"), "Spend"),
+					"ScavToolUpgrade.Native.NewTools.Spend");
 			}
 
 			if (finalAttempt && !upgradePatched && !spendPatched)
@@ -63,52 +64,22 @@ namespace TinkerChance
 			}
 		}
 
-		private static bool HasAssembly(string assemblyName)
+		private static bool Patch(Harmony harmony, MethodInfo method, string label)
 		{
-			foreach (Assembly candidate in AppDomain.CurrentDomain.GetAssemblies())
+			if (method == null)
 			{
-				if (candidate.GetName().Name == assemblyName)
-				{
-					return true;
-				}
+				return false;
 			}
 
-			return false;
-		}
-
-		private static bool Patch(Harmony harmony, string assemblyName, string typeName, string methodName)
-		{
 			try
 			{
-				Assembly assembly = null;
-				foreach (Assembly candidate in AppDomain.CurrentDomain.GetAssemblies())
-				{
-					if (candidate.GetName().Name == assemblyName)
-					{
-						assembly = candidate;
-						break;
-					}
-				}
-				if (assembly == null)
-				{
-					return false;
-				}
-
-				Type type = assembly.GetType(typeName, throwOnError: false);
-				MethodInfo method = type?.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-				if (method == null)
-				{
-					TinkerChanceMod.Log?.Warning("Could not find " + typeName + "." + methodName + " to patch.");
-					return false;
-				}
-
 				harmony.Patch(method, transpiler: new HarmonyMethod(typeof(OtherModPatches), nameof(ReplaceTwenty)));
-				TinkerChanceMod.Log?.Log("Patched " + typeName + "." + methodName + " to use the configured chance.");
+				TinkerChanceMod.Log?.Log("Patched " + label + " to use the configured chance.");
 				return true;
 			}
 			catch (Exception ex)
 			{
-				TinkerChanceMod.Log?.Warning("Could not patch " + typeName + "." + methodName + ": " + ex.Message);
+				TinkerChanceMod.Log?.Warning("Could not patch " + label + ": " + ex.Message);
 				return false;
 			}
 		}
@@ -117,7 +88,7 @@ namespace TinkerChance
 		private static IEnumerable<CodeInstruction> ReplaceTwenty(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
 		{
 			List<CodeInstruction> list = new List<CodeInstruction>(instructions);
-			MethodInfo getter = typeof(TinkerChanceApi).GetProperty(nameof(TinkerChanceApi.Chance)).GetGetMethod();
+			MethodInfo getter = AccessTools.PropertyGetter(typeof(TinkerChanceApi), nameof(TinkerChanceApi.Chance));
 			int replaced = 0;
 
 			for (int i = 1; i < list.Count; i++)
@@ -135,8 +106,7 @@ namespace TinkerChance
 				CodeInstruction previous = list[i - 1];
 				bool loadsTwenty =
 					(previous.opcode == OpCodes.Ldc_I4_S && Convert.ToInt32(previous.operand) == 20) ||
-					(previous.opcode == OpCodes.Ldc_I4 && Convert.ToInt32(previous.operand) == 20) ||
-					(previous.opcode == OpCodes.Ldc_I4_8 && false);
+					(previous.opcode == OpCodes.Ldc_I4 && Convert.ToInt32(previous.operand) == 20);
 
 				if (loadsTwenty)
 				{

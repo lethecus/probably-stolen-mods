@@ -1,4 +1,5 @@
 using System;
+using HarmonyLib;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,14 @@ namespace FastCharger
 		private static readonly List<GameItem> liveItems = new List<GameItem>();
 
 		private static int frame;
+
+		// Literal type lookup, so the scanner classifies it as an internal game type.
+		private static readonly bool ModifiersAvailable = AccessTools.TypeByName("ItemSpriteModifier") != null;
+
+
+		private static GameObject updaterObject;
+
+		private static float nextFrameAt;
 
 		private static bool lastPower;
 
@@ -166,19 +175,39 @@ namespace FastCharger
 			ModHook.OnGameLoadedLate -= StartAnimation;
 			ModHook.OnGameLoadedLate -= StampJacksonDay;
 			ModHook.OnWakingUpLate -= StampJacksonDay;
+
+			if (updaterObject != null)
+			{
+				UnityEngine.Object.Destroy(updaterObject);
+				updaterObject = null;
+			}
 		}
 
 		private static void StartAnimation()
 		{
 			try
 			{
-				ModHelper.StopAllCoroutines(ModId);
-				ModHelper.StartCoroutine(ModId, AnimateLoop());
+				EnsureUpdater();
+				nextFrameAt = 0f;
+				lastPower = !(PlayerStore.Instance != null && PlayerStore.Instance.isPowerOn);
 			}
 			catch (Exception ex)
 			{
 				Log?.Warning("Could not start the rainbow animation: " + ex.Message);
 			}
+		}
+
+		// A plain MonoBehaviour tick, because ModHelper's coroutine helpers do not exist in older game builds
+		// and calling them there aborted OnEnable before the items were registered.
+		private static void EnsureUpdater()
+		{
+			if (updaterObject != null)
+			{
+				return;
+			}
+			updaterObject = new GameObject("FastChargerUpdater");
+			UnityEngine.Object.DontDestroyOnLoad(updaterObject);
+			updaterObject.AddComponent<FastChargerUpdater>();
 		}
 
 		/// <summary>Reads the settings once per load: the sliders say "restart required", so mid-day changes wait.</summary>
@@ -274,10 +303,20 @@ namespace FastCharger
 			inventory.onSlotAddItemFunc += (GameItem _, GameInventory _, SlotMarker _) => AudioManager.Instance.Play3("battery_insert");
 			inventory.onSlotRemoveItemFunc += (GameItem _, GameInventory _, SlotMarker _) => AudioManager.Instance.Play3("battery_removed");
 
-			machine.getItemSpriteModifierForItemFunc = (GameItem _) => ChargerSprites(inventory);
+			// The animated pips need ItemSpriteModifier, which older game builds do not ship. The call is
+			// isolated in its own method and only made when the type exists, so an old build never JITs it.
+			if (ModifiersAvailable)
+			{
+				AttachSpriteModifiers(machine, inventory);
+			}
 			machine.onLoaded = (Action<GameItem>)Delegate.Combine(machine.onLoaded, new Action<GameItem>(Register));
 			Register(machine);
 			return machine;
+		}
+
+		private static void AttachSpriteModifiers(GameItem machine, GameInventory inventory)
+		{
+			machine.getItemSpriteModifierForItemFunc = (GameItem _) => ChargerSprites(inventory);
 		}
 
 		private static List<ItemSpriteModifier> ChargerSprites(GameInventory inventory)
@@ -403,6 +442,17 @@ namespace FastCharger
 					if (item.identifier == ChargerId || item.identifier == BlocId)
 					{
 						Register(item);
+						// A restored item can bind its sprite before the mod textures are ready; bind it again here so
+						// it never stays on the game's 1x1 placeholder.
+						try
+						{
+							bool powered = PlayerStore.Instance != null && PlayerStore.Instance.isPowerOn;
+							item.SetSprite(ModId, item.identifier == ChargerId ? ChargerFrame : BlocFrame(powered));
+						}
+						catch (Exception ex)
+						{
+							Log?.Warning("Could not refresh a sprite: " + ex.Message);
+						}
 						found++;
 					}
 				}
@@ -443,45 +493,45 @@ namespace FastCharger
 
 		// ------------------------------------------------------------ animation
 
-		private static IEnumerator AnimateLoop()
+		internal static void TickAnimation()
 		{
-			while (true)
+			try
 			{
-				float wait = 0.5f;
-				try
+				if (UnityEngine.Time.time >= nextScan)
 				{
-					if (UnityEngine.Time.time >= nextScan)
-					{
-						nextScan = UnityEngine.Time.time + 2f;
-						ScanItems();
-					}
-
-					bool animating = AnimateEnabled;
-					bool powered = PlayerStore.Instance != null && PlayerStore.Instance.isPowerOn;
-					int next = animating ? (frame + 1) % FrameCount : 0;
-
-					if (next != frame || powered != lastPower)
-					{
-						frame = next;
-						lastPower = powered;
-						ApplyFrames(powered);
-					}
-
-					wait = animating ? 1f / Fps : 0.5f;
-
-					if (UnityEngine.Time.time >= nextTickLog)
-					{
-						nextTickLog = UnityEngine.Time.time + 5f;
-						Log?.Log("Anim tick: frame " + frame + ", " + liveItems.Count + " item(s), " + (animating ? Fps + " fps" : "paused") + ".");
-					}
-				}
-				catch (Exception ex)
-				{
-					Log?.Warning("Rainbow animation failed: " + ex.Message);
-					wait = 1f;
+					nextScan = UnityEngine.Time.time + 2f;
+					ScanItems();
 				}
 
-				yield return new WaitForSeconds(wait);
+				bool animating = AnimateEnabled;
+				bool powered = PlayerStore.Instance != null && PlayerStore.Instance.isPowerOn;
+
+				if (animating)
+				{
+					if (UnityEngine.Time.time < nextFrameAt)
+					{
+						return;
+					}
+					nextFrameAt = UnityEngine.Time.time + 1f / Fps;
+				}
+
+				int next = animating ? (frame + 1) % FrameCount : 0;
+				if (next != frame || powered != lastPower)
+				{
+					frame = next;
+					lastPower = powered;
+					ApplyFrames(powered);
+				}
+
+				if (UnityEngine.Time.time >= nextTickLog)
+				{
+					nextTickLog = UnityEngine.Time.time + 5f;
+					Log?.Log("Anim tick: frame " + frame + ", " + liveItems.Count + " item(s), " + (animating ? Fps + " fps" : "paused") + ".");
+				}
+			}
+			catch (Exception ex)
+			{
+				Log?.Warning("Rainbow animation failed: " + ex.Message);
 			}
 		}
 

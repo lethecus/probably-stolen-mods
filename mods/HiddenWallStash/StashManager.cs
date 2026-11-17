@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class StashManager
@@ -95,6 +96,7 @@ public static class StashManager
 						Stash = decoded;
 						Stash.GetUniqueID();
 						RestoreFeatures();
+						ApplyConfiguredSize();
 						lastSignature = ComputeSignature();
 						Log.Log("Decoded hidden wall stash with " + state.saveItems.Count + " saved nodes.");
 						return;
@@ -121,7 +123,60 @@ public static class StashManager
 			return;
 		}
 		Stash.GetUniqueID();
+		List<GameGridInventory> fresh = GridsOf(Stash);
+		if (fresh.Count > 0 && fresh[0].inventoryShape != null)
+		{
+			StoreSize(fresh[0].inventoryShape.width, fresh[0].inventoryShape.height);
+		}
 		EncodeNow();
+	}
+
+	/// <summary>Size the stash was last built at, so a decode matches the save instead of the setting.</summary>
+	internal static bool TryReadStoredSize(out int width, out int height)
+	{
+		width = 0;
+		height = 0;
+		try
+		{
+			string stored = ModHelper.GetModData(ModId, StashItemFactory.SizeKey, null);
+			if (string.IsNullOrEmpty(stored))
+			{
+				return false;
+			}
+			string[] parts = stored.Split('x');
+			if (parts.Length != 2 ||
+			    !int.TryParse(parts[0], out width) || !int.TryParse(parts[1], out height))
+			{
+				return false;
+			}
+			if (width < HiddenWallStash.HiddenWallStashMod.MinSide || width > HiddenWallStash.HiddenWallStashMod.MaxSide ||
+			    height < HiddenWallStash.HiddenWallStashMod.MinSide || height > HiddenWallStash.HiddenWallStashMod.MaxSide)
+			{
+				return false;
+			}
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
+	}
+
+	internal static void StoreSize(int width, int height)
+	{
+		try
+		{
+			ModHelper.SetModData(ModId, StashItemFactory.SizeKey, width + "x" + height);
+		}
+		catch (Exception exception)
+		{
+			Log.Warning("Could not store the stash size: " + exception.Message);
+		}
+	}
+
+	internal static bool IsDecoding
+	{
+		get { return decoding; }
 	}
 
 	public static void MarkDirty()
@@ -198,6 +253,8 @@ public static class StashManager
 		{
 			return;
 		}
+		// Safety net: if the size changed while the game was running, apply it before the window is shown.
+		ApplyConfiguredSize();
 		if (IsWindowVisible())
 		{
 			Stash.CloseContentWindow();
@@ -349,15 +406,55 @@ public static class StashManager
 	// render tree to find them. Works for both freshly created and decoded stashes.
 	private static IEnumerable<GameGridInventory> EnumerateStashGrids()
 	{
-		PixelWindow window = Stash != null ? Stash.contentWindow : null;
-		if (window == null || window.handler == null)
+		return GridsOf(Stash);
+	}
+
+	/// <summary>Tab grids of any stash item, fresh or decoded.</summary>
+	private static List<GameGridInventory> GridsOf(GameItem item)
+	{
+		List<GameGridInventory> grids = new List<GameGridInventory>();
+		PixelWindow window = item != null ? item.contentWindow : null;
+		if (window == null)
 		{
-			yield break;
+			return grids;
+		}
+
+		// Model path first: the panel/tab objects exist as soon as the item is decoded, while their render
+		// nodes only appear once the window has been shown. Walking the render tree here is why resizing
+		// silently did nothing after a load.
+		if (window.child is MachineryPanelRow row && row.Panels != null)
+		{
+			for (int p = 0; p < row.Panels.Count; p++)
+			{
+				MachineryPanel panel = row.Panels[p];
+				if (panel == null || !(panel.content is MachineryTabs tabs))
+				{
+					continue;
+				}
+				for (int i = 0; i < tabs.count; i++)
+				{
+					MachineryIntake intake = tabs.GetPage(i) as MachineryIntake;
+					if (intake != null && intake.content is GameGridInventory grid)
+					{
+						grids.Add(grid);
+					}
+				}
+			}
+		}
+		if (grids.Count > 0)
+		{
+			return grids;
+		}
+
+		// Fallback for a window that is already on screen.
+		if (window.handler == null)
+		{
+			return grids;
 		}
 		TreeNodeRender[] nodes = window.handler.GetComponentsInChildren<TreeNodeRender>(true);
 		if (nodes == null)
 		{
-			yield break;
+			return grids;
 		}
 		foreach (TreeNodeRender node in nodes)
 		{
@@ -370,9 +467,148 @@ public static class StashManager
 				MachineryIntake intake = tabs.GetPage(i) as MachineryIntake;
 				if (intake != null && intake.content is GameGridInventory grid)
 				{
-					yield return grid;
+					grids.Add(grid);
 				}
 			}
+		}
+		return grids;
+	}
+
+	/// <summary>
+	/// Applies the configured stash size to an existing stash. The stash is not placed anywhere in the
+	/// world - it lives in mod data only - so the clean way is to build a replacement at the new size and
+	/// move the contents across, rather than resizing grids inside a window laid out for the old size.
+	/// Growing is always safe; shrinking only happens when every tab is empty, because items would otherwise
+	/// have nowhere to go.
+	/// </summary>
+	public static void ApplyConfiguredSize()
+	{
+		try
+		{
+			if (!IsUsable(Stash))
+			{
+				return;
+			}
+
+			int wantWidth = HiddenWallStash.HiddenWallStashMod.StashWidth;
+			int wantHeight = HiddenWallStash.HiddenWallStashMod.StashHeight;
+
+			List<GameGridInventory> grids = GridsOf(Stash);
+			if (grids.Count == 0)
+			{
+				Log.Warning("Could not find the stash tab grids; size change skipped this load.");
+				return;
+			}
+			GridShape shape = grids[0].inventoryShape;
+			if (shape == null)
+			{
+				return;
+			}
+			int currentWidth = shape.width;
+			int currentHeight = shape.height;
+			if (currentWidth == wantWidth && currentHeight == wantHeight)
+			{
+				StoreSize(currentWidth, currentHeight);
+				return;
+			}
+
+			GameItem replacement = DirectoryMaster.Item(ItemId);
+			if (!IsUsable(replacement))
+			{
+				Log.Warning("Could not build a resized hidden wall stash.");
+				return;
+			}
+			replacement.GetUniqueID();
+			List<GameGridInventory> targets = GridsOf(replacement);
+			if (targets.Count == 0)
+			{
+				Log.Warning("The rebuilt hidden wall stash had no tab grids.");
+				return;
+			}
+
+			List<KeyValuePair<GameGridInventory, GameItem>> moved = new List<KeyValuePair<GameGridInventory, GameItem>>();
+			int keptInTab = 0;
+			int spilled = 0;
+			int expected = 0;
+			for (int e = 0; e < grids.Count; e++)
+			{
+				expected += grids[e].childItems.Count;
+			}
+			Dictionary<string, int> spillCounts = new Dictionary<string, int>();
+			for (int i = 0; i < grids.Count; i++)
+			{
+				foreach (GameItem child in grids[i].childItems.ToList())
+				{
+					bool placed = false;
+					// Prefer the item's own tab so a resize keeps the organisation, and only spill into the
+					// other tabs when it genuinely does not fit any more.
+					if (i < targets.Count && GraphUtils.TryAcceptAll(targets[i], child) == 0)
+					{
+						placed = true;
+						keptInTab++;
+						moved.Add(new KeyValuePair<GameGridInventory, GameItem>(grids[i], child));
+					}
+					if (!placed)
+					{
+						for (int t = 0; t < targets.Count; t++)
+						{
+							if (t == i)
+							{
+								continue;
+							}
+							// TryAcceptAll returns the amount that did NOT fit, so 0 means it went in.
+							if (GraphUtils.TryAcceptAll(targets[t], child) == 0)
+							{
+								placed = true;
+								spilled++;
+								string pair = (i + 1) + "->" + (t + 1);
+								spillCounts[pair] = spillCounts.TryGetValue(pair, out int seenCount) ? seenCount + 1 : 1;
+								moved.Add(new KeyValuePair<GameGridInventory, GameItem>(grids[i], child));
+								break;
+							}
+						}
+					}
+					if (!placed)
+					{
+						// Nothing is lost: put back everything already moved and keep the old stash.
+						for (int m = moved.Count - 1; m >= 0; m--)
+						{
+							try
+							{
+								GraphUtils.TryAcceptAll(moved[m].Key, moved[m].Value);
+							}
+							catch
+							{
+							}
+						}
+						Log.Warning("Could not fit " + child.identifier + " into " + wantWidth + "x" + wantHeight +
+							"; kept " + currentWidth + "x" + currentHeight + " and restored the items.");
+						return;
+					}
+				}
+			}
+
+			Stash = replacement;
+			StoreSize(wantWidth, wantHeight);
+			EncodeNow();
+			string spillSummary = string.Empty;
+			foreach (KeyValuePair<string, int> pair in spillCounts)
+			{
+				spillSummary += " " + pair.Key + "x" + pair.Value;
+			}
+			int movedTotal = keptInTab + spilled;
+			Log.Log("Resized the hidden wall stash to " + wantWidth + "x" + wantHeight + " (was " +
+				currentWidth + "x" + currentHeight + "): " + keptInTab + " stayed in their own tab, " + spilled +
+				" moved, " + movedTotal + " of " + expected + " item(s) placed" +
+				(spilled > 0 ? "; spill" + spillSummary : "") + ".");
+			if (movedTotal != expected)
+			{
+				Log.Error("Stash resize placed " + movedTotal + " item(s) but " + expected + " were present.");
+			}
+		}
+		catch (Exception exception)
+		{
+			Log.Error("Failed to resize the hidden wall stash: " + exception);
 		}
 	}
 

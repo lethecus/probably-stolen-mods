@@ -7,7 +7,7 @@ The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `cassette_randomize`
 - Version: 3.4
-- Author: Local
+- Author: Lethecus
 - Game version: 1.0.0.14
 
 ## Install

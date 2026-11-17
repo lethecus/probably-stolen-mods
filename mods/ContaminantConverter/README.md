@@ -4,7 +4,7 @@ A powered chemistry machine with a battery slot and a standard module bay. Place
 
 - Mod ID: `contaminant_converter`
 - Version: 1.2
-- Author: Local
+- Author: Lethecus
 - Game version: 1.0.0.14
 
 ## Install

@@ -1,36 +1,72 @@
-﻿{
-    "game":  "probablystolen",
-    "note":  "Nexus mod and file ids used by tools/nexus-upload.ps1. A \u0027file id\u0027 is a file group; new versions are added to it. The API key lives outside the repo at %APPDATA%\\NexusAPI\\key.txt.",
-    "mods":  [
-                 {
-                     "mod_id":  "1448",
-                     "name":  "Blank Card Printer",
-                     "file_id":  "2271",
-                     "file_name":  "Blank Card Printer V1.2"
-                 },
-                 {
-                     "mod_id":  "1449",
-                     "name":  "Cassette Player Upgrade",
-                     "file_id":  "8389923",
-                     "file_name":  "CassetteRandomize 3.1.1"
-                 },
-                 {
-                     "mod_id":  "1453",
-                     "name":  "Hidden Wall Stash",
-                     "file_id":  "8389917",
-                     "file_name":  "HiddenWallStash 1.2"
-                 },
-                 {
-                     "mod_id":  "1466",
-                     "name":  "Tinkers Chance",
-                     "file_id":  "8389818",
-                     "file_name":  "TinkerChance 1.3"
-                 },
-                 {
-                     "mod_id":  "1472",
-                     "name":  "Fast Charger",
-                     "file_id":  "2333",
-                     "file_name":  "FastCharger 1.7"
-                 }
-             ]
+{
+    "game": "probablystolen",
+    "note": "Nexus mod and file ids used by tools/nexus-upload.ps1. A 'file id' is a file group; new versions are added to it. The API key lives outside the repo at %APPDATA%\\NexusAPI\\key.txt.",
+    "mods": [
+        {
+            "mod_id": "1448",
+            "name": "Blank Card Printer",
+            "file_id": "2371",
+            "file_name": "BlankCardPrinter 1.3"
+        },
+        {
+            "mod_id": "1449",
+            "name": "Cassette Player Upgrade",
+            "file_id": "2370",
+            "file_name": "CassetteRandomize 3.4"
+        },
+        {
+            "mod_id": "1453",
+            "name": "Hidden Wall Stash",
+            "file_id": "2366",
+            "file_name": "HiddenWallStash 1.2"
+        },
+        {
+            "mod_id": "1466",
+            "name": "Tinkers Chance",
+            "file_id": "2364",
+            "file_name": "Tinkerer Chance 1.4"
+        },
+        {
+            "mod_id": "1472",
+            "name": "Fast Charger",
+            "file_id": "2363",
+            "file_name": "FastCharger 1.7 GV"
+        },
+        {
+            "mod_id": "1480",
+            "name": "Calendar TV",
+            "file_id": "2375",
+            "file_name": "CalendarTV 1.0.7"
+        },
+        {
+            "mod_id": "1450",
+            "name": "Tape Resizer",
+            "file_id": "2369",
+            "file_name": "Cassette Tape Size"
+        },
+        {
+            "mod_id": "1451",
+            "name": "Contaminate Converter",
+            "file_id": "2368",
+            "file_name": "Contaminant Converter V1.1"
+        },
+        {
+            "mod_id": "1452",
+            "name": "Extra Customer Counter",
+            "file_id": "2367",
+            "file_name": "Customer Counter V1.1"
+        },
+        {
+            "mod_id": "1455",
+            "name": "Water Handling Changes",
+            "file_id": "2365",
+            "file_name": "Water Jug Tools 1.1"
+        },
+        {
+            "mod_id": "1488",
+            "name": "Save the Newspaper",
+            "file_id": "2377",
+            "file_name": "SaveTheNewspaper 1.0"
+        }
+    ]
 }

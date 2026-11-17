@@ -11,7 +11,7 @@ Volume is handled by the video site's own player: if the sign is silent, check t
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>
-    <Version>1.0.0.14-1.0.*</Version>
+    <Version>0.0.0-1.0.*</Version>
   </GameVersions>
   <Prerequisites />
   <Assemblies>

@@ -10,7 +10,7 @@ The source for all my mods if you wish to confirm nothing shady going on.
 
 - Mod ID: `fast_charger`
 - Version: 1.7
-- Author: Local
+- Author: Lethecus
 - Game version: 1.0.0.14
 
 ## What it adds

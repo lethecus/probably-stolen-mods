@@ -4,7 +4,7 @@ Shrinks every music cassette from its 2x2 grid footprint down to a single 1x1 ce
 
 - Mod ID: `cassette_tape_size`
 - Version: 1.0
-- Author: Local
+- Author: Lethecus
 - Game version: 1.0.0.14
 
 ## Install
