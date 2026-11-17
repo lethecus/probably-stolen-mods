@@ -9,8 +9,12 @@ the build can be inspected, reproduced and compared instead of taken on trust.
 - The mods only use the game's own mod API (`IMod`, `ModHook`, `ModHelper`) plus Harmony patches,
   and read/write only the game's normal files and folders.
 
-Included mods: CassetteRandomize, CassetteTapeSize, ContaminantConverter,
-WaterJugTools, CustomerCounter, HiddenWallStash, BlankCardPrinter, TinkerChance.
+Included mods: BlankCardPrinter, CalendarTV, CassetteRandomize, CassetteTapeSize,
+ContaminantConverter, CustomerCounter, FastCharger, HiddenWallStash, SaveTheNewspaper,
+TinkerChance, WaterJugTools.
+
+Only mods published on the Workshop live here. Personal-use mods are deliberately kept out
+of this repository.
 
 Not included: some mods are kept for personal use only and are intentionally not published here.
 
