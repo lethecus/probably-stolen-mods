@@ -3,7 +3,7 @@
   <ID>customer_counter</ID>
   <Name>Customer Counter</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.0</ModVersion>
+  <ModVersion>1.1</ModVersion>
   <Description>A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.
 
 https://github.com/lethecus/probably-stolen-mods
