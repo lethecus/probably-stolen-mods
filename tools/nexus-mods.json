@@ -67,6 +67,12 @@
             "name": "Save the Newspaper",
             "file_id": "2377",
             "file_name": "SaveTheNewspaper 1.0"
+        },
+        {
+            "mod_id": "1507",
+            "name": "Liquid Locale Guard",
+            "file_id": "2433",
+            "file_name": "LiquidLocaleGuard 1.0.0"
         }
     ]
 }

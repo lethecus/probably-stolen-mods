@@ -25,7 +25,7 @@ loaded in whatever order Steam reports - a mod cannot influence that. The Nexus 
 `Mods\!LiquidLocaleGuard`, and local folders are always loaded before Workshop items, so the leading `!` is what
 guarantees it goes first. Renaming the folder removes that guarantee.
 
-Get it on Nexus: <https://www.nexusmods.com/probablystolen> (mod name: **Liquid Locale Guard**).
+Get it on Nexus: <https://www.nexusmods.com/probablystolen/mods/1507>.
 
 Included mods: BlankCardPrinter, CalendarTV, CassetteRandomize, CassetteTapeSize,
 ContaminantConverter, CustomerCounter, FastCharger, HiddenWallStash, LiquidLocaleGuard,
