@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using HarmonyLib;
 using Steamworks;
 using TMPro;
@@ -36,7 +37,10 @@ namespace CalendarTV
 
 		private const KeyCode DefaultNextKey = KeyCode.O;
 
-		private static ConfigEntry<string> nextKeySetting;
+		// Keybinds are stored in this mod's own data folder as a small JSON file. They used to live in ModConfig
+		// entries, but the ModConfig window keeps its own text buffer and applying it could write stale keys over
+		// a rebind made in Options. Options -> Calendar TV is now the only place to set them.
+		private const string KeyFile = "keys.json";
 
 		private static KeyCode nextKey = DefaultNextKey;
 
@@ -44,11 +48,7 @@ namespace CalendarTV
 
 		private static ConfigEntry<string> playlistSetting;
 
-		private static ConfigEntry<bool> loopSetting;
-
-		private static ConfigEntry<bool> shuffleSetting;
-
-		private static ConfigEntry<string> toggleKeySetting;
+		private static bool shuffle;
 
 		private static ModConfig config;
 
@@ -115,17 +115,17 @@ namespace CalendarTV
 			{
 				config = ModConfig.For(ModId);
 				playlistSetting = config.Define("playlist", "", "Playlist", () => "YouTube playlist", null, () => "Playlist URL (https://www.youtube.com/playlist?list=...) or just the list id. Leave empty to open the YouTube home page.", false);
-				loopSetting = config.Define("loop", true, "Playlist", () => "Loop playlist", () => "Restart the playlist when it ends.", false);
-				shuffleSetting = config.Define("shuffle", false, "Playlist", () => "Randomize", () => "Start at a random row of the playlist each time the video is turned on. The skip key always moves to the next track in order; real shuffle order is not exposed by YouTube.", false);
-				toggleKeySetting = config.Define("toggle_key", DefaultToggleKey.ToString(), "Controls", () => "Toggle key", new string[] { "I", "F6", "F7", "F8", "F9", "F10", "F12", "KeypadMultiply", "KeypadDivide", "KeypadPlus", "KeypadMinus", "Insert", "Home", "End", "PageUp", "PageDown" }, () => "Fallback for the toggle key. The native binder lives in Options -> Calendar TV and captures any key.", false);
-				nextKeySetting = config.Define("next_key", DefaultNextKey.ToString(), "Controls", () => "Next track key", new string[] { "O", "P", "J", "K", "L", "N", "M", "RightBracket", "Comma", "Period", "Slash", "F6", "F7", "F8", "PageDown" }, () => "Fallback for the next track key. The native binder lives in Options -> Calendar TV and captures any key.", false);
+				// toggle_key / next_key / shuffle are deliberately NOT defined here: the game's Options registry has
+				// no text control, so the playlist URL is the only setting that still needs the mod settings page.
+				// Keys and shuffle live in Options -> Calendar TV and are persisted in this mod's own data folder.
+				// The old "loop" entry was removed: it was never read anywhere, so it did nothing.
 			}
 			catch (Exception ex)
 			{
 				Log?.Warning("Could not register the settings: " + ex.Message);
 			}
 
-			RefreshToggleKey();
+			LoadKeys();
 			EnsureBinding();
 			RegisterOptions();
 
@@ -177,24 +177,88 @@ namespace CalendarTV
 
 		// ------------------------------------------------------------- keybind
 
-		private static void RefreshToggleKey()
+		/// <summary>
+		/// Settings are stored as plain "key=value" lines in this mod's own data folder. ModConfig is deliberately
+		/// not used for keys or shuffle any more: its window keeps a text buffer, and applying stale text could
+		/// overwrite a rebind made in Options. Options -> Calendar TV is the only place to change these.
+		/// </summary>
+		private static void LoadKeys()
 		{
 			try
 			{
-				string value = toggleKeySetting != null ? toggleKeySetting.Value : null;
-				if (!string.IsNullOrEmpty(value) && Enum.TryParse(value, true, out KeyCode parsed))
+				if (!ModHelper.ModDataFileExists(ModId, KeyFile))
 				{
-					toggleKey = parsed;
+					// First run after the settings moved out of ModConfig: adopt what the game's binder already
+					// shows (that is what the Options menu displays), then persist it.
+					KeyCode boundToggle = KeyBindHelper.Get(BindingId);
+					KeyCode boundNext = KeyBindHelper.Get(NextBindingId);
+					if (boundToggle != KeyCode.None)
+					{
+						toggleKey = boundToggle;
+					}
+					if (boundNext != KeyCode.None)
+					{
+						nextKey = boundNext;
+					}
+					SaveKeys();
+					Log?.Log("Created the settings file: toggle " + toggleKey + ", next " + nextKey + ".");
+					return;
 				}
-				value = nextKeySetting != null ? nextKeySetting.Value : null;
-				if (!string.IsNullOrEmpty(value) && Enum.TryParse(value, true, out KeyCode next))
+				string raw = ModHelper.ReadModDataFileText(ModId, KeyFile);
+				if (string.IsNullOrEmpty(raw))
 				{
-					nextKey = next;
+					return;
+				}
+				string[] lines = raw.Split('\n');
+				for (int i = 0; i < lines.Length; i++)
+				{
+					string line = lines[i].Trim();
+					int split = line.IndexOf('=');
+					if (split <= 0)
+					{
+						continue;
+					}
+					string key = line.Substring(0, split).Trim();
+					string value = line.Substring(split + 1).Trim();
+					KeyCode parsed;
+					if (key == "toggle" && Enum.TryParse(value, true, out parsed))
+					{
+						toggleKey = parsed;
+					}
+					else if (key == "next" && Enum.TryParse(value, true, out parsed))
+					{
+						nextKey = parsed;
+					}
+					else if (key == "shuffle")
+					{
+						bool flag;
+						if (bool.TryParse(value, out flag))
+						{
+							shuffle = flag;
+						}
+					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Log?.Warning("Could not read the toggle key: " + ex.Message);
+				Log?.Warning("Could not read the key file: " + ex.Message);
+			}
+		}
+
+		private static void SaveKeys()
+		{
+			try
+			{
+				StringBuilder text = new StringBuilder();
+				text.AppendLine("# Calendar TV settings");
+				text.AppendLine("toggle=" + toggleKey);
+				text.AppendLine("next=" + nextKey);
+				text.AppendLine("shuffle=" + (shuffle ? "true" : "false"));
+				ModHelper.WriteModDataFileText(ModId, KeyFile, text.ToString());
+			}
+			catch (Exception ex)
+			{
+				Log?.Warning("Could not write the key file: " + ex.Message);
 			}
 		}
 
@@ -220,6 +284,11 @@ namespace CalendarTV
 						label = () => "Calendar TV: next track"
 					});
 				}
+				// Push the persisted keys into the binder so the Options menu shows what the mod will actually
+				// use. The binder's own ES3 storage does not survive a restart for mod additions, the config
+				// file does, so the config is the source of truth and the binder is the display.
+				KeyBindHelper.Set(BindingId, toggleKey);
+				KeyBindHelper.Set(NextBindingId, nextKey);
 			}
 			catch (Exception ex)
 			{
@@ -248,6 +317,15 @@ namespace CalendarTV
 					SetNextKey);
 				next.source = "calendar_tv";
 				GameOptionRegistry.Add("calendar_tv", next);
+
+				GameOptionRegistry.Entry randomize = GameOptionRegistry.Toggle(
+					"calendar_tv_shuffle",
+					() => "Randomize playlist",
+					() => shuffle,
+					SetShuffle,
+					() => "Start at a random row of the playlist instead of the first one.");
+				randomize.source = "calendar_tv";
+				GameOptionRegistry.Add("calendar_tv", randomize);
 			}
 			catch (Exception ex)
 			{
@@ -260,12 +338,9 @@ namespace CalendarTV
 			try
 			{
 				nextKey = key;
-				if (nextKeySetting != null)
-				{
-					nextKeySetting.Set(key.ToString());
-				}
 				KeyBindHelper.Set(NextBindingId, key);
 				KeyBindHelper.Save();
+				SaveKeys();
 				Log?.Log("Next track key bound to " + key + ".");
 			}
 			catch (Exception ex)
@@ -279,17 +354,28 @@ namespace CalendarTV
 			try
 			{
 				toggleKey = key;
-				if (toggleKeySetting != null)
-				{
-					toggleKeySetting.Set(key.ToString());
-				}
 				KeyBindHelper.Set(BindingId, key);
 				KeyBindHelper.Save();
+				SaveKeys();
 				Log?.Log("Toggle key bound to " + key + ".");
 			}
 			catch (Exception ex)
 			{
 				Log?.Warning("Could not store the toggle key: " + ex.Message);
+			}
+		}
+
+		private static void SetShuffle(bool value)
+		{
+			try
+			{
+				shuffle = value;
+				SaveKeys();
+				Log?.Log("Randomize " + (value ? "on" : "off") + ".");
+			}
+			catch (Exception ex)
+			{
+				Log?.Warning("Could not store Randomize: " + ex.Message);
 			}
 		}
 
@@ -328,7 +414,6 @@ namespace CalendarTV
 
 		private static void OnGameLoaded()
 		{
-			RefreshToggleKey();
 			sign = UnityEngine.Object.FindObjectOfType<StoreCalendar>();
 			dayText = sign != null ? sign.dayTMP : null;
 			if (sign != null)
@@ -442,10 +527,6 @@ namespace CalendarTV
 				if (sign == null)
 				{
 					OnGameLoaded();
-				}
-				if (UnityEngine.Time.frameCount % 60 == 0)
-				{
-					RefreshToggleKey();
 				}
 				if (Input.GetKeyDown(toggleKey) && lastToggleFrame != UnityEngine.Time.frameCount)
 				{
@@ -888,7 +969,7 @@ namespace CalendarTV
 				string watchList = ExtractListId(watch);
 				// A watch URL that points into a normal playlist still honours Randomize: start at a
 				// random row of that playlist instead of always the one in the URL.
-				if (!radio && watchList.Length > 0 && shuffleSetting != null && shuffleSetting.Value)
+				if (!radio && watchList.Length > 0 && shuffle)
 				{
 					pickIndex = UnityEngine.Random.Range(0, 100);
 					Log?.Log("Watch URL with playlist " + watchList + " and Randomize on: starting at a random row.");
@@ -896,7 +977,7 @@ namespace CalendarTV
 					return;
 				}
 				pickIndex = 0;
-				if (radio && shuffleSetting != null && shuffleSetting.Value)
+				if (radio && shuffle)
 				{
 					Log?.Log("Mix URL: Randomize is ignored, the radio queue picks its own order.");
 				}
@@ -915,7 +996,7 @@ namespace CalendarTV
 				LoadUrl("https://www.youtube.com/");
 				return;
 			}
-			pickIndex = (shuffleSetting != null && shuffleSetting.Value) ? UnityEngine.Random.Range(0, 100) : 0;
+			pickIndex = (shuffle) ? UnityEngine.Random.Range(0, 100) : 0;
 			LoadUrl("https://www.youtube.com/playlist?list=" + Uri.EscapeDataString(list));
 		}
 		private static void LoadUrl(string url)

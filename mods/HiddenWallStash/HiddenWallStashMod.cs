@@ -106,6 +106,12 @@ namespace HiddenWallStash
 		private static void OnModItemDirectoryInit(ModItemDirectory dir)
 		{
 			dir.Add(StashManager.ItemId, StashItemFactory.Create);
+			// The old identifier stays registered so a save written before the rename still decodes; the item
+			// itself is then renamed in AttachHost.
+			if (!string.Equals(StashManager.ItemId, StashManager.ItemIdentifier, StringComparison.Ordinal))
+			{
+				dir.Add(StashManager.ItemIdentifier, StashItemFactory.Create);
+			}
 		}
 
 		private static void OnGameLoadedInit()

@@ -23,7 +23,11 @@ public class GrateBehaviour : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		if (eventData != null && eventData.button != PointerEventData.InputButton.Left)
+		// Left click and right click both toggle the stash. Right click was previously ignored; the grate is a
+		// plain sprite with no item context menu, so there is nothing else to conflict with.
+		if (eventData != null
+			&& eventData.button != PointerEventData.InputButton.Left
+			&& eventData.button != PointerEventData.InputButton.Right)
 		{
 			return;
 		}

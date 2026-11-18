@@ -38,7 +38,7 @@ public static class StashItemFactory
 
 		PixelWindow window = MachineHelper.CreateMachineryWindow(true, MachineHelper.Panel(null, tabs, "storage"));
 		window.SetTitle("Hidden Wall Stash");
-		GameItem stash = ItemDirectory.CreateEmptyItem(StashManager.ItemId);
+		GameItem stash = ItemDirectory.CreateEmptyItem(StashManager.ItemIdentifier);
 		stash.SetContentWindow(window);
 		stash.unitValue = 0L;
 		stash.name = "Hidden Wall Stash";
@@ -46,7 +46,15 @@ public static class StashItemFactory
 		stash.EnableTag("CONTAINER_TAG");
 		stash.EnableTag("ITEM_HIDDEN_TAG");
 		stash.SetGameItemType("STORAGE");
-
+		// Owned, like every other container in the shop. AutoStorage's Owned.Is() requires this before it
+		// will consider an item a container, and FindAllItem(true) filters on it as well.
+		stash.EnableTag("IS_OWNED_TAG");
+		// AutoStorage discovers tabbed storage through its machine path (IsMachineItem -> AllMachineSlots ->
+		// AddMachineryPanelSlots -> AddTabbedPanelSlots). Its container path needs ResolveInventory() to find a
+		// GameInventory through the content window, which a machinery window of 10 tabs does not expose. The
+		// MACHINE *tag* is only read by AutoStorage's Tags.Has; the game itself checks IsGameItemType("MACHINE"),
+		// which stays unset, so this does not make the stash a machine anywhere else.
+		stash.EnableTag("MACHINE");
 		for (int i = 0; i < TabCount; i++)
 		{
 			MachineryIntake intake = tabs.GetPage(i) as MachineryIntake;

@@ -8,6 +8,8 @@
 
 1.5 counts the stash as shop storage, so it behaves like any other container: machines inside get their nightly cycle, hoppers can link to it and AutoStorage can fill it. It also counts toward nightly service cost and end-of-day value, as normal storage does. Security inspections still ignore it. If you prefer an inert stash, turn off "Count stash contents as shop storage" in the mod settings.
 
+AutoStorage: open its container list with Ctrl+L and pick the stash from there - it is listed once per storage page (ten tabs). Shift+right-click cannot open it, because that gesture needs an item under the cursor and the stash is only the wall grate. Use the Settings button on its row instead.
+
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>
   <GameVersions>

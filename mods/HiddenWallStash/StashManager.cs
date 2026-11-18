@@ -6,6 +6,14 @@ using UnityEngine;
 public static class StashManager
 {
 	public const string ItemId = "hidden_wall_stash";
+
+	/// <summary>
+	/// Identifier the item actually carries. It deliberately does NOT contain "hidden": AutoStorage ignores any
+	/// item whose id contains one of its block words ("hidden" among them), so a stash called hidden_wall_stash
+	/// can never be listed no matter how it is tagged or attached. The factory stays registered under the old id
+	/// as well, so a save that still contains the old identifier resolves.
+	/// </summary>
+	public const string ItemIdentifier = "wall_grate_stash";
 	public const string ModId = HiddenWallStash.HiddenWallStashMod.ModId;
 
 	private const string StashKey = "stash";
@@ -21,6 +29,14 @@ public static class StashManager
 	private static float nextSignatureCheck;
 	private static bool decoding;
 	private static GameObject updaterObject;
+
+	/// <summary>
+	/// Invisible parent for the stash item. AutoStorage's container scan ignores any item that is not
+	/// inside an inventory (its IsAttached check reads item.parentInventory.childItems), so a virtual item
+	/// reconstructed from mod data is skipped no matter how well FindAllItem exposes it. This private grid
+	/// gives the stash a parent without putting it anywhere the player can see, sell, inspect or save.
+	/// </summary>
+	private static GameGridInventory hostInventory;
 
 	private static ModLog Log => HiddenWallStash.HiddenWallStashMod.Log;
 
@@ -97,6 +113,7 @@ public static class StashManager
 						Stash.GetUniqueID();
 						RestoreFeatures();
 						ApplyConfiguredSize();
+						AttachHost(Stash);
 						lastSignature = ComputeSignature();
 						Log.Log("Decoded hidden wall stash with " + state.saveItems.Count + " saved nodes.");
 						return;
@@ -115,7 +132,7 @@ public static class StashManager
 
 	private static void CreateFresh()
 	{
-		Stash = DirectoryMaster.Item(ItemId);
+		Stash = DirectoryMaster.Item(ItemIdentifier);
 		if (!IsUsable(Stash))
 		{
 			Log.Error("Could not create the hidden wall stash item. Is the item factory registered?");
@@ -128,7 +145,98 @@ public static class StashManager
 		{
 			StoreSize(fresh[0].inventoryShape.width, fresh[0].inventoryShape.height);
 		}
+		AttachHost(Stash);
 		EncodeNow();
+	}
+
+	/// <summary>
+	/// Gives the stash a parent inventory so container scans accept it, and marks it owned for the same
+	/// reason. Called after every create/decode. The host is never rendered and is not reachable from any
+	/// EmporiumEntry window, so it cannot be opened, inspected or written into the save by the game.
+	/// </summary>
+	private static void AttachHost(GameItem item)
+	{
+		try
+		{
+			if (item == null)
+			{
+				return;
+			}
+			if (!item.IsTag("IS_OWNED_TAG"))
+			{
+				item.EnableTag("IS_OWNED_TAG", false);
+			}
+			// A stash decoded from an older save still carries "hidden_wall_stash", which AutoStorage blocks by
+			// name. Rename it here so the save re-encodes with the usable identifier.
+			if (!string.Equals(item.identifier, ItemIdentifier, StringComparison.Ordinal))
+			{
+				item.identifier = ItemIdentifier;
+			}
+			// The factory sets this for new stashes, but an existing stash is decoded from mod data and keeps
+			// the tags it was saved with - so a stash saved before this change never gets it. AutoStorage's
+			// IsMachineItem is Tags.Has(it,"MACHINE"), and that is what routes the stash down its tabbed
+			// machinery path, so set it here as well.
+			// A decoded stash can come back with an empty display name, and AutoStorage labels its container rows
+			// with GetDisplayName(), which then falls back to the identifier ("wall_grate_stash").
+
+			if (string.IsNullOrEmpty(item.name))
+			{
+				item.name = "Hidden Wall Stash";
+			}
+			if (!item.IsTag("MACHINE"))
+			{
+				item.EnableTag("MACHINE", false);
+			}
+			if (hostInventory == null)
+			{
+				hostInventory = new GameGridInventory(25, 25);
+				hostInventory.identifier = "hidden_wall_stash_host";
+			}
+			if (item.parentInventory == hostInventory || item.parentInventory != null)
+			{
+				return;
+			}
+			SlotMarker slot = hostInventory.TryInventorySlot(item, item.unitCount, (GridShape)null, (TagSystem)null);
+			if (slot != null && slot.targetItem == null)
+			{
+				slot.AcceptUnchecked();
+			}
+			if (item.parentInventory == null)
+			{
+				// The slot path can refuse silently (shape validation), so fall back to the inventory's own
+				// accept, which is what a normal pickup uses.
+				hostInventory.UncheckedAccept(item);
+			}
+			GameInventory parent = item.parentInventory;
+			string window = "none";
+			try
+			{
+				if (item.contentWindow != null && item.contentWindow.childElement != null)
+				{
+					// AutoStorage's machinery path requires the window's child element to be a MachineryPanelRow
+					// (MachineryRow(item) returns null otherwise), which is the last thing that can silently
+					// break after the tags are right.
+					window = item.contentWindow.childElement.GetType().Name;
+				}
+			}
+			catch (Exception)
+			{
+			}
+			Log.Log("Stash host: parent=" + ((parent == null) ? "none" : (parent.identifier ?? "?"))
+				+ ", children=" + ((parent == null) ? -1 : parent.childItems.Count)
+				+ ", shape=" + ((item.modifiedShape == null) ? "null" : (item.modifiedShape.width + "x" + item.modifiedShape.height))
+				+ ", machineTag=" + item.IsTag("MACHINE")
+				+ ", ownedTag=" + item.IsTag("IS_OWNED_TAG")
+				+ ", windowRow=" + window);
+			if (parent == null)
+			{
+				Log.Warning("Stash host inventory did not take the item; AutoStorage will not list the stash.");
+			}
+		}
+		catch (Exception ex)
+		{
+			Log.Warning("Could not attach the stash host inventory: " + ex.Message);
+		}
 	}
 
 	/// <summary>Size the stash was last built at, so a decode matches the save instead of the setting.</summary>
@@ -512,7 +620,7 @@ public static class StashManager
 				return;
 			}
 
-			GameItem replacement = DirectoryMaster.Item(ItemId);
+			GameItem replacement = DirectoryMaster.Item(ItemIdentifier);
 			if (!IsUsable(replacement))
 			{
 				Log.Warning("Could not build a resized hidden wall stash.");
