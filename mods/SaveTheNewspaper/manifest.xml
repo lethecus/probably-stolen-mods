@@ -3,10 +3,13 @@
   <ID>save_the_newspaper</ID>
   <Name>Save the Newspaper</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.0</ModVersion>
-  <Description>Have you ever just wanted to keep the newspaper but wake up the next morning to find it deleted itself? Like WTH.... well this mod allows you to save those newspapers if you want switch in the mod settings. Some might ask why keep them? some other mods add uses for them and when they disappear before you can use them well....
+  <ModVersion>1.0.1</ModVersion>
+  <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
+
+Have you ever just wanted to keep the newspaper but wake up the next morning to find it deleted itself? Like WTH.... well this mod allows you to save those newspapers if you want switch in the mod settings. Some might ask why keep them? some other mods add uses for them and when they disappear before you can use them well....
 
 Turning the setting off later does not delete the papers you already saved - they stay in your storage. It only lets the new morning paper delete itself again.
+
 
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>

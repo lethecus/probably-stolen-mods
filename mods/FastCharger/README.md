@@ -5,6 +5,8 @@ had? Well then Fast Chargers is the mod you want. It adds a new Fast Charger and
 them have a mod menu setting to choose the amount of charge that happens per night. Also a setting
 for animated texture effects. The game only loads the settings on load, so no changing mid-day.
 
+Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.
+
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.
 

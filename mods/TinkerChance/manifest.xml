@@ -3,14 +3,17 @@
   <ID>tinker_chance</ID>
   <Name>Tinkerer Chance</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.4.1</ModVersion>
-  <Description>Turns the Tinkerer perk into a setting instead of a fixed 20% chance: pick any keep-chance from 0 to 100% and it applies immediately. Press F4 (rebindable) for a small window with the slider; both the chance and the hotkey are remembered between sessions.
+  <ModVersion>1.4.2</ModVersion>
+  <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
+
+Turns the Tinkerer perk into a setting instead of a fixed 20% chance: pick any keep-chance from 0 to 100% and it applies immediately. Press F4 (rebindable) for a small window with the slider; both the chance and the hotkey are remembered between sessions.
 
 Works on the game's own upgrade materials - machines, modules, toolboxes, water tanks, reactors, cages, husbandry - and also on Scavenging Tool Upgrades, which rolls its own hardcoded 20% and is patched when that mod is installed. Gun repair kits are unaffected: the game destroys those unconditionally and never rolls Tinkerer on them.
 
 Slider sets chance live no need to save or close the window.
 
 100% to test, 20% for vanilla balance, 0% to make the perk do nothing.
+
 
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>

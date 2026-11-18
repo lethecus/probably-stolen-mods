@@ -57,6 +57,14 @@ namespace FastCharger
 
 		private static float nextTickLog;
 
+		// The first failure of each kind is logged with its stack so a report can be acted on; later ones are
+		// counted only. Without this a failing tick wrote one line per frame, which is what filled the dev log.
+		private static bool reportedAnimationError;
+
+		private static bool reportedScanError;
+
+		private static bool storeWasReady;
+
 		private static int appliedCharger = 30;
 
 		private static int appliedBloc = 20;
@@ -188,12 +196,25 @@ namespace FastCharger
 			try
 			{
 				EnsureUpdater();
+			}
+			catch (Exception)
+			{
+				// Expected while the menu is still loading: the driver cannot be created yet. OnGameLoadedLate
+				// calls this again once the shop exists, which is the call that matters. Logging this one was
+				// the last warning the mod still wrote at startup.
+			}
+			if (!StoreReady())
+			{
+				return;
+			}
+			try
+			{
 				nextFrameAt = 0f;
 				lastPower = !(PlayerStore.Instance != null && PlayerStore.Instance.isPowerOn);
 			}
 			catch (Exception ex)
 			{
-				Log?.Warning("Could not start the rainbow animation: " + ex.Message);
+				Log?.Warning("Could not reset the rainbow animation: " + ex.Message);
 			}
 		}
 
@@ -417,6 +438,13 @@ namespace FastCharger
 			{
 				return;
 			}
+			// Only placed machines are animated. The factory also runs to build the item definition, and those
+			// prototypes have no parent inventory: pushing a sprite into one throws (an empty-message exception),
+			// which used to land in the log right after a long stall. ScanItems picks the placed ones up.
+			if (item.parentInventory == null)
+			{
+				return;
+			}
 			liveItems.Add(item);
 		}
 
@@ -425,6 +453,10 @@ namespace FastCharger
 		{
 			try
 			{
+				if (!StoreReady())
+				{
+					return;
+				}
 				if (PlayerStore.Instance == null)
 				{
 					return;
@@ -464,7 +496,11 @@ namespace FastCharger
 			}
 			catch (Exception ex)
 			{
-				Log?.Warning("Could not scan for existing fast chargers: " + ex.Message);
+				if (!reportedScanError)
+				{
+					reportedScanError = true;
+					Log?.Warning("Could not scan for existing fast chargers:\n" + ex);
+				}
 			}
 		}
 
@@ -493,10 +529,44 @@ namespace FastCharger
 
 		// ------------------------------------------------------------ animation
 
+		/// <summary>
+		/// True only once the shop scene exists. The updater is created from OnEnable, which runs while the
+		/// main menu is still up, and in that state there is nothing to animate or scan: every call throws
+		/// a null reference and the mod used to log one warning per frame for the whole menu stay.
+		/// </summary>
+		private static bool StoreReady()
+		{
+			try
+			{
+				EmporiumEntry entry = EmporiumEntry.Instance;
+				return entry != null && entry.invElement != null;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
+		}
+
 		internal static void TickAnimation()
 		{
 			try
 			{
+				if (!StoreReady())
+				{
+					storeWasReady = false;
+					return;
+				}
+				if (!storeWasReady)
+				{
+					// Entering the shop: retry immediately and allow one fresh stack per failure kind. Leaving
+					// the shop resets this, so a menu stay cannot silence a real error for the whole session.
+					storeWasReady = true;
+					reportedAnimationError = false;
+					reportedScanError = false;
+					nextFrameAt = 0f;
+					nextScan = 0f;
+				}
+
 				if (UnityEngine.Time.time >= nextScan)
 				{
 					nextScan = UnityEngine.Time.time + 2f;
@@ -526,12 +596,20 @@ namespace FastCharger
 				if (UnityEngine.Time.time >= nextTickLog)
 				{
 					nextTickLog = UnityEngine.Time.time + 5f;
-					Log?.Log("Anim tick: frame " + frame + ", " + liveItems.Count + " item(s), " + (animating ? Fps + " fps" : "paused") + ".");
+					// Deliberately silent: ScanItems already logs when the tracked machine count changes, and a
+					// line every five seconds was noise in a log that is read by hand.
 				}
 			}
 			catch (Exception ex)
 			{
-				Log?.Warning("Rainbow animation failed: " + ex.Message);
+				// Never retry at frame rate, and keep the dev log readable: one full stack, then silence until
+				// the shop is entered again.
+				nextFrameAt = UnityEngine.Time.time + 2f;
+				if (!reportedAnimationError)
+				{
+					reportedAnimationError = true;
+					Log?.Warning("Rainbow animation failed; paused until the next load:\n" + ex);
+				}
 			}
 		}
 

@@ -3,8 +3,11 @@
   <ID>customer_counter</ID>
   <Name>Customer Counter</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.1</ModVersion>
-  <Description>A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.
+  <ModVersion>1.1.1</ModVersion>
+  <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
+
+A small LCD panel next to the shop clock that shows how many customers are still waiting in line today. Installed automatically.
+
 
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>

@@ -6,3 +6,6 @@ Logs/
 *.zip
 tools/sync.config.json
 dist/
+
+# build outputs that sometimes land next to a mod by accident
+*.dll

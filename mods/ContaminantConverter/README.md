@@ -20,3 +20,5 @@ dotnet build ContaminantConverter.csproj -c Release -p:GameDir="C:\Program Files
 ```
 
 Or from the repository root: `.\build-all.ps1 -Deploy`.
+
+Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.

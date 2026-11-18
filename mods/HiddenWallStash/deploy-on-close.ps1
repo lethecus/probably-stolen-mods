@@ -1,4 +1,4 @@
-$src = 'C:\Users\RWJVH\Documents\Default Project\ProbablyStolenMods\mods\HiddenWallStash'
+﻿$src = 'C:\Users\RWJVH\Documents\Default Project\ProbablyStolenMods\mods\HiddenWallStash'
 $dst = 'C:\Program Files (x86)\Steam\steamapps\common\Probably Stolen\Mods\HiddenWallStash'
 $deadline = (Get-Date).AddMinutes(240)
 while ((Get-Process -Name 'Probably Stolen' -ErrorAction SilentlyContinue) -and (Get-Date) -lt $deadline) {
@@ -20,4 +20,7 @@ if (-not $ok) { 'could not replace the DLL'; exit 1 }
 
 Copy-Item (Join-Path $src 'manifest.xml') (Join-Path $dst 'manifest.xml') -Force
 Copy-Item (Join-Path $src 'Textures\grate.png') (Join-Path $dst 'Textures\grate.png') -Force
+Copy-Item (Join-Path $src 'preview.png') $dst -Force
+Copy-Item (Join-Path $src 'README.md') $dst -Force
 Write-Output ('deployed ' + (Get-Item (Join-Path $dst 'HiddenWallStash.dll')).Length + ' bytes ' + (Get-FileHash (Join-Path $dst 'HiddenWallStash.dll')).Hash.Substring(0,16))
+

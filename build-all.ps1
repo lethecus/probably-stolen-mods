@@ -60,13 +60,16 @@ foreach ($project in $projects) {
 		continue
 	}
 	[xml]$manifest = Get-Content $manifestPath -Raw
+	# Two manifest shapes are in use: <Manifest> and <Mod>. Reading only .Manifest silently skipped the DLL for
+	# every mod using <Mod> (Fast Charger did not deploy its assembly at all until 18 Nov 2026).
+	$manifestRoot = if ($manifest.Manifest) { $manifest.Manifest } else { $manifest.Mod }
 	$target = Join-Path $ModsDir (Split-Path $modSource -Leaf)
 	New-Item -ItemType Directory -Force -Path $target | Out-Null
 
 	Copy-Item $manifestPath (Join-Path $target 'manifest.xml') -Force
 
 	$binDir = Join-Path $modSource 'bin\Release\netstandard2.1'
-	foreach ($assembly in $manifest.Manifest.Assemblies.Assembly) {
+	foreach ($assembly in $manifestRoot.Assemblies.Assembly) {
 		$dll = Join-Path $binDir $assembly
 		if (-not (Test-Path $dll)) {
 			$dll = Get-ChildItem (Join-Path $modSource 'bin\Release') -Recurse -Filter $assembly | Select-Object -First 1 -ExpandProperty FullName
@@ -76,6 +79,16 @@ foreach ($project in $projects) {
 		} else {
 			Write-Warning "$name : could not find $assembly"
 		}
+	}
+
+	# Workshop uploads are built from the game's Mods folder, so the preview image has to be deployed too or the
+	# uploaded item loses its thumbnail.
+	foreach ($image in Get-ChildItem $modSource -File -Filter 'preview*') {
+		Copy-Item $image.FullName (Join-Path $target $image.Name) -Force
+	}
+	$readme = Join-Path $modSource 'README.md'
+	if (Test-Path $readme) {
+		Copy-Item $readme (Join-Path $target 'README.md') -Force
 	}
 
 	# Assets the loader reads from next to the DLL (Textures, Localization, Sounds, ...).

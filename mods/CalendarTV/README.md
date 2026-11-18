@@ -12,6 +12,8 @@ Press the next track key (default `O`) to skip to the next track; clicking the s
 typing in the player does not trigger them. The cassette player pauses while the video runs and resumes
 when it is switched off.
 
+Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.
+
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.
 

@@ -26,3 +26,5 @@ The `reflection-external` capability exists only for the Scavenging Tool Upgrade
 - Mod ID: `tinker_chance`
 - Version: 1.2
 - Game version: 1.0.0.14
+
+Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.

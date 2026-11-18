@@ -9,6 +9,8 @@ adds a filament slot and uses 1 unit of 3D Printing Filament per card, plus 6 po
 being a way to print credits into cards. The mode is chosen in the mod settings and applies after a
 reload.
 
+Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.
+
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.
 

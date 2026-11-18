@@ -9,15 +9,16 @@ without opening.
 **Stash size → Cells per row / Rows per tab** (mod settings)
 
 - range is 5 to 25 per side, defaults are 15 × 13
-- the size applies on the next load, not mid-session
-- **growing** keeps everything, the stash is rebuilt at the new size and the contents move across
-- **shrinking** repacks each tab first, then moves any overflow into free space in other tabs, so a smaller
-  size never deletes anything
-- if the items cannot all fit, the resize is **refused as a whole**: the stash keeps its previous size, every
-  item is put back, and the log says which item did not fit
+- the size applies on the next load, not mid-session, and it is applied in place on that single load
+- **growing** always works; repeating cells are added, nothing is moved
+- **shrinking** needs empty tabs. If anything is still inside, the resize is **refused as a whole**: the stash
+  keeps its previous size, nothing is moved or deleted, and the log says how many items are in the way
+- shrinking is refused rather than repacked on purpose: a tab that no longer fits an item has nowhere to put it,
+  and the safe answer is to ask you to empty it first
 
-The stash is not a placed object - it lives in the mod's own save data - so changing size rebuilds the item
-rather than trying to resize grids inside a window laid out for the old dimensions.
+The stash is not a placed object - it lives in the mod's own save data - so the size is applied to the existing
+tab grids with the game's own `SetShape` + `Validate` (the same call the player inventory uses when a perk
+changes its size).
 
 ## Using with AutoStorage
 
@@ -46,5 +47,7 @@ automatically.
 Empty the stash before disabling this mod, or its contents are lost.
 
 ## Source
+
+Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.
 
 https://github.com/lethecus/probably-stolen-mods

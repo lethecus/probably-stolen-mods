@@ -36,4 +36,6 @@ Copy the `SaveTheNewspaper` folder into `Probably Stolen\Mods\`. Requires no oth
 
 ## Source
 
+Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.
+
 https://github.com/lethecus/probably-stolen-mods

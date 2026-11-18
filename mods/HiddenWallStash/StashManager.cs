@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -37,6 +37,14 @@ public static class StashManager
 	/// gives the stash a parent without putting it anywhere the player can see, sell, inspect or save.
 	/// </summary>
 	private static GameGridInventory hostInventory;
+
+	/// <summary>
+	/// Every item that has been seen inside the stash this session, by unique id. This is a record of
+	/// origin, not of location or ownership: items leave the stash all the time and keep their id. It
+	/// exists so an item that came out of the stash and then ends up with no parent inventory - the one
+	/// state the game deletes items from - can be put back instead of disappearing.
+	/// </summary>
+	private static readonly HashSet<int> seenInStash = new HashSet<int>();
 
 	private static ModLog Log => HiddenWallStash.HiddenWallStashMod.Log;
 
@@ -114,6 +122,7 @@ public static class StashManager
 						RestoreFeatures();
 						ApplyConfiguredSize();
 						AttachHost(Stash);
+						RememberContents();
 						lastSignature = ComputeSignature();
 						Log.Log("Decoded hidden wall stash with " + state.saveItems.Count + " saved nodes.");
 						return;
@@ -146,6 +155,7 @@ public static class StashManager
 			StoreSize(fresh[0].inventoryShape.width, fresh[0].inventoryShape.height);
 		}
 		AttachHost(Stash);
+		RememberContents();
 		EncodeNow();
 	}
 
@@ -192,20 +202,54 @@ public static class StashManager
 				hostInventory = new GameGridInventory(25, 25);
 				hostInventory.identifier = "hidden_wall_stash_host";
 			}
+			// A decode builds a fresh stash item on every load while the host lives for the whole process, so
+			// without this the host keeps every previous stash: the log showed children=1, then 2, then 3, one
+			// per load. Only the current item belongs there.
+			try
+			{
+				for (int i = hostInventory.childItems.Count - 1; i >= 0; i--)
+				{
+					GameItem previous = hostInventory.childItems[i];
+					if (previous != null && previous != item)
+					{
+						hostInventory.Expel(previous);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Log.Warning("Could not clear a previous stash from its host: " + ex);
+			}
 			if (item.parentInventory == hostInventory || item.parentInventory != null)
 			{
 				return;
 			}
-			SlotMarker slot = hostInventory.TryInventorySlot(item, item.unitCount, (GridShape)null, (TagSystem)null);
-			if (slot != null && slot.targetItem == null)
+			// The slot path is what 1.5 used, and it accepts without validating the host grid - which has no render
+			// handler. A straight UncheckedAccept throws inside its Validate patch (and then the item appears twice
+			// in the host: children=2 for one stash). Only fall back to it if the slot path left the item
+			// unattached.
+			try
 			{
-				slot.AcceptUnchecked();
+				SlotMarker slot = hostInventory.TryInventorySlot(item, item.unitCount, (GridShape)null, (TagSystem)null);
+				if (slot != null && slot.targetItem == null)
+				{
+					slot.AcceptUnchecked();
+				}
+			}
+			catch (Exception ex)
+			{
+				Log.Warning("The stash host slot path failed: " + ex);
 			}
 			if (item.parentInventory == null)
 			{
-				// The slot path can refuse silently (shape validation), so fall back to the inventory's own
-				// accept, which is what a normal pickup uses.
-				hostInventory.UncheckedAccept(item);
+				try
+				{
+					hostInventory.UncheckedAccept(item);
+				}
+				catch (Exception ex)
+				{
+					Log.Warning("The stash host inventory refused the item: " + ex);
+				}
 			}
 			GameInventory parent = item.parentInventory;
 			string window = "none";
@@ -235,7 +279,7 @@ public static class StashManager
 		}
 		catch (Exception ex)
 		{
-			Log.Warning("Could not attach the stash host inventory: " + ex.Message);
+			Log.Warning("Could not attach the stash host inventory: " + ex);
 		}
 	}
 
@@ -287,6 +331,70 @@ public static class StashManager
 		get { return decoding; }
 	}
 
+	/// <summary>Records that an item has been inside the stash, so the rescue path can recognise it later.</summary>
+	internal static void Remember(GameItem item)
+	{
+		if (item == null)
+		{
+			return;
+		}
+		try
+		{
+			if (item.uniqueId != 0)
+			{
+				seenInStash.Add(item.uniqueId);
+			}
+		}
+		catch (Exception)
+		{
+		}
+	}
+
+	/// <summary>Remembers everything currently inside the stash. Called after a load, when no per-item
+	/// callback has fired yet.</summary>
+	internal static void RememberContents()
+	{
+		if (Stash == null)
+		{
+			return;
+		}
+		try
+		{
+			foreach (GameItem item in GraphUtils.FindAllChildrenType<GameItem>(Stash))
+			{
+				Remember(item);
+			}
+		}
+		catch (Exception)
+		{
+		}
+	}
+
+	internal static bool WasInStash(GameItem item)
+	{
+		return item != null && item.uniqueId != 0 && seenInStash.Contains(item.uniqueId);
+	}
+
+	/// <summary>
+	/// Puts an item that came out of the stash back into it. Only called when the item is about to be
+	/// destroyed while it has no parent inventory, which is the one state the game deletes items from.
+	/// Returns true only if the item was actually stored again.
+	/// </summary>
+	internal static bool TryRescue(GameItem item)
+	{
+		if (item == null || item == Stash)
+		{
+			return false;
+		}
+		if (!TryDropIntoStash(item))
+		{
+			return false;
+		}
+		Log.Warning("Rescued " + item.identifier + " (uid " + item.uniqueId
+			+ ") from being destroyed without a parent inventory; it is back in the stash.");
+		return true;
+	}
+
 	public static void MarkDirty()
 	{
 		if (decoding)
@@ -299,6 +407,15 @@ public static class StashManager
 
 	public static void OnStashInventoryChanged(GameItem item, GameInventory inventory, SlotMarker slot)
 	{
+		// Remember where the item came from. Its parent is already updated by the time this fires, so a
+		// null parent here means the item is currently on the cursor or was expelled without landing.
+		Remember(item);
+		if (item != null)
+		{
+			GameInventory parent = item.parentInventory;
+			Log.Log("[stash] " + item.identifier + " uid=" + item.uniqueId + " x" + item.unitCount
+				+ " -> " + ((parent == null) ? "NO PARENT (on cursor or loose)" : ((parent.identifier ?? "?") + " (" + parent.GetType().Name + ")")));
+		}
 		MarkDirty();
 	}
 
@@ -361,8 +478,9 @@ public static class StashManager
 		{
 			return;
 		}
-		// Safety net: if the size changed while the game was running, apply it before the window is shown.
-		ApplyConfiguredSize();
+		// The size is applied once per load (EnsureStash -> ApplyConfiguredSize). Doing it here as well meant a
+		// resize could run while the player was mid-drag, which is how a resize ended up moving an item that was
+		// already on the cursor.
 		if (IsWindowVisible())
 		{
 			Stash.CloseContentWindow();
@@ -372,6 +490,9 @@ public static class StashManager
 		}
 		Stash.contentWindow.Show(Input.mousePosition);
 		Stash.RestoreContentWindowPosition();
+		// Re-wire renaming on every open. The game's decode path installs its own callback, which writes the
+		// caption tag through ModifyTag and throws on a resized stash; ours replaces it here.
+		SetupTabNames(Stash);
 		PlayClick();
 	}
 
@@ -500,6 +621,10 @@ public static class StashManager
 		unchecked
 		{
 			hash = hash * 31 + Stash.uniqueId;
+			// Tab captions live in a tag on the stash item, so renaming a tab changes nothing the loop below can
+			// see. Without this the name was only written when something else triggered an encode - which is why
+			// a renamed tab could come back blank after a save.
+			hash = hash * 31 + TabNameHash();
 			foreach (GameItem item in GraphUtils.FindAllChildrenType<GameItem>(Stash))
 			{
 				hash = hash * 31 + item.uniqueId;
@@ -508,6 +633,24 @@ public static class StashManager
 			}
 		}
 		return hash;
+	}
+
+	/// <summary>Hash of the saved tab captions, so a rename counts as a change worth encoding.</summary>
+	private static int TabNameHash()
+	{
+		try
+		{
+			if (Stash == null || !Stash.IsTag("STORAGE_TAB_NAMES_STRING"))
+			{
+				return 0;
+			}
+			string names = Stash.GetTagReadonly("STORAGE_TAB_NAMES_STRING").GetString();
+			return string.IsNullOrEmpty(names) ? 0 : names.GetHashCode();
+		}
+		catch (Exception)
+		{
+			return 0;
+		}
 	}
 
 	// The tab inventories live inside the stash's content window, so walk the window's
@@ -583,11 +726,34 @@ public static class StashManager
 	}
 
 	/// <summary>
-	/// Applies the configured stash size to an existing stash. The stash is not placed anywhere in the
-	/// world - it lives in mod data only - so the clean way is to build a replacement at the new size and
-	/// move the contents across, rather than resizing grids inside a window laid out for the old size.
-	/// Growing is always safe; shrinking only happens when every tab is empty, because items would otherwise
-	/// have nowhere to go.
+	/// Re-applies the saved captions and re-wires the game's rename prompt. The write itself is safe now that
+	/// ValidateBackground is guarded (see ValidateBackgroundGuard): the game's SetTabName writes the caption tag
+	/// through GameItem.ModifyTag, which validates every grid under the item, and a tab that has never been drawn
+	/// used to throw there.
+	/// </summary>
+	private static void SetupTabNames(GameItem item)
+	{
+		if (!IsUsable(item))
+		{
+			return;
+		}
+		try
+		{
+			StorageExpansionHelper.InitTabNames(item);
+		}
+		catch (Exception exception)
+		{
+			Log.Warning("Could not set up the stash tab names: " + exception);
+		}
+	}
+
+	/// <summary>
+	/// Applies the configured size to the existing tab grids, in place. This used to build a replacement item and
+	/// move every item across, and that was unsafe: a freshly built item's tab grids have no render handlers until
+	/// the window is drawn, so moving an item into one threw a null reference inside SlotMarker.TryAcceptOnce. The
+	/// outer catch then abandoned the replacement - with the already-moved items inside it - and those items were
+	/// gone. Resizing in place is the game's own pattern (EmporiumEntry.SetBigInv does SetShape + Validate), and
+	/// because nothing is moved, a failure can only postpone the resize, never lose an item.
 	/// </summary>
 	public static void ApplyConfiguredSize()
 	{
@@ -620,99 +786,59 @@ public static class StashManager
 				return;
 			}
 
-			GameItem replacement = DirectoryMaster.Item(ItemIdentifier);
-			if (!IsUsable(replacement))
+			// Shrinking has to expel whatever no longer fits, so it is only allowed on empty tabs. Growing never
+			// invalidates an existing slot, which is why it needs no checks at all.
+			if (wantWidth < currentWidth || wantHeight < currentHeight)
 			{
-				Log.Warning("Could not build a resized hidden wall stash.");
-				return;
-			}
-			replacement.GetUniqueID();
-			List<GameGridInventory> targets = GridsOf(replacement);
-			if (targets.Count == 0)
-			{
-				Log.Warning("The rebuilt hidden wall stash had no tab grids.");
-				return;
-			}
-
-			List<KeyValuePair<GameGridInventory, GameItem>> moved = new List<KeyValuePair<GameGridInventory, GameItem>>();
-			int keptInTab = 0;
-			int spilled = 0;
-			int expected = 0;
-			for (int e = 0; e < grids.Count; e++)
-			{
-				expected += grids[e].childItems.Count;
-			}
-			Dictionary<string, int> spillCounts = new Dictionary<string, int>();
-			for (int i = 0; i < grids.Count; i++)
-			{
-				foreach (GameItem child in grids[i].childItems.ToList())
+				int occupied = 0;
+				foreach (GameGridInventory grid in grids)
 				{
-					bool placed = false;
-					// Prefer the item's own tab so a resize keeps the organisation, and only spill into the
-					// other tabs when it genuinely does not fit any more.
-					if (i < targets.Count && GraphUtils.TryAcceptAll(targets[i], child) == 0)
-					{
-						placed = true;
-						keptInTab++;
-						moved.Add(new KeyValuePair<GameGridInventory, GameItem>(grids[i], child));
-					}
-					if (!placed)
-					{
-						for (int t = 0; t < targets.Count; t++)
-						{
-							if (t == i)
-							{
-								continue;
-							}
-							// TryAcceptAll returns the amount that did NOT fit, so 0 means it went in.
-							if (GraphUtils.TryAcceptAll(targets[t], child) == 0)
-							{
-								placed = true;
-								spilled++;
-								string pair = (i + 1) + "->" + (t + 1);
-								spillCounts[pair] = spillCounts.TryGetValue(pair, out int seenCount) ? seenCount + 1 : 1;
-								moved.Add(new KeyValuePair<GameGridInventory, GameItem>(grids[i], child));
-								break;
-							}
-						}
-					}
-					if (!placed)
-					{
-						// Nothing is lost: put back everything already moved and keep the old stash.
-						for (int m = moved.Count - 1; m >= 0; m--)
-						{
-							try
-							{
-								GraphUtils.TryAcceptAll(moved[m].Key, moved[m].Value);
-							}
-							catch
-							{
-							}
-						}
-						Log.Warning("Could not fit " + child.identifier + " into " + wantWidth + "x" + wantHeight +
-							"; kept " + currentWidth + "x" + currentHeight + " and restored the items.");
-						return;
-					}
+					occupied += grid.childItems.Count;
+				}
+				if (occupied > 0)
+				{
+					Log.Warning("Stash resize to " + wantWidth + "x" + wantHeight + " refused: the stash still holds "
+						+ occupied + " item(s). Empty the tabs first; kept " + currentWidth + "x" + currentHeight + ".");
+					StoreSize(currentWidth, currentHeight);
+					return;
 				}
 			}
 
-			Stash = replacement;
+			int resized = 0;
+			foreach (GameGridInventory grid in grids)
+			{
+				try
+				{
+					grid.SetShape(wantWidth, wantHeight);
+					grid.Validate();
+					resized++;
+				}
+				catch (Exception exception)
+				{
+					Log.Warning("Could not resize one stash tab: " + exception.Message);
+				}
+			}
+			if (resized < grids.Count)
+			{
+				// Leave the recorded size alone so the next load decodes cleanly and tries again.
+				Log.Warning("Stash resize kept " + currentWidth + "x" + currentHeight + ": " + resized + " of "
+					+ grids.Count + " tab(s) changed. It will retry on the next load.");
+				return;
+			}
+
+			try
+			{
+				Stash.contentWindow.Validate();
+			}
+			catch (Exception)
+			{
+			}
+
+			SetupTabNames(Stash);
 			StoreSize(wantWidth, wantHeight);
 			EncodeNow();
-			string spillSummary = string.Empty;
-			foreach (KeyValuePair<string, int> pair in spillCounts)
-			{
-				spillSummary += " " + pair.Key + "x" + pair.Value;
-			}
-			int movedTotal = keptInTab + spilled;
 			Log.Log("Resized the hidden wall stash to " + wantWidth + "x" + wantHeight + " (was " +
-				currentWidth + "x" + currentHeight + "): " + keptInTab + " stayed in their own tab, " + spilled +
-				" moved, " + movedTotal + " of " + expected + " item(s) placed" +
-				(spilled > 0 ? "; spill" + spillSummary : "") + ".");
-			if (movedTotal != expected)
-			{
-				Log.Error("Stash resize placed " + movedTotal + " item(s) but " + expected + " were present.");
-			}
+				currentWidth + "x" + currentHeight + ") in place across " + resized + " tab(s).");
 		}
 		catch (Exception exception)
 		{

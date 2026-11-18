@@ -3,12 +3,15 @@
   <ID>hidden_wall_stash</ID>
   <Name>Hidden Wall Stash</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.5</ModVersion>
-  <Description>A concealed smuggler storage with ten tabs, installed at the start of every game. Hover the metal grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it without opening. Each tab is 15x13 cells by default, and the size is configurable in the mod settings from 5 to 25 cells per side. The new size is applied on the next load. Shrinking repacks each tab and moves overflow into free tabs so nothing is lost; if everything cannot fit, the resize is refused and the stash stays as it was. Uninstall note: empty the stash before disabling this mod, or its contents are lost.
+  <ModVersion>1.6.1</ModVersion>
+  <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
+
+A concealed smuggler storage with ten tabs, installed at the start of every game. Hover the metal grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it without opening. Each tab is 15x13 cells by default, and the size is configurable in the mod settings from 5 to 25 cells per side. The new size is applied on the next load, in place. Growing always works. Shrinking needs empty tabs: if the stash still holds anything the resize is refused and nothing is changed, so empty the tabs first. Uninstall note: empty the stash before disabling this mod, or its contents are lost.
 
 1.5 counts the stash as shop storage, so it behaves like any other container: machines inside get their nightly cycle, hoppers can link to it and AutoStorage can fill it. It also counts toward nightly service cost and end-of-day value, as normal storage does. Security inspections still ignore it. If you prefer an inert stash, turn off "Count stash contents as shop storage" in the mod settings.
 
 AutoStorage: open its container list with Ctrl+L and pick the stash from there - it is listed once per storage page (ten tabs). Shift+right-click cannot open it, because that gesture needs an item under the cursor and the stash is only the wall grate. Use the Settings button on its row instead.
+
 
 https://github.com/lethecus/probably-stolen-mods
 The source for all my mods if you wish to confirm nothing shady going on.</Description>

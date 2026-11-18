@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mod>
+  <ID>liquid_locale_guard</ID>
+  <Name>Liquid Locale Guard</Name>
+  <Author>Lethecus</Author>
+  <ModVersion>1.0.0</ModVersion>
+  <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
+
+Several liquid mods can fail together with "Attempting to use an invalid operation handle", each showing a caution in the mods menu. Only the first one is real: the game asks the localization system for liquid names while the mod list is still loading, and if that table is not ready yet the exception poisons liquid data for the whole session. Every later liquid mod then fails with the same message, no matter which one it is.
+
+This mod makes that first lookup return a plain English name instead of failing. Liquid initialises normally, no other mod inherits the error, and once the game has loaded the real localized names are written back, so nothing stays as a placeholder.
+
+It only touches lookups whose key starts with liquid_, and only when they actually throw. Nothing else about localization changes.
+
+Load order matters: this has to run before the liquid mods. A manual install into the Mods folder always loads before Workshop items. From the Workshop it is best effort, or the liquid mods can list liquid_locale_guard as a prerequisite and the game will move it to the front automatically. If it loads too late it says so in the log and no damage is done beyond that session.
+
+
+https://github.com/lethecus/probably-stolen-mods
+The source for all my mods if you wish to confirm nothing shady going on.</Description>
+  <GameVersions>
+    <Version>0.0.0-1.0.*</Version>
+  </GameVersions>
+  <Prerequisites />
+  <Assemblies>
+    <Assembly>LiquidLocaleGuard.dll</Assembly>
+  </Assemblies>
+  <Capabilities />
+</Mod>
+
