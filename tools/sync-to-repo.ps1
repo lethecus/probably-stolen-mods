@@ -193,6 +193,11 @@ dotnet build $csproj -c Release -p:GameDir="C:\Program Files (x86)\Steam\steamap
 
 Or from the repository root: ``.\build-all.ps1 -Deploy``.
 "@
+			# Extra documentation that must survive regeneration (NOTES.md, next to the manifest).
+			$notesPath = Join-Path $destination 'NOTES.md'
+			if (Test-Path $notesPath) {
+				$text = $text.TrimEnd() + "`r`n`r`n" + (Get-Content $notesPath -Raw).Trim()
+			}
 			$current = if (Test-Path $readmePath) { Get-Content $readmePath -Raw } else { '' }
 			if ($current -ne $text) {
 				if (-not $DryRun) {
