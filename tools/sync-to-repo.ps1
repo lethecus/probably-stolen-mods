@@ -31,7 +31,8 @@ param(
 	[string]$RepoRoot,
 	[string]$ConfigPath,
 	[switch]$DryRun,
-	[switch]$NoPush
+	[switch]$NoPush,
+	[switch]$NoNexus
 )
 
 $ErrorActionPreference = 'Stop'
@@ -78,6 +79,19 @@ $mutex = New-Object System.Threading.Mutex($false, 'Global\PSModsAutoSync')
 if (-not $mutex.WaitOne(0)) {
 	Write-Log 'Another sync is already running, skipping.'
 	return
+}
+
+# Brings Nexus up to date when a manifest version moved. Skipped with -NoNexus, and never during -DryRun.
+function Invoke-NexusSync {
+	if ($NoNexus -or $DryRun) { return }
+	$nexusSync = Join-Path $scriptDir 'nexus-sync.ps1'
+	if (-not (Test-Path $nexusSync)) { return }
+	try {
+		& $nexusSync
+	}
+	catch {
+		Write-Log ('Nexus sync failed: ' + $_.Exception.Message)
+	}
 }
 
 # Pushes any local commits that origin does not have yet (retries after a failed push).
@@ -199,6 +213,7 @@ Or from the repository root: ``.\build-all.ps1 -Deploy``.
 		if (-not $status) {
 			Write-Log "No changes. (copied=$copied readme=$normalised)"
 			if (-not $DryRun) { Push-Pending }
+			Invoke-NexusSync
 			return
 		}
 
@@ -236,6 +251,7 @@ Or from the repository root: ``.\build-all.ps1 -Deploy``.
 		}
 
 		Push-Pending
+		Invoke-NexusSync
 	}
 	finally {
 		Pop-Location

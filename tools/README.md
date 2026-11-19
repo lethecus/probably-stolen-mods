@@ -69,3 +69,38 @@ Logs:
   and syncs whatever changed in the meantime.
 - Because the sync stages the whole working tree before committing, changes you make directly in
   the repository are picked up by the next sync as well.
+
+## Nexus publishing (nexus-sync.ps1)
+
+`sync-to-repo.ps1` now finishes by running `nexus-sync.ps1`, so one pass covers Workshop, the
+repository and the Nexus page.
+
+For every mod in `tools\nexus-mods.json` it asks the Nexus v3 API for the page version and the
+MAIN file version. When either differs from `<ModVersion>` in the repo manifest, it:
+
+1. builds the mod,
+2. rebuilds the dist zip with `make-nexus-zip.ps1`,
+3. pushes the new version through `..\PersonalModFixes\tools\nexus_push.py`, which uploads the
+   zip, creates the version, sets the page version, archives the old file and adds the changelog
+   from `dist\changelog-<prefix>-<version>.txt`.
+
+A mod with no changelog for the new version is skipped and logged, never given invented text.
+
+```powershell
+.\tools\nexus-sync.ps1 -DryRun          # what is behind
+.\tools\nexus-sync.ps1                  # build, zip and push everything behind
+.\tools\nexus-sync.ps1 -Only FastCharger
+.\tools\sync-to-repo.ps1 -NoNexus       # sync repo and Workshop-side work only
+python ..\PersonalModFixes\tools\nexus_push.py --check   # read-only drift report
+```
+
+Log: `%LOCALAPPDATA%\PSModsAutoSync\nexus.log`.
+
+Notes:
+
+- `file_id` in `nexus-mods.json` is the legacy v1 (game scoped) id. v3 uses global ids, so the
+  pusher resolves the mod and the file group at run time. Changing those ids by hand is not needed
+  while `repo` and `changelog_prefix` are correct.
+- The API can upload files to an existing mod but cannot create a mod page. A brand new mod still
+  needs its page made on the website first; after that, add its `mod_id`, `file_id`, `repo` and
+  `changelog_prefix` here and the automation will keep it current.
