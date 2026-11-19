@@ -37,6 +37,8 @@ in the animal path is patched, so breeding, hunger, waste and escape chance beha
 * **Maximum cage size** — tallest the cage can be upgraded to, in rows. Vanilla 8, default 12, maximum 16.
 
 Changing it mid-save is safe: it only changes how many more rows can be bought. Already-bought rows stay.
+The setting applies as soon as it is committed - it does not declare `requiresRestart`, because the mod
+updates its cap live, so the config window shows no restart warning.
 
 ## Compatibility
 

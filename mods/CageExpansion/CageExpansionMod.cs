@@ -53,7 +53,7 @@ namespace CageExpansion
 					() => "Maximum cage size",
 					VanillaMaxHeight, HardMaxHeight,
 					() => "Tallest the cage can be upgraded to, in grid rows. Vanilla stops at 8. Each extra row still costs one metal ingot and adds 20 durability. More rows mean more cells, which is what lowers the overcrowding percentage.",
-					true);
+					false);
 				MaxHeight = Clamp(maxHeightEntry.Value);
 				maxHeightEntry.OnChanged += value => MaxHeight = Clamp(value);
 			}
