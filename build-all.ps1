@@ -17,7 +17,11 @@ if (-not $GameDir) {
 	$props = Join-Path $root 'Directory.Build.props'
 	if (Test-Path $props) {
 		[xml]$xml = Get-Content $props -Raw
-		$GameDir = $xml.Project.PropertyGroup.GameDir
+		# .GameDir can come back as an XmlElement, not a string; "the game dir" would then be the type name and every
+		# reference would fail to resolve.
+		$node = $xml.Project.PropertyGroup.GameDir
+		if ($node -is [System.Xml.XmlElement]) { $GameDir = $node.InnerText } else { $GameDir = [string]$node }
+		$GameDir = $GameDir.Trim()
 	}
 }
 if ($Deploy -and -not $ModsDir) {
