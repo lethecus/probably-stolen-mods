@@ -1,0 +1,3 @@
+cfg.section.playlist,Плейлист
+cfg.playlist.label,Плейлист YouTube
+cfg.playlist.tip,URL плейлиста (https://www.youtube.com/playlist?list=...) или только идентификатор списка. Пустое поле открывает главную страницу YouTube.

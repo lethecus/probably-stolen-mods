@@ -1,0 +1,17 @@
+cfg.section.charger,Szybka ładowarka
+cfg.rate.label,Ładowanie na cykl
+cfg.rate.tip,Energia przywracana każdej baterii na cykl maszyny. Standardowa ładowarka daje 3 (6 z ulepszeniem Commercial Power).
+cfg.section.bloc,Szybki blok
+cfg.bloc.label,Ładowanie na cykl
+cfg.bloc.tip,Energia przywracana każdej sąsiedniej baterii lub komórce maszyny na cykl. Standardowy powerblock daje 2 (4 z ulepszeniem Commercial Power).
+cfg.section.appearance,Wygląd
+cfg.animate.label,Animuj tęczę
+cfg.animate.tip,Przewija tęczowe kolory po maszynach. Wyłączone zostawia statyczną klatkę 0.
+cfg.fps.label,Prędkość animacji (fps)
+cfg.fps.tip,"Klatki tęczy na sekundę. 8 to spokojne przewijanie, 12-16 wyraźnie się rusza."
+item.charger.name,Szybka ładowarka
+item.charger.desc,Osiem wnęk na baterie i luksusowa matryca ładująca. Przywraca znacznie więcej energii na cykl niż standardowa ładowarka; ilość ustawia się w ustawieniach moda. Tylko akumulatory - jednorazowe i hypertech są odrzucane.
+item.charger.flavor,"Sprzęt klasy stacyjnej, dla ludzi, którzy nie lubią czekać."
+item.bloc.name,Szybki blok
+item.bloc.desc,Luksusowy powerblock. Szybko ładuje sąsiednie baterie i wewnętrzne ogniwa pobliskich maszyn; ilość ustawia się w ustawieniach moda.
+item.bloc.flavor,"Pomarańczowy pasek oznacza, że działa. Prawdopodobnie."

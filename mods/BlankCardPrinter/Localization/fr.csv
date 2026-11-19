@@ -1,0 +1,5 @@
+cfg.section.balance,Équilibre
+cfg.easy.label,Mode facile
+cfg.easy.tip,"Activé : 3 d'énergie et 10 crédits par carte, sans matériau (comportement d'origine). Désactivé : mode normal, 1 unité de filament d'impression 3D par carte, plus 6 d'énergie et 10 crédits. Le mode normal ajoute un emplacement de filament ; en changer nécessite un rechargement, car la fenêtre de la machine est construite à la création de l'imprimante."
+item.name,Imprimante de cartes
+item.desc,"Presse des cartes d'accès vierges. Le mode facile nécessite une batterie, 3 d'énergie et 10 crédits par carte. Le mode normal consomme en plus 1 unité de filament d'impression 3D par carte."

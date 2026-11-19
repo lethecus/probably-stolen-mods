@@ -1,0 +1,11 @@
+cfg.section.size,儲物格尺寸
+cfg.width.label,每行格數
+cfg.width.tip,每個儲物頁的寬度（格）。預設 15。修改後會在下次載入時重建；如果要縮小，請先清空儲物頁，否則它們會保持目前尺寸。
+cfg.height.label,每頁行數
+cfg.height.tip,每個儲物頁的高度（格）。預設 13。重建規則與寬度相同。
+cfg.section.behaviour,儲物行為
+cfg.storage.label,將儲物內容計為店鋪儲存
+cfg.storage.tip,開啟：儲物內的物品與普通倉庫中的物品相同，夜間機器流程會執行，漏斗可以連接，AutoStorage 也可以填充。它同樣計入夜間服務費和日終價值。關閉：儲物不參與這些系統。無論開關，安全檢查都忽略它。
+ui.title,隱藏壁櫥
+item.name,隱藏壁櫥
+item.desc,牆柵後面的隱藏隔間。

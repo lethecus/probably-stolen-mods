@@ -1,0 +1,3 @@
+cfg.section.playlist,Wiedergabeliste
+cfg.playlist.label,YouTube-Wiedergabeliste
+cfg.playlist.tip,"Playlist-URL (https://www.youtube.com/playlist?list=...) oder nur die Listen-ID. Leer lassen, um die YouTube-Startseite zu öffnen."

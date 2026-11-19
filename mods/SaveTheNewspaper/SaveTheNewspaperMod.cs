@@ -40,9 +40,9 @@ namespace SaveTheNewspaper
 				keepSetting = config.Define(
 					"keep_newspaper",
 					true,
-					"Newspaper",
-					() => "Keep the newspaper overnight",
-					() => "On: the morning newspaper no longer deletes itself at the end of the day, so it can be stored and used later. Off: new papers delete themselves again, but papers you already saved are kept.",
+					Loc.Get("cfg.section.newspaper"),
+					() => Loc.Get("cfg.keep.label"),
+					() => Loc.Get("cfg.keep.tip"),
 					false);
 			}
 			catch (Exception ex)

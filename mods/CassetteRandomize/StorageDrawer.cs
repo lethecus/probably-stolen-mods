@@ -55,7 +55,7 @@ namespace CassetteRandomize
 				RenderHandler.TryLoadFromAtlas(Atlas, face + "_hl"),
 				RenderHandler.TryLoadFromAtlas(Atlas, face + "_c"),
 				RenderHandler.TryLoadFromAtlas(Atlas, face + "_d"));
-			arrow.SetDescription(open ? "Hide the storage." : "Show the storage.");
+			arrow.SetDescription(open ? Loc.Get("ui.storage.hide") : Loc.Get("ui.storage.show"));
 			arrow.Validate();
 			int top = HeaderHeight + Mathf.Max(0, (window.heightPixels - HeaderHeight - arrow.heightPixels) / 2);
 			arrow.handler.rectTransform.anchoredPosition = new Vector2(-arrow.widthPixels + 1, -top);

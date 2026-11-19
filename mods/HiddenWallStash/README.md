@@ -51,3 +51,23 @@ Empty the stash before disabling this mod, or its contents are lost.
 Want to help make the mod better? Report issues at https://tally.so/r/0V85KB so we can keep it working for you.
 
 https://github.com/lethecus/probably-stolen-mods
+
+## Translations
+
+This mod ships its text in all eight languages the game supports:
+
+    en  English (fallback for anything missing)
+    zh  Simplified Chinese
+    zh_TW  Traditional Chinese
+    de  German
+    fr  French
+    ja  Japanese
+    pl  Polish
+    ru  Russian
+
+Files live in `Localization\<locale>.csv` as `key,value` pairs. If a wording is wrong or awkward in your language, edit
+that one line and send it back - no code, no rebuild, and I will fold it into the next version. The `en.csv` file is the
+reference: every other locale has exactly the same keys.
+
+Item names and descriptions are written into the save when the stash is created, so an existing stash keeps the language
+it was made in. UI labels and tooltips follow the game language immediately.

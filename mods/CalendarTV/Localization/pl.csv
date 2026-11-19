@@ -1,0 +1,3 @@
+cfg.section.playlist,Lista odtwarzania
+cfg.playlist.label,Playlista YouTube
+cfg.playlist.tip,Adres playlisty (https://www.youtube.com/playlist?list=...) lub sam identyfikator listy. Puste pole otwiera stronę główną YouTube.

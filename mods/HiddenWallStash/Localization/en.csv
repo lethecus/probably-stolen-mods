@@ -1,0 +1,11 @@
+cfg.section.size,Stash size
+cfg.width.label,Cells per row
+cfg.width.tip,"Width of every stash tab, in cells. Default is 15. Changing this rebuilds the stash on the next load; if you are shrinking, empty the tabs first or they keep their current size."
+cfg.height.label,Rows per tab
+cfg.height.tip,"Height of every stash tab, in cells. Default is 13. Same rebuild rules as the width."
+cfg.section.behaviour,Stash behaviour
+cfg.storage.label,Count stash contents as shop storage
+cfg.storage.tip,"On: anything inside the stash is treated like items in normal storage, so nightly machine passes run, hoppers can link to it and AutoStorage can fill it. It also counts toward nightly service cost and end-of-day value. Off: the stash is inert and invisible to those systems. Security inspections ignore it either way."
+ui.title,Hidden Wall Stash
+item.name,Hidden Wall Stash
+item.desc,A concealed compartment behind a wall grate.

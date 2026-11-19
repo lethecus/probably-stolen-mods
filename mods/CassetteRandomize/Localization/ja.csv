@@ -1,0 +1,21 @@
+ui.randomize,ランダム再生
+ui.randomize.desc,ランダム再生：ランダムなカセットを開始し、曲が終わるたびに切り替え続けます。
+ui.equalizer,イコライザー
+ui.mono,モノラル
+ui.mono.desc,両チャンネルを1つとして再生します。
+ui.save,保存
+ui.save.slot,スロット？
+ui.save.desc,押してからスロットを選ぶと現在の設定を保存します。
+ui.volume,音量：{0}%
+ui.bass,低音：{0}
+ui.treble,高音：{0}
+ui.voice,声：{0}
+ui.balance,バランス：{0}
+ui.center,中央
+ui.left,左 {0}
+ui.right,右 {0}
+ui.preset.save,現在の設定をスロット {0} に保存します。
+ui.preset.load,プリセット {0} を読み込みます。
+ui.preset.empty,プリセット {0} は空です。保存を押してからこのボタンを押してください。
+ui.storage.hide,収納を隠す。
+ui.storage.show,収納を表示。

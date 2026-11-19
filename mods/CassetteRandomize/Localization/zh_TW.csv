@@ -1,0 +1,21 @@
+ui.randomize,隨機播放
+ui.randomize.desc,隨機播放：開始一捲隨機卡帶，並在每首曲目結束後繼續隨機切換。
+ui.equalizer,等化器
+ui.mono,單聲道
+ui.mono.desc,將兩個聲道合併播放。
+ui.save,儲存
+ui.save.slot,槽位？
+ui.save.desc,按下後選擇一個槽位以儲存目前設定。
+ui.volume,音量：{0}%
+ui.bass,低音：{0}
+ui.treble,高音：{0}
+ui.voice,人聲：{0}
+ui.balance,平衡：{0}
+ui.center,居中
+ui.left,左 {0}
+ui.right,右 {0}
+ui.preset.save,將目前設定儲存到槽位 {0}。
+ui.preset.load,載入預設 {0}。
+ui.preset.empty,預設 {0} 為空。請先按儲存，再按此按鈕。
+ui.storage.hide,隱藏儲物。
+ui.storage.show,顯示儲物。

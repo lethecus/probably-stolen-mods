@@ -1,0 +1,3 @@
+cfg.section.playlist,Liste de lecture
+cfg.playlist.label,Liste de lecture YouTube
+cfg.playlist.tip,URL de la liste de lecture (https://www.youtube.com/playlist?list=...) ou simplement l'identifiant de la liste. Laisser vide pour ouvrir la page d'accueil YouTube.

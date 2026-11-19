@@ -1,0 +1,17 @@
+cfg.section.charger,Fast charger
+cfg.rate.label,Charge per cycle
+cfg.rate.tip,Energy restored to each battery per machine cycle. Vanilla recharger is 3 (6 with the Commercial Power upgrade).
+cfg.section.bloc,Fast bloc
+cfg.bloc.label,Charge per cycle
+cfg.bloc.tip,Energy restored to each adjacent battery or machine cell per cycle. Vanilla powerblock is 2 (4 with the Commercial Power upgrade).
+cfg.section.appearance,Appearance
+cfg.animate.label,Animate rainbow
+cfg.animate.tip,Scrolls the rainbow colours across the machines. Off keeps the static frame 0 art.
+cfg.fps.label,Animation speed (fps)
+cfg.fps.tip,"Rainbow frames per second. 8 is a calm scroll, 12-16 is clearly moving."
+item.charger.name,Fast Charger
+item.charger.desc,Eight battery bays and a luxury charging array. Restores far more energy per cycle than a standard recharger; the amount is set in the mod settings. Rechargeable energy cells only - disposable and hypertech cells are not accepted.
+item.charger.flavor,"Station-grade hardware, sold to people who do not like waiting."
+item.bloc.name,Fast Bloc
+item.bloc.desc,A luxury power block. Rapidly charges adjacent batteries and the internal cells of nearby machines; the amount is set in the mod settings.
+item.bloc.flavor,The orange stripe means it is working. Probably.

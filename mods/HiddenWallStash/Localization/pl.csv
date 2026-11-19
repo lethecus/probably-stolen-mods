@@ -1,0 +1,11 @@
+cfg.section.size,Rozmiar skrytki
+cfg.width.label,Komórki w rzędzie
+cfg.width.tip,"Szerokość każdej zakładki skrytki w komórkach. Domyślnie 15. Zmiana przebuduje skrytkę przy następnym wczytaniu; przy zmniejszaniu najpierw opróżnij zakładki, inaczej zachowają obecny rozmiar."
+cfg.height.label,Wiersze na zakładkę
+cfg.height.tip,Wysokość każdej zakładki skrytki w komórkach. Domyślnie 13. Te same zasady co przy szerokości.
+cfg.section.behaviour,Zachowanie skrytki
+cfg.storage.label,Licz zawartość skrytki jako magazyn sklepu
+cfg.storage.tip,"Włączone: zawartość skrytki jest traktowana jak zwykły magazyn, nocne cykle maszyn działają, leje mogą się łączyć, a AutoStorage może ją zapełniać. Liczy się też do nocnych kosztów obsługi i wartości na koniec dnia. Wyłączone: skrytka jest odizolowana i niewidoczna dla tych systemów. Kontrole bezpieczeństwa i tak ją pomijają."
+ui.title,Ukryta skrytka w ścianie
+item.name,Ukryta skrytka w ścianie
+item.desc,Ukryta przegroda za kratką w ścianie.

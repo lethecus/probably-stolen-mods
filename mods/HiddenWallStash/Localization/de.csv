@@ -1,0 +1,11 @@
+cfg.section.size,Größe des Verstecks
+cfg.width.label,Zellen pro Reihe
+cfg.width.tip,"Breite jeder Verstecksseite in Zellen. Standard 15. Eine Änderung baut das Versteck beim nächsten Laden neu auf; beim Verkleinern zuerst die Seiten leeren, sonst behalten sie ihre aktuelle Größe."
+cfg.height.label,Zeilen pro Seite
+cfg.height.tip,Höhe jeder Verstecksseite in Zellen. Standard 13. Gleiche Regeln wie bei der Breite.
+cfg.section.behaviour,Verhalten des Verstecks
+cfg.storage.label,Verstecksinhalt als Lagerbestand zählen
+cfg.storage.tip,"An: Alles im Versteck zählt wie normale Lagerware, nächtliche Maschinenläufe finden statt, Trichter können es verbinden und AutoStorage kann es befüllen. Es zählt zudem zu den nächtlichen Betriebskosten und zum Tagesendwert. Aus: Das Versteck bleibt eigenständig und für diese Systeme unsichtbar. Sicherheitskontrollen ignorieren es in beiden Fällen."
+ui.title,Versteck in der Wand
+item.name,Versteck in der Wand
+item.desc,Ein verborgenes Fach hinter einem Wandgitter.

@@ -1,0 +1,3 @@
+cfg.section.cage,Käfig
+cfg.max.label,Maximale Käfiggröße
+cfg.max.tip,"Höchste Höhe, auf die der Käfig aufgerüstet werden kann, in Rasterzeilen. Vanilla endet bei 8. Jede zusätzliche Zeile kostet weiterhin einen Metallbarren und gibt 20 Haltbarkeit. Mehr Zeilen bedeuten mehr Zellen, was den Überfüllungsprozentsatz senkt."

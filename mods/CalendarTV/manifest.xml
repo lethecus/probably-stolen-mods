@@ -3,7 +3,7 @@
   <ID>calendar_tv</ID>
   <Name>Calendar TV</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.1.2</ModVersion>
+  <ModVersion>1.2.0</ModVersion>
   <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
 
 This mod is heavily inspired by Frequency TV (https://steamcommunity.com/sharedfiles/filedetails/?id=3836903387). The difference between this mod and that one is very simple: this is not a full access system. It is a playlist video player that only sits on the calendar screen when a hotkey is pressed (default I, rebindable inside the game's options menu, and a skip button also rebindable in options). It does allow randomizing play of the list, defaulted off; that switch, both hotkeys and the next-track key live in the game's own Options menu under "Calendar TV", and the playlist URL is set in the mod's settings page. It only plays public, unlisted and mix playlist URLs. If there is a play error it skips that video within a few seconds.
@@ -12,7 +12,9 @@ Volume is handled by the video site's own player: if the sign is silent, check t
 
 
 https://github.com/lethecus/probably-stolen-mods
-The source for all my mods if you wish to confirm nothing shady going on.</Description>
+The source for all my mods if you wish to confirm nothing shady going on.
+
+Localization: ships with all game-available languages, translated by AI. Translation files are in the mod folder and can be corrected if you find translation errors. I am not bilingual, which is why they are AI translated.</Description>
   <GameVersions>
     <Version>0.0.0-1.0.*</Version>
   </GameVersions>

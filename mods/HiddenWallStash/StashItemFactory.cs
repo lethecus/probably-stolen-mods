@@ -37,12 +37,12 @@ public static class StashItemFactory
 		}
 
 		PixelWindow window = MachineHelper.CreateMachineryWindow(true, MachineHelper.Panel(null, tabs, "storage"));
-		window.SetTitle("Hidden Wall Stash");
+		window.SetTitle(HiddenWallStash.Loc.Get("ui.title"));
 		GameItem stash = ItemDirectory.CreateEmptyItem(StashManager.ItemIdentifier);
 		stash.SetContentWindow(window);
 		stash.unitValue = 0L;
-		stash.name = "Hidden Wall Stash";
-		stash.shortDescription = "A concealed compartment behind a wall grate.";
+		stash.name = HiddenWallStash.Loc.Get("item.name");
+		stash.shortDescription = HiddenWallStash.Loc.Get("item.desc");
 		stash.EnableTag("CONTAINER_TAG");
 		stash.EnableTag("ITEM_HIDDEN_TAG");
 		stash.SetGameItemType("STORAGE");

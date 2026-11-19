@@ -37,7 +37,7 @@ public class PrinterMod : IMod
 	{
 		try
 		{
-			easyMode = ModConfig.For(ModId).Define("easy_mode", true, "Balance", () => "Easy mode", () => "On: 3 power and 10 credits per card, no material (original behaviour). Off: normal mode, 1 unit of 3D Printing Filament per card plus 6 power and 10 credits. Normal mode adds a filament slot; changing this needs a reload because the machine window is built when the printer is created.", false);
+			easyMode = ModConfig.For(ModId).Define("easy_mode", true, BlankCardPrinter.Loc.Get("cfg.section.balance"), () => BlankCardPrinter.Loc.Get("cfg.easy.label"), () => BlankCardPrinter.Loc.Get("cfg.easy.tip"), false);
 		}
 		catch (Exception ex)
 		{
@@ -69,8 +69,8 @@ public class PrinterMod : IMod
 		((Directory<GameItem>)(object)dir).Add("blank_card_printer.printer", (Func<GameItem>)(() =>
 		{
 			GameItem val = ItemDirectory.CreateEmptyItem("blank_card_printer.printer");
-			val.name = "Card Printer";
-			val.shortDescription = "Presses out blank access cards. Easy mode needs a battery, 3 power and 10 credits per card. Normal mode also uses 1 unit of 3D Printing Filament per card.";
+			val.name = BlankCardPrinter.Loc.Get("item.name");
+			val.shortDescription = BlankCardPrinter.Loc.Get("item.desc");
 			val.SetSpriteAndShapeFromMod("blank_card_printer", "card_printer");
 			val.SetContentWindow(BuildWindow(val));
 			return val;

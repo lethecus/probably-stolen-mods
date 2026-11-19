@@ -49,10 +49,10 @@ namespace CageExpansion
 			{
 				ModConfig config = ModConfig.For(ModId);
 				maxHeightEntry = config.Define(
-					"max_size", 12, "Cage",
-					() => "Maximum cage size",
+					"max_size", 12, Loc.Get("cfg.section.cage"),
+					() => Loc.Get("cfg.max.label"),
 					VanillaMaxHeight, HardMaxHeight,
-					() => "Tallest the cage can be upgraded to, in grid rows. Vanilla stops at 8. Each extra row still costs one metal ingot and adds 20 durability. More rows mean more cells, which is what lowers the overcrowding percentage.",
+					() => Loc.Get("cfg.max.tip"),
 					false);
 				MaxHeight = Clamp(maxHeightEntry.Value);
 				maxHeightEntry.OnChanged += value => MaxHeight = Clamp(value);

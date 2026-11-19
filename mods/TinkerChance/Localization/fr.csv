@@ -1,0 +1,8 @@
+ui.title,Chance du bricoleur
+ui.chance,Chance de conservation : {0} %
+ui.hotkey,Raccourci : {0}
+ui.listening,appuyez sur une touche...
+ui.cancel,Annuler la réaffectation
+ui.change,Changer le raccourci
+ui.reset,Réinitialiser à {0} %
+ui.close,Fermer

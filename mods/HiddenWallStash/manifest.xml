@@ -3,7 +3,7 @@
   <ID>hidden_wall_stash</ID>
   <Name>Hidden Wall Stash</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.6.1</ModVersion>
+  <ModVersion>1.7.0</ModVersion>
   <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
 
 A concealed smuggler storage with ten tabs, installed at the start of every game. Hover the metal grate on the wall above the shop radio to outline it; click it to open, or drag an item onto it to store it without opening. Each tab is 15x13 cells by default, and the size is configurable in the mod settings from 5 to 25 cells per side. The new size is applied on the next load, in place. Growing always works. Shrinking needs empty tabs: if the stash still holds anything the resize is refused and nothing is changed, so empty the tabs first. Uninstall note: empty the stash before disabling this mod, or its contents are lost.
@@ -14,7 +14,9 @@ AutoStorage: open its container list with Ctrl+L and pick the stash from there -
 
 
 https://github.com/lethecus/probably-stolen-mods
-The source for all my mods if you wish to confirm nothing shady going on.</Description>
+The source for all my mods if you wish to confirm nothing shady going on.
+
+Localization: ships with all game-available languages, translated by AI. Translation files are in the mod folder and can be corrected if you find translation errors. I am not bilingual, which is why they are AI translated.</Description>
   <GameVersions>
     <Version>0.0.0-1.0.*</Version>
   </GameVersions>

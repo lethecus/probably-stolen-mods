@@ -1,0 +1,3 @@
+cfg.section.cage,Cage
+cfg.max.label,Taille maximale de la cage
+cfg.max.tip,"Hauteur maximale à laquelle la cage peut être améliorée, en lignes de grille. La version de base s'arrête à 8. Chaque ligne supplémentaire coûte toujours un lingot de métal et ajoute 20 de durabilité. Plus de lignes, plus de cellules, ce qui réduit le pourcentage de surpopulation."

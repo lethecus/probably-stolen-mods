@@ -1,0 +1,17 @@
+cfg.section.charger,Chargeur rapide
+cfg.rate.label,Charge par cycle
+cfg.rate.tip,Énergie rendue à chaque batterie par cycle de machine. Le chargeur de base en rend 3 (6 avec l'amélioration Commercial Power).
+cfg.section.bloc,Bloc rapide
+cfg.bloc.label,Charge par cycle
+cfg.bloc.tip,Énergie rendue à chaque batterie ou cellule de machine adjacente par cycle. Le powerblock de base en rend 2 (4 avec l'amélioration Commercial Power).
+cfg.section.appearance,Apparence
+cfg.animate.label,Animer l'arc-en-ciel
+cfg.animate.tip,"Fait défiler les couleurs d'arc-en-ciel sur les machines. Désactivé, l'image statique de la frame 0 est conservée."
+cfg.fps.label,Vitesse d'animation (ips)
+cfg.fps.tip,"Images d'arc-en-ciel par seconde. 8 est un défilement calme, 12-16 bouge clairement."
+item.charger.name,Chargeur rapide
+item.charger.desc,Huit baies de batteries et un luxueux réseau de charge. Restitue bien plus d'énergie par cycle qu'un chargeur standard ; la quantité se règle dans les paramètres du mod. Uniquement des cellules rechargeables : les cellules jetables et hypertech sont refusées.
+item.charger.flavor,"Du matériel de qualité station, vendu à ceux qui n'aiment pas attendre."
+item.bloc.name,Bloc rapide
+item.bloc.desc,Un powerblock de luxe. Recharge rapidement les batteries adjacentes et les cellules internes des machines proches ; la quantité se règle dans les paramètres du mod.
+item.bloc.flavor,La bande orange signifie que ça marche. Probablement.

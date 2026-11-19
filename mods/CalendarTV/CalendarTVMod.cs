@@ -114,7 +114,7 @@ namespace CalendarTV
 			try
 			{
 				config = ModConfig.For(ModId);
-				playlistSetting = config.Define("playlist", "", "Playlist", () => "YouTube playlist", null, () => "Playlist URL (https://www.youtube.com/playlist?list=...) or just the list id. Leave empty to open the YouTube home page.", false);
+				playlistSetting = config.Define("playlist", "", Loc.Get("cfg.section.playlist"), () => Loc.Get("cfg.playlist.label"), null, () => Loc.Get("cfg.playlist.tip"), false);
 				// toggle_key / next_key / shuffle are deliberately NOT defined here: the game's Options registry has
 				// no text control, so the playlist URL is the only setting that still needs the mod settings page.
 				// Keys and shuffle live in Options -> Calendar TV and are persisted in this mod's own data folder.

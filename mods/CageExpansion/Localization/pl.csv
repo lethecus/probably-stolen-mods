@@ -1,0 +1,3 @@
+cfg.section.cage,Klatka
+cfg.max.label,Maksymalny rozmiar klatki
+cfg.max.tip,"Maksymalna wysokość, do której można ulepszyć klatkę, w wierszach siatki. Standardowo 8. Każdy dodatkowy wiersz nadal kosztuje jedną sztabkę metalu i daje 20 wytrzymałości. Więcej wierszy to więcej komórek, co obniża procent przeludnienia."

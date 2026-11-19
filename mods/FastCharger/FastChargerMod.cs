@@ -135,10 +135,10 @@ namespace FastCharger
 			try
 			{
 				ModConfig config = ModConfig.For(ModId);
-				chargerRate = config.Define("charge_rate", 30, "Fast charger", () => "Charge per cycle", 0, 500, () => "Energy restored to each battery per machine cycle. Vanilla recharger is 3 (6 with the Commercial Power upgrade).", true);
-				blocRate = config.Define("bloc_rate", 20, "Fast bloc", () => "Charge per cycle", 0, 500, () => "Energy restored to each adjacent battery or machine cell per cycle. Vanilla powerblock is 2 (4 with the Commercial Power upgrade).", true);
-				animate = config.Define("animate_rainbow", true, "Appearance", () => "Animate rainbow", () => "Scrolls the rainbow colours across the machines. Off keeps the static frame 0 art.", true);
-				animFps = config.Define("animation_fps", 12, "Appearance", () => "Animation speed (fps)", 4, 20, () => "Rainbow frames per second. 8 is a calm scroll, 12-16 is clearly moving.", true);
+				chargerRate = config.Define("charge_rate", 30, Loc.Get("cfg.section.charger"), () => Loc.Get("cfg.rate.label"), 0, 500, () => Loc.Get("cfg.rate.tip"), true);
+				blocRate = config.Define("bloc_rate", 20, Loc.Get("cfg.section.bloc"), () => Loc.Get("cfg.bloc.label"), 0, 500, () => Loc.Get("cfg.bloc.tip"), true);
+				animate = config.Define("animate_rainbow", true, Loc.Get("cfg.section.appearance"), () => Loc.Get("cfg.animate.label"), () => Loc.Get("cfg.animate.tip"), true);
+				animFps = config.Define("animation_fps", 12, "Appearance", () => Loc.Get("cfg.fps.label"), 4, 20, () => Loc.Get("cfg.fps.tip"), true);
 			}
 			catch (Exception ex)
 			{
@@ -282,9 +282,9 @@ namespace FastCharger
 			GameItem machine = ItemDirectory.CreateEmptyItem()
 				.SetContentWindow(window)
 				.SetSpriteAndShapeFromMod(ModId, "fast_charger_0");
-			machine.name = "Fast Charger";
-			machine.shortDescription = "Eight battery bays and a luxury charging array. Restores far more energy per cycle than a standard recharger; the amount is set in the Fast Charger mod settings. Rechargeable energy cells only - disposable and hypertech cells are not accepted.";
-			machine.flavorText = "Station-grade hardware, sold to people who do not like waiting.";
+			machine.name = Loc.Get("item.charger.name");
+			machine.shortDescription = Loc.Get("item.charger.desc");
+			machine.flavorText = Loc.Get("item.charger.flavor");
 			machine.unitValue = 450L;
 			machine.SetGameItemType("MACHINE");
 			machine.SetGameItemType("LUXURY_ITEM");
@@ -380,9 +380,9 @@ namespace FastCharger
 		{
 			GameItem item = ItemDirectory.CreateEmptyItem()
 				.SetSpriteAndShapeFromMod(ModId, "fast_bloc_0");
-			item.name = "Fast Bloc";
-			item.shortDescription = "A luxury power block. Rapidly charges adjacent batteries and the internal cells of nearby machines; the amount is set in the Fast Charger mod settings.";
-			item.flavorText = "The orange stripe means it is working. Probably.";
+			item.name = Loc.Get("item.bloc.name");
+			item.shortDescription = Loc.Get("item.bloc.desc");
+			item.flavorText = Loc.Get("item.bloc.flavor");
 			item.unitValue = 600L;
 			item.SetGameItemType("MACHINE");
 			item.SetGameItemType("LUXURY_ITEM");

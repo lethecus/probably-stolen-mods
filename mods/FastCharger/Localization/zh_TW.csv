@@ -1,0 +1,17 @@
+cfg.section.charger,快速充電器
+cfg.rate.label,每週期充能
+cfg.rate.tip,每台機器週期為每顆電池恢復的能量。原版充電器為 3（商業電力升級後為 6）。
+cfg.section.bloc,快速電池組
+cfg.bloc.label,每週期充能
+cfg.bloc.tip,每週期為相鄰電池或機器電池格恢復的能量。原版電力塊為 2（商業電力升級後為 4）。
+cfg.section.appearance,外觀
+cfg.animate.label,彩虹動畫
+cfg.animate.tip,讓彩虹顏色在機器上流動。關閉時保持第 0 幀的靜態畫面。
+cfg.fps.label,動畫速度（fps）
+cfg.fps.tip,每秒彩虹幀數。8 為緩慢流動，12-16 明顯在動。
+item.charger.name,快速充電器
+item.charger.desc,八個電池位與豪華充電陣列。每週期恢復的能量遠超標準充電器；數值在模組設定中調整。僅接受可充電能量電池——一次性電池與高科技電池不予接受。
+item.charger.flavor,空間站級硬體，賣給不喜歡等待的人。
+item.bloc.name,快速電池組
+item.bloc.desc,豪華電力塊。快速為相鄰電池和附近機器的內部電池格充電；數值在模組設定中調整。
+item.bloc.flavor,橙色條紋表示它在運作。大概吧。

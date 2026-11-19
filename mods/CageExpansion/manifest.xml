@@ -3,7 +3,7 @@
   <ID>cage_expansion</ID>
   <Name>Cage Expansion</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.1</ModVersion>
+  <ModVersion>1.2</ModVersion>
   <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
 
 The animal cage stops at eight size upgrades, which is not much room once a few rats are breeding. This raises that cap so one cage can be taller, in the mod settings.
@@ -14,7 +14,9 @@ Each extra row still costs one metal ingot and still adds the usual durability, 
 
 
 https://github.com/lethecus/probably-stolen-mods
-The source for all my mods if you wish to confirm nothing shady going on.</Description>
+The source for all my mods if you wish to confirm nothing shady going on.
+
+Localization: ships with all game-available languages, translated by AI. Translation files are in the mod folder and can be corrected if you find translation errors. I am not bilingual, which is why they are AI translated.</Description>
   <GameVersions>
     <Version>0.0.0-1.0.*</Version>
   </GameVersions>

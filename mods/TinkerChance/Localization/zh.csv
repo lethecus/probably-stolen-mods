@@ -1,0 +1,8 @@
+ui.title,修补匠几率
+ui.chance,保留几率：{0}%
+ui.hotkey,快捷键：{0}
+ui.listening,请按键...
+ui.cancel,取消重新绑定
+ui.change,更改快捷键
+ui.reset,重置为 {0}%
+ui.close,关闭

@@ -1,0 +1,11 @@
+cfg.section.size,Taille du coffre
+cfg.width.label,Cellules par ligne
+cfg.width.tip,"Largeur de chaque onglet du coffre, en cellules. Par défaut 15. Toute modification reconstruit le coffre au prochain chargement ; pour réduire, videz d'abord les onglets, sinon ils gardent leur taille actuelle."
+cfg.height.label,Lignes par onglet
+cfg.height.tip,Hauteur de chaque onglet du coffre, en cellules. Par défaut 13. Mêmes règles que la largeur.
+cfg.section.behaviour,Comportement du coffre
+cfg.storage.label,Compter le contenu du coffre comme stock du magasin
+cfg.storage.tip,"Activé : le contenu du coffre est traité comme du stock normal, les machines tournent la nuit, les entonnoirs peuvent s'y connecter et AutoStorage peut le remplir. Il compte aussi dans les frais de service nocturnes et la valeur de fin de journée. Désactivé : le coffre reste isolé et invisible pour ces systèmes. Les contrôles de sécurité l'ignorent dans les deux cas."
+ui.title,Coffre mural dissimulé
+item.name,Coffre mural dissimulé
+item.desc,Un compartiment dissimulé derrière une grille murale.

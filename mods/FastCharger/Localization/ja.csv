@@ -1,0 +1,17 @@
+cfg.section.charger,高速充電器
+cfg.rate.label,サイクルあたりの充電量
+cfg.rate.tip,1サイクルごとに各バッテリーへ回復するエネルギー量。標準の充電器は3（Commercial Powerアップグレードで6）。
+cfg.section.bloc,高速ブロック
+cfg.bloc.label,サイクルあたりの充電量
+cfg.bloc.tip,1サイクルごとに隣接するバッテリーや機械セルへ回復するエネルギー量。標準のパワーブロックは2（Commercial Powerアップグレードで4）。
+cfg.section.appearance,外観
+cfg.animate.label,レインボーを動かす
+cfg.animate.tip,虹色が機械の上を流れます。オフにするとフレーム0の静止画のままです。
+cfg.fps.label,アニメ速度（fps）
+cfg.fps.tip,1秒あたりの虹色フレーム数。8はゆっくり、12〜16ははっきり動いて見えます。
+item.charger.name,高速充電器
+item.charger.desc,8つのバッテリー枠と豪華な充電アレイ。標準の充電器よりはるかに多くのエネルギーを1サイクルで回復します。量はMOD設定で指定します。充電式のエネルギーセルのみ対応し、使い捨てセルとハイパーテックセルは受け付けません。
+item.charger.flavor,待つのが嫌いな人のための、ステーション級のハードウェア。
+item.bloc.name,高速ブロック
+item.bloc.desc,高級パワーブロック。隣接するバッテリーと近くの機械の内部セルを急速充電します。量はMOD設定で指定します。
+item.bloc.flavor,オレンジの縞は動作中の印。たぶんです。

@@ -13,6 +13,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ContaminantConverterMod.cs" />
+    <Compile Include="Loc.cs" />
     <Compile Include="ConverterItemDirectory.cs" />
     <Compile Include="MachineContaminantConverter.cs" />
     <Compile Include="ConverterConfig.cs" />

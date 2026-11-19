@@ -1,0 +1,5 @@
+cfg.section.balance,Balans
+cfg.easy.label,Tryb łatwy
+cfg.easy.tip,"Włączone: 3 energii i 10 kredytów za kartę, bez materiału (zachowanie oryginalne). Wyłączone: tryb normalny, 1 jednostka filamentu do druku 3D na kartę plus 6 energii i 10 kredytów. Tryb normalny dodaje gniazdo filamentu; zmiana wymaga ponownego wczytania, bo okno maszyny powstaje przy tworzeniu drukarki."
+item.name,Drukarka kart
+item.desc,"Wytłacza puste karty dostępu. Tryb łatwy wymaga baterii, 3 energii i 10 kredytów za kartę. Tryb normalny zużywa dodatkowo 1 jednostkę filamentu do druku 3D na kartę."

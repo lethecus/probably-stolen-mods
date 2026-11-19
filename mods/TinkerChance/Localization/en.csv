@@ -1,0 +1,8 @@
+ui.title,Tinkerer Chance
+ui.chance,Keep chance: {0}%
+ui.hotkey,Hotkey: {0}
+ui.listening,press a key...
+ui.cancel,Cancel rebind
+ui.change,Change hotkey
+ui.reset,Reset to {0}%
+ui.close,Close

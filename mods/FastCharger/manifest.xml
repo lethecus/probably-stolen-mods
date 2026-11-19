@@ -3,14 +3,16 @@
   <ID>fast_charger</ID>
   <Name>Fast Charger</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.8.1</ModVersion>
+  <ModVersion>1.9.0</ModVersion>
   <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
 
 Have you ever thought how the hell are we in space but lost fast charge compatibilities we already had? Well then Fast Chargers is the mod you want. It adds a new Fast Charger and Fast Bloc. Both of them have a mod menu setting to choose the amount of charge that happens per night. Also a setting for animated texture effects. The game only loads the settings on load, so no changing mid-day.
 
 
 https://github.com/lethecus/probably-stolen-mods
-The source for all my mods if you wish to confirm nothing shady going on.</Description>
+The source for all my mods if you wish to confirm nothing shady going on.
+
+Localization: ships with all game-available languages, translated by AI. Translation files are in the mod folder and can be corrected if you find translation errors. I am not bilingual, which is why they are AI translated.</Description>
   <GameVersions>
     <Version>0.0.0-1.0.*</Version>
   </GameVersions>

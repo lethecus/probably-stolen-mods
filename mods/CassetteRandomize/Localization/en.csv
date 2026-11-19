@@ -1,0 +1,21 @@
+ui.randomize,Randomize
+ui.randomize.desc,Randomize: start a random cassette and keep shuffling at the end of every track.
+ui.equalizer,Equalizer
+ui.mono,Mono
+ui.mono.desc,Plays both channels as one.
+ui.save,Save
+ui.save.slot,Slot?
+ui.save.desc,"Press, then pick a slot to store the current settings."
+ui.volume,Volume: {0}%
+ui.bass,Bass: {0}
+ui.treble,Treble: {0}
+ui.voice,Voice: {0}
+ui.balance,Balance: {0}
+ui.center,Center
+ui.left,Left {0}
+ui.right,Right {0}
+ui.preset.save,Store the current settings in slot {0}.
+ui.preset.load,Load preset {0}.
+ui.preset.empty,"Preset {0} is empty. Press Save, then this button."
+ui.storage.hide,Hide the storage.
+ui.storage.show,Show the storage.

@@ -20,6 +20,7 @@
     <Compile Include="GrateBehaviour.cs" />
     <Compile Include="GrateDropPatch.cs" />
     <Compile Include="StashBridgePatch.cs" />
+    <Compile Include="Loc.cs" />
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,3 @@
+cfg.section.newspaper,报纸
+cfg.keep.label,将报纸保留过夜
+cfg.keep.tip,开启：晨报不再在一天结束时自动删除，可以存放并在之后使用。关闭：新的报纸会恢复自动删除，但已经保存的报纸会保留。

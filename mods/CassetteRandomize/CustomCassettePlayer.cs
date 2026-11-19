@@ -43,9 +43,9 @@ namespace CassetteRandomize
 			}
 			else
 			{
-				randomize = new MachineryButton("Randomize", null, -1, -1);
+				randomize = new MachineryButton(Loc.Get("ui.randomize"), null, -1, -1);
 			}
-			randomize.SetDescription("Randomize: start a random cassette and keep shuffling at the end of every track.");
+			randomize.SetDescription(Loc.Get("ui.randomize.desc"));
 			MachineryStack controls = MachineryStack.Horizontal(previous, play, stop, next, randomize);
 
 			MachineryStack volumePlaceholder = new MachineryStack(true, 4);
@@ -125,7 +125,7 @@ namespace CassetteRandomize
 			MachineryPanel equalizer = row?.GetPanel("volume");
 			if (equalizer != null)
 			{
-				equalizer.SetLabel("Equalizer");
+				equalizer.SetLabel(Loc.Get("ui.equalizer"));
 				equalizer.SetContent(ui.root);
 			}
 			MachineryPanel storagePanel = row?.GetPanel("storage");

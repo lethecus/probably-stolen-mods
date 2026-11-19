@@ -3,7 +3,7 @@
   <ID>blank_card_printer</ID>
   <Name>Blank Card Printer</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.3.3</ModVersion>
+  <ModVersion>1.4.0</ModVersion>
   <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
 
 Adds a Card Printer machine that prints vanilla blank keycards. It needs a battery in its power slot; the Print button shows the price before you press it. Find it in scavenging or buy it from the inventor.
@@ -12,7 +12,9 @@ Easy mode (default) keeps the original cost: 3 power and 10 credits per card, no
 
 
 https://github.com/lethecus/probably-stolen-mods
-The source for all my mods if you wish to confirm nothing shady going on.</Description>
+The source for all my mods if you wish to confirm nothing shady going on.
+
+Localization: ships with all game-available languages, translated by AI. Translation files are in the mod folder and can be corrected if you find translation errors. I am not bilingual, which is why they are AI translated.</Description>
   <GameVersions>
     <Version>0.0.0-1.0.*</Version>
   </GameVersions>

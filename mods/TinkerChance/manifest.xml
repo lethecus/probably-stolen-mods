@@ -3,7 +3,7 @@
   <ID>tinker_chance</ID>
   <Name>Tinkerer Chance</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.4.2</ModVersion>
+  <ModVersion>1.5.0</ModVersion>
   <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
 
 Turns the Tinkerer perk into a setting instead of a fixed 20% chance: pick any keep-chance from 0 to 100% and it applies immediately. Press F4 (rebindable) for a small window with the slider; both the chance and the hotkey are remembered between sessions.
@@ -16,7 +16,9 @@ Slider sets chance live no need to save or close the window.
 
 
 https://github.com/lethecus/probably-stolen-mods
-The source for all my mods if you wish to confirm nothing shady going on.</Description>
+The source for all my mods if you wish to confirm nothing shady going on.
+
+Localization: ships with all game-available languages, translated by AI. Translation files are in the mod folder and can be corrected if you find translation errors. I am not bilingual, which is why they are AI translated.</Description>
   <GameVersions>
     <Version>0.0.0-1.0.*</Version>
   </GameVersions>

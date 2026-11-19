@@ -71,13 +71,13 @@ namespace TinkerChance
 			{
 				return;
 			}
-			windowRect = GUI.Window(WindowId, windowRect, DrawWindow, "Tinkerer Chance");
+			windowRect = GUI.Window(WindowId, windowRect, DrawWindow, Loc.Get("ui.title"));
 		}
 
 		private void DrawWindow(int id)
 		{
 			GUILayout.Space(6f);
-			GUILayout.Label("Keep chance: " + TinkerSettings.Chance + "%");
+			GUILayout.Label(Loc.Get("ui.chance", TinkerSettings.Chance));
 
 			int picked = Mathf.RoundToInt(GUILayout.HorizontalSlider(TinkerSettings.Chance, 0f, 100f));
 			if (picked != TinkerSettings.Chance)
@@ -86,20 +86,20 @@ namespace TinkerChance
 			}
 
 			GUILayout.Space(6f);
-			GUILayout.Label("Hotkey: " + (capturing ? "press a key..." : TinkerSettings.Hotkey.ToString()));
+			GUILayout.Label(Loc.Get("ui.hotkey", capturing ? Loc.Get("ui.listening") : TinkerSettings.Hotkey.ToString()));
 
-			if (GUILayout.Button(capturing ? "Cancel rebind" : "Change hotkey"))
+			if (GUILayout.Button(capturing ? Loc.Get("ui.cancel") : Loc.Get("ui.change")))
 			{
 				capturing = !capturing;
 			}
 
-			if (GUILayout.Button("Reset to " + TinkerSettings.DefaultChance + "%"))
+			if (GUILayout.Button(Loc.Get("ui.reset", TinkerSettings.DefaultChance)))
 			{
 				TinkerSettings.SetChance(TinkerSettings.DefaultChance);
 			}
 
 			GUILayout.Space(4f);
-			if (GUILayout.Button("Close"))
+			if (GUILayout.Button(Loc.Get("ui.close")))
 			{
 				visible = false;
 			}

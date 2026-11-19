@@ -3,14 +3,16 @@
   <ID>contaminant_converter</ID>
   <Name>Contaminant Converter</Name>
   <Author>Lethecus</Author>
-  <ModVersion>1.2.1</ModVersion>
+  <ModVersion>1.3.0</ModVersion>
   <Description>Want to help make the mod better? Report bugs and logs at https://tally.so/r/0V85KB so we can keep it working for you.
 
 A powered chemistry machine with a battery slot and a standard module bay. Place a source and a target liquid container, select one contaminant, check the Product readout, then press Convert. Converts Chemical Contaminant to Acid or Zyanide (selectable), Organic Waste to Base, Microbes to Contraceptive Hormones, Mineral to N-Methylol Base, Heavy Metal to Lipobond Agent, and Physical Contaminant to Reducing Agent. Efficiency modules lower the power cost to a minimum of 1 per use; performance modules raise throughput. Not a starter item: Dr. Jackson's shop stocks one at random, and a debug spawn is provided. Includes a custom machine sprite.
 
 
 https://github.com/lethecus/probably-stolen-mods
-The source for all my mods if you wish to confirm nothing shady going on.</Description>
+The source for all my mods if you wish to confirm nothing shady going on.
+
+Localization: ships with all game-available languages, translated by AI. Translation files are in the mod folder and can be corrected if you find translation errors. I am not bilingual, which is why they are AI translated.</Description>
   <GameVersions>
     <Version>0.0.0-1.0.*</Version>
   </GameVersions>

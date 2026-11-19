@@ -1,0 +1,3 @@
+cfg.section.newspaper,Journal
+cfg.keep.label,Conserver le journal toute la nuit
+cfg.keep.tip,"Activé : le journal du matin ne se supprime plus en fin de journée ; il peut être stocké et utilisé plus tard. Désactivé : les nouveaux journaux se suppriment de nouveau, mais ceux que vous avez déjà gardés restent."

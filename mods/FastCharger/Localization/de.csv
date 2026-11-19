@@ -1,0 +1,17 @@
+cfg.section.charger,Schnellladegerät
+cfg.rate.label,Ladung pro Zyklus
+cfg.rate.tip,"Energie, die jede Batterie pro Maschinenzyklus erhält. Das Standard-Ladegerät liefert 3 (6 mit dem Commercial-Power-Upgrade)."
+cfg.section.bloc,Schnellblock
+cfg.bloc.label,Ladung pro Zyklus
+cfg.bloc.tip,"Energie, die jede angrenzende Batterie oder Maschinenzelle pro Zyklus erhält. Der Standard-Powerblock liefert 2 (4 mit dem Commercial-Power-Upgrade)."
+cfg.section.appearance,Aussehen
+cfg.animate.label,Regenbogen animieren
+cfg.animate.tip,Lässt die Regenbogenfarben über die Maschinen laufen. Aus behält das statische Bild von Frame 0.
+cfg.fps.label,Animationsgeschwindigkeit (FPS)
+cfg.fps.tip,"Regenbogenbilder pro Sekunde. 8 ist ruhig, 12-16 ist deutlich in Bewegung."
+item.charger.name,Schnellladegerät
+item.charger.desc,Acht Batteriefächer und eine luxuriöse Ladeanordnung. Liefert pro Zyklus weit mehr Energie als ein Standard-Ladegerät; die Menge wird in den Mod-Einstellungen festgelegt. Nur wiederaufladbare Energiezellen - Einweg- und Hypertech-Zellen werden nicht angenommen.
+item.charger.flavor,"Hardware in Stationsqualität, verkauft an Leute, die nicht gern warten."
+item.bloc.name,Schnellblock
+item.bloc.desc,Ein luxuriöser Powerblock. Lädt angrenzende Batterien und die internen Zellen naher Maschinen schnell auf; die Menge wird in den Mod-Einstellungen festgelegt.
+item.bloc.flavor,"Der orange Streifen heißt, er arbeitet. Wahrscheinlich."

@@ -53,25 +53,25 @@ namespace HiddenWallStash
 				widthSetting = config.Define(
 					"stash_width",
 					DefaultWidth,
-					"Stash size",
-					() => "Cells per row",
+					Loc.Get("cfg.section.size"),
+					() => Loc.Get("cfg.width.label"),
 					MinSide,
 					MaxSide,
-					() => "Width of every stash tab, in cells. Default is 15. Changing this rebuilds the stash on the next load; if you are shrinking, empty the tabs first or they keep their current size.");
+					() => Loc.Get("cfg.width.tip"));
 				heightSetting = config.Define(
 					"stash_height",
 					DefaultHeight,
-					"Stash size",
-					() => "Rows per tab",
+					Loc.Get("cfg.section.size"),
+					() => Loc.Get("cfg.height.label"),
 					MinSide,
 					MaxSide,
-					() => "Height of every stash tab, in cells. Default is 13. Same rebuild rules as the width.");
+					() => Loc.Get("cfg.height.tip"));
 				exposeSetting = config.Define(
 					"expose_as_storage",
 					true,
-					"Stash behaviour",
-					() => "Count stash contents as shop storage",
-					() => "On: anything inside the stash is treated like items in normal storage, so nightly machine passes run, hoppers can link to it and AutoStorage can fill it. It also counts toward nightly service cost and end-of-day value. Off: the stash is inert and invisible to those systems. Security inspections ignore it either way.",
+					Loc.Get("cfg.section.behaviour"),
+					() => Loc.Get("cfg.storage.label"),
+					() => Loc.Get("cfg.storage.tip"),
 					false);
 			}
 			catch (Exception ex)

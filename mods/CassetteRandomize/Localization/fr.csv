@@ -1,0 +1,21 @@
+ui.randomize,Lecture aléatoire
+ui.randomize.desc,Lecture aléatoire : lance une cassette au hasard et continue de mélanger à la fin de chaque piste.
+ui.equalizer,Égaliseur
+ui.mono,Mono
+ui.mono.desc,Joue les deux canaux comme un seul.
+ui.save,Enregistrer
+ui.save.slot,Emplacement ?
+ui.save.desc,"Appuyez, puis choisissez un emplacement pour enregistrer les réglages actuels."
+ui.volume,Volume : {0} %
+ui.bass,Graves : {0}
+ui.treble,Aigus : {0}
+ui.voice,Voix : {0}
+ui.balance,Balance : {0}
+ui.center,Centre
+ui.left,Gauche {0}
+ui.right,Droite {0}
+ui.preset.save,Enregistrer les réglages actuels dans l'emplacement {0}.
+ui.preset.load,Charger le préréglage {0}.
+ui.preset.empty,"Le préréglage {0} est vide. Appuyez sur Enregistrer, puis sur ce bouton."
+ui.storage.hide,Masquer le rangement.
+ui.storage.show,Afficher le rangement.

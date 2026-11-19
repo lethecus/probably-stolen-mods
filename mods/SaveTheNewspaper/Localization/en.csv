@@ -1,0 +1,3 @@
+cfg.section.newspaper,Newspaper
+cfg.keep.label,Keep the newspaper overnight
+cfg.keep.tip,"On: the morning newspaper no longer deletes itself at the end of the day, so it can be stored and used later. Off: new papers delete themselves again, but papers you already saved are kept."

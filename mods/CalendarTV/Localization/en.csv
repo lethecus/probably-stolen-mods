@@ -1,0 +1,3 @@
+cfg.section.playlist,Playlist
+cfg.playlist.label,YouTube playlist
+cfg.playlist.tip,Playlist URL (https://www.youtube.com/playlist?list=...) or just the list id. Leave empty to open the YouTube home page.

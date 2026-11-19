@@ -1,0 +1,11 @@
+cfg.section.size,储物格尺寸
+cfg.width.label,每行格数
+cfg.width.tip,每个储物页的宽度（格）。默认 15。修改后会在下次载入时重建；如果要缩小，请先清空储物页，否则它们会保持当前尺寸。
+cfg.height.label,每页行数
+cfg.height.tip,每个储物页的高度（格）。默认 13。重建规则与宽度相同。
+cfg.section.behaviour,储物行为
+cfg.storage.label,将储物内容计为店铺存储
+cfg.storage.tip,开启：储物内的物品与普通仓库中的物品相同，夜间机器流程会运行，漏斗可以连接，AutoStorage 也可以填充。它同样计入夜间服务费和日终价值。关闭：储物不参与这些系统。无论开关，安全检查都忽略它。
+ui.title,隐藏壁橱
+item.name,隐藏壁橱
+item.desc,墙栅后面的隐藏隔间。

@@ -76,8 +76,8 @@ namespace ContaminantConverter
 			ApplySprite(machine, false);
 			ForceShape(machine);
 			machine.name = ConverterConfig.Name;
-			machine.shortDescription = "Extracts one selected contaminant from the source container and converts it into a useful chemical in the target container.";
-			machine.flavorText = "A compact chemistry bench: dirty water in, reagents out.";
+			machine.shortDescription = ContaminantConverter.Loc.Get("item.desc");
+			machine.flavorText = ContaminantConverter.Loc.Get("item.flavor");
 			machine.unitValue = ConverterConfig.UnitValue;
 			machine.SetGameItemType("MACHINE");
 			machine.EnableTag("CONTAINER_TAG", false);
@@ -148,8 +148,8 @@ namespace ContaminantConverter
 			machine.onLoaded = (GameItem loaded) =>
 			{
 				loaded.name = ConverterConfig.Name;
-				loaded.shortDescription = "Extracts one selected contaminant from the source container and converts it into a useful chemical in the target container.";
-				loaded.flavorText = "A compact chemistry bench: dirty water in, reagents out.";
+				loaded.shortDescription = ContaminantConverter.Loc.Get("item.desc");
+				loaded.flavorText = ContaminantConverter.Loc.Get("item.flavor");
 				bool hasSource = Contexts.TryGetValue(loaded, out Context loadedCtx) && loadedCtx.Source.childItem != null;
 				ApplySprite(loaded, hasSource);
 				ForceShape(loaded);

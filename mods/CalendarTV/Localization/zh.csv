@@ -1,0 +1,3 @@
+cfg.section.playlist,播放列表
+cfg.playlist.label,YouTube 播放列表
+cfg.playlist.tip,播放列表网址（https://www.youtube.com/playlist?list=...）或仅填写列表 ID。留空则打开 YouTube 首页。

@@ -1,0 +1,3 @@
+cfg.section.newspaper,Gazeta
+cfg.keep.label,Zachowaj gazetę na noc
+cfg.keep.tip,"Włączone: poranna gazeta nie usuwa się już z końcem dnia, można ją przechować i użyć później. Wyłączone: nowe gazety znów się usuwają, ale już zachowane pozostają."

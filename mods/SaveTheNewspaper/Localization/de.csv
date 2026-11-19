@@ -1,0 +1,3 @@
+cfg.section.newspaper,Zeitung
+cfg.keep.label,Zeitung über Nacht behalten
+cfg.keep.tip,"An: Die Morgenzeitung löscht sich nicht mehr am Tagesende, sodass sie gelagert und später genutzt werden kann. Aus: Neue Zeitungen löschen sich wieder selbst, bereits gespeicherte bleiben erhalten."

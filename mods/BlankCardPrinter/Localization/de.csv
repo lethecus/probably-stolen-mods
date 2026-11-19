@@ -1,0 +1,5 @@
+cfg.section.balance,Balance
+cfg.easy.label,Einfacher Modus
+cfg.easy.tip,"An: 3 Strom und 10 Credits pro Karte, kein Material (ursprüngliches Verhalten). Aus: Normalmodus, 1 Einheit 3D-Druckfilament pro Karte plus 6 Strom und 10 Credits. Der Normalmodus fügt einen Filamentplatz hinzu; eine Änderung erfordert ein Neuladen, da das Maschinenfenster beim Erstellen des Druckers gebaut wird."
+item.name,Kartendrucker
+item.desc,"Presst leere Zugangskarten. Der einfache Modus braucht eine Batterie, 3 Strom und 10 Credits pro Karte. Der normale Modus verbraucht zusätzlich 1 Einheit 3D-Druckfilament pro Karte."

@@ -1,0 +1,21 @@
+ui.randomize,Odtwarzanie losowe
+ui.randomize.desc,Odtwarzanie losowe: uruchamia losową kasetę i miesza dalej po każdym utworze.
+ui.equalizer,Korektor
+ui.mono,Mono
+ui.mono.desc,Odtwarza oba kanały jako jeden.
+ui.save,Zapisz
+ui.save.slot,Slot?
+ui.save.desc,"Naciśnij, potem wybierz slot, aby zapisać bieżące ustawienia."
+ui.volume,Głośność: {0}%
+ui.bass,Bas: {0}
+ui.treble,Sopran: {0}
+ui.voice,Głos: {0}
+ui.balance,Balans: {0}
+ui.center,Środek
+ui.left,Lewo {0}
+ui.right,Prawo {0}
+ui.preset.save,Zapisz bieżące ustawienia w slocie {0}.
+ui.preset.load,Wczytaj preset {0}.
+ui.preset.empty,"Preset {0} jest pusty. Naciśnij Zapisz, potem ten przycisk."
+ui.storage.hide,Ukryj schowek.
+ui.storage.show,Pokaż schowek.

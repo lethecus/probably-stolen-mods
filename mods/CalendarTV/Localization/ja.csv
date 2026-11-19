@@ -1,0 +1,3 @@
+cfg.section.playlist,プレイリスト
+cfg.playlist.label,YouTube プレイリスト
+cfg.playlist.tip,プレイリストの URL（https://www.youtube.com/playlist?list=...）またはリスト ID のみ。空欄にすると YouTube のホームページを開きます。

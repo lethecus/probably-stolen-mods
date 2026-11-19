@@ -1,0 +1,17 @@
+cfg.section.charger,快速充电器
+cfg.rate.label,每周期充能
+cfg.rate.tip,每台机器周期为每块电池恢复的能量。原版充电器为 3（商业电力升级后为 6）。
+cfg.section.bloc,快速电池组
+cfg.bloc.label,每周期充能
+cfg.bloc.tip,每周期为相邻电池或机器电池格恢复的能量。原版电力块为 2（商业电力升级后为 4）。
+cfg.section.appearance,外观
+cfg.animate.label,彩虹动画
+cfg.animate.tip,让彩虹颜色在机器上流动。关闭时保持第 0 帧的静态画面。
+cfg.fps.label,动画速度（fps）
+cfg.fps.tip,每秒彩虹帧数。8 为缓慢流动，12-16 明显在动。
+item.charger.name,快速充电器
+item.charger.desc,八个电池位与豪华充电阵列。每周期恢复的能量远超标准充电器；具体数值在模组设置中调整。仅接受可充电能量电池——一次性电池与高科技电池不予接受。
+item.charger.flavor,空间站级硬件，卖给不喜欢等待的人。
+item.bloc.name,快速电池组
+item.bloc.desc,豪华电力块。快速为相邻电池和附近机器的内部电池格充电；数值在模组设置中调整。
+item.bloc.flavor,橙色条纹表示它在工作。大概吧。

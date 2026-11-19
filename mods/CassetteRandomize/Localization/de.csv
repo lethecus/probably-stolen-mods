@@ -1,0 +1,21 @@
+ui.randomize,Zufallswiedergabe
+ui.randomize.desc,Zufallswiedergabe: startet eine zufällige Kassette und mischt am Ende jedes Titels weiter.
+ui.equalizer,Equalizer
+ui.mono,Mono
+ui.mono.desc,Spielt beide Kanäle als einen.
+ui.save,Speichern
+ui.save.slot,Slot?
+ui.save.desc,"Drücken, dann einen Slot wählen, um die aktuellen Einstellungen zu speichern."
+ui.volume,Lautstärke: {0}%
+ui.bass,Bass: {0}
+ui.treble,Höhen: {0}
+ui.voice,Stimme: {0}
+ui.balance,Balance: {0}
+ui.center,Mitte
+ui.left,Links {0}
+ui.right,Rechts {0}
+ui.preset.save,Aktuelle Einstellungen in Slot {0} speichern.
+ui.preset.load,Preset {0} laden.
+ui.preset.empty,"Preset {0} ist leer. Erst Speichern drücken, dann diesen Knopf."
+ui.storage.hide,Lager verbergen.
+ui.storage.show,Lager anzeigen.

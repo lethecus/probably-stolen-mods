@@ -88,8 +88,8 @@ namespace CassetteRandomize
 			balanceText = NewText();
 			balanceSlider = NewToneSlider();
 
-			monoSwitch = new MachineryRadioButton("Mono", false, _ => OnToneChanged());
-			monoSwitch.SetDescription("Plays both channels as one.");
+			monoSwitch = new MachineryRadioButton(Loc.Get("ui.mono"), false, _ => OnToneChanged());
+			monoSwitch.SetDescription(Loc.Get("ui.mono.desc"));
 
 			MachineryStack transportStack = transport as MachineryStack;
 			MachineryStack transportTop = null;
@@ -124,7 +124,7 @@ namespace CassetteRandomize
 				presetButtons[i].SetFillWidth(false);
 				presetRow.Add(presetButtons[i]);
 			}
-			saveButton = new MachineryButton("Save", OnSavePressed, SaveButtonWidth, PresetButtonHeight);
+			saveButton = new MachineryButton(Loc.Get("ui.save"), OnSavePressed, SaveButtonWidth, PresetButtonHeight);
 			saveButton.SetFillWidth(false);
 			presetRow.Add(saveButton);
 
@@ -278,27 +278,27 @@ namespace CassetteRandomize
 
 		private void RefreshTexts()
 		{
-			volumeText.SetText("Volume: " + volumeSlider.GetInt() + "%");
-			bassText.SetText("Bass: " + Signed(bassSlider.GetInt()));
-			trebleText.SetText("Treble: " + Signed(trebleSlider.GetInt()));
-			voiceText.SetText("Voice: " + Signed(voiceSlider.GetInt()));
+			volumeText.SetText(Loc.Get("ui.volume", volumeSlider.GetInt()));
+			bassText.SetText(Loc.Get("ui.bass", Signed(bassSlider.GetInt())));
+			trebleText.SetText(Loc.Get("ui.treble", Signed(trebleSlider.GetInt())));
+			voiceText.SetText(Loc.Get("ui.voice", Signed(voiceSlider.GetInt())));
 			int balance = balanceSlider.GetInt();
 			string side = balance == 0
-				? "Center"
-				: (balance < 0 ? "Left " + -balance : "Right " + balance);
-			balanceText.SetText("Balance: " + side);
+				? Loc.Get("ui.center")
+				: (balance < 0 ? Loc.Get("ui.left", -balance) : Loc.Get("ui.right", balance));
+			balanceText.SetText(Loc.Get("ui.balance", side));
 		}
 
 		private void RefreshPresetButtons()
 		{
-			saveButton.SetText(saving ? "Slot?" : "Save");
-			saveButton.SetDescription("Press, then pick a slot to store the current settings.");
+			saveButton.SetText(saving ? Loc.Get("ui.save.slot") : Loc.Get("ui.save"));
+			saveButton.SetDescription(Loc.Get("ui.save.desc"));
 			for (int i = 0; i < DeckSettings.PresetCount; i++)
 			{
 				bool filled = DeckSettings.TryGetPreset(machine, i, out _);
 				string description = saving
-					? "Store the current settings in slot " + (i + 1) + "."
-					: (filled ? "Load preset " + (i + 1) + "." : "Preset " + (i + 1) + " is empty. Press Save, then this button.");
+					? Loc.Get("ui.preset.save", i + 1)
+					: (filled ? Loc.Get("ui.preset.load", i + 1) : Loc.Get("ui.preset.empty", i + 1));
 				presetButtons[i].SetDescription(description);
 			}
 			root.Validate();

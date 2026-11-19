@@ -191,7 +191,7 @@ public static class StashManager
 
 			if (string.IsNullOrEmpty(item.name))
 			{
-				item.name = "Hidden Wall Stash";
+				item.name = HiddenWallStash.Loc.Get("item.name");
 			}
 			if (!item.IsTag("MACHINE"))
 			{

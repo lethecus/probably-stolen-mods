@@ -20,6 +20,7 @@
     <Compile Include="DeckUi.cs" />
     <Compile Include="EqualizerDisplay.cs" />
     <Compile Include="StorageDrawer.cs" />
+    <Compile Include="Loc.cs" />
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
