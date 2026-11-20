@@ -323,7 +323,7 @@ namespace CalendarTV
 					() => "Randomize playlist",
 					() => shuffle,
 					SetShuffle,
-					() => "Start at a random row of the playlist instead of the first one.");
+					() => "Start at a random row and keep shuffling: every next track is picked at random instead of following the list.");
 				randomize.source = "calendar_tv";
 				GameOptionRegistry.Add("calendar_tv", randomize);
 			}
@@ -846,9 +846,21 @@ namespace CalendarTV
 			}
 		}
 	} catch (e) {}
-	window.__ctTry();
+	// Randomize: turn on YouTube's own shuffle once per page, so both the Next key and the
+// end-of-track autoplay follow a shuffled order instead of the playlist order.
+window.__ctShuffleOn = function () {
+	try {
+		if (!window.__ctShuffle || window.__ctShuffleDone) { return; }
+		var b = document.querySelector('.ytp-shuffle-button');
+		if (!b) { return; }
+		if (b.getAttribute('aria-checked') !== 'true') { b.click(); }
+		window.__ctShuffleDone = 1;
+	} catch (e) {}
+};
+window.__ctShuffleOn();
+window.__ctTry();
 	if (!window.__ctTicker) {
-		window.__ctTicker = setInterval(function () { window.__ctStyle(); window.__ctTry(); }, 500);
+		window.__ctTicker = setInterval(function () { window.__ctStyle(); window.__ctShuffleOn(); window.__ctTry(); }, 500);
 	}
 })();";
 
@@ -868,7 +880,8 @@ namespace CalendarTV
 		private static string BuildScript()
 		{
 			string list = GetPlaylistId().Replace("'", "");
-			return "window.__ctPick=" + pickIndex + ";window.__ctList='" + list + "';" + PlaybackScript;
+			return "window.__ctPick=" + pickIndex + ";window.__ctList='" + list + "';window.__ctShuffle=" +
+				(shuffle ? "1" : "0") + ";" + PlaybackScript;
 		}
 
 		private static string ExtractListId(string url)

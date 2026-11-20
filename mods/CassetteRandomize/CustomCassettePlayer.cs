@@ -99,7 +99,13 @@ namespace CassetteRandomize
 			};
 
 			previous.SetCallback((Action)(() => Previous(machine, deck)));
-			play.SetCallback((Action)(() => Play(machine, deck)));
+			play.SetCallback((Action)(() =>
+			{
+				// Re-attach the equalizer filter here as well: the load-late call can run before
+				// AudioManager.audioSourceMusic exists, and without a filter the spectrum never ticks.
+				DeckSettings.ApplyTone(machine);
+				Play(machine, deck);
+			}));
 			stop.SetCallback((Action)(() => Stop(machine)));
 			next.SetCallback((Action)(() => Next(machine, deck)));
 			randomize.SetCallback((Action)(() =>
@@ -122,6 +128,9 @@ namespace CassetteRandomize
 				controlsPanel.SetHidden(true);
 			}
 			DeckUi ui = new DeckUi(machine, transport);
+			// Opening the deck is the first reliable moment the music source exists, so make sure the
+			// equalizer filter is attached even if nothing has been slid yet.
+			DeckSettings.ApplyTone(machine);
 			MachineryPanel equalizer = row?.GetPanel("volume");
 			if (equalizer != null)
 			{
